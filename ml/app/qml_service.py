@@ -45,7 +45,7 @@ class QMLService:
         try:
             if os.path.exists(MODEL_PATH):
                 artifact = joblib.load(MODEL_PATH)
-                self.weights = np.array(artifact["weights"])
+                self.weights = np.array(artifact["weights"]).T
                 print("Loaded PennyLane QML Model successfully.")
         except Exception as e:
             print(f"Warning: Could not load QML model: {e}")

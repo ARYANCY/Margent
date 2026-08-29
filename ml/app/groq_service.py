@@ -88,7 +88,7 @@ class GroqService:
                     "- urgency_score: float (0.0 to 1.0)"
                 )
                 completion = self.client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
+                    model=os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b"),
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     temperature=0.2
@@ -149,7 +149,7 @@ class GroqService:
                     "target_appeal (string), sample_critique (string)."
                 )
                 completion = self.client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
+                    model=os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b"),
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     temperature=0.4
@@ -161,7 +161,7 @@ class GroqService:
                     "sentiment_score": float(res.get("sentiment_score", 0.72)),
                     "target_appeal": str(res.get("target_appeal", "Tech Creators & Trendsetters")),
                     "critique": str(res.get("sample_critique", "Strong visual hook with clear trend-aligned positioning.")),
-                    "model_used": "groq/llama-3.3-70b-versatile"
+                    "model_used": "groq/openai/gpt-oss-120b"
                 }
             except Exception as e:
                 print(f"Groq API live call fallback: {e}")
@@ -209,7 +209,7 @@ class GroqService:
                     f"3. recommended_actions: An array of 3 actionable, specific marketing optimization steps."
                 )
                 completion = self.client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
+                    model=os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b"),
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     temperature=0.6

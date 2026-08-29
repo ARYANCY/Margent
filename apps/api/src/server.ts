@@ -6,6 +6,7 @@ import path from "path";
 import dotenv from "dotenv";
 
 dotenv.config();
+dotenv.config({ path: path.join(__dirname, "../../../.env") });
 
 import { agentsRouter } from "./routes/agents";
 import { trendsRouter } from "./routes/trends";

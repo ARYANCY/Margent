@@ -60,9 +60,20 @@ export class LLMClient {
   private isDemoMode: boolean;
 
   constructor() {
-    this.apiKey = process.env.XAI_API_KEY || "";
-    this.model = process.env.XAI_MODEL || "grok-4.6";
+    this.apiKey = process.env.GROQ_API_KEY || process.env.XAI_API_KEY || "";
+    if (process.env.GROQ_API_KEY) {
+      this.model = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
+    } else {
+      this.model = process.env.XAI_MODEL || "grok-4.6";
+    }
     this.isDemoMode = !this.apiKey || process.env.DEMO_MODE === "true";
+  }
+
+  private getApiUrl(): string {
+    if (process.env.GROQ_API_KEY) {
+      return "https://api.groq.com/openai/v1/chat/completions";
+    }
+    return "https://api.x.ai/v1/chat/completions";
   }
 
   async cleanAndProcessCampaignData(params: {
@@ -80,7 +91,7 @@ export class LLMClient {
 
     if (!this.isDemoMode && this.apiKey) {
       try {
-        const response = await fetch("https://api.x.ai/v1/chat/completions", {
+        const response = await fetch(this.getApiUrl(), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -149,7 +160,7 @@ export class LLMClient {
     // If API key is available and demo mode is off, make structured call to Grok
     if (!this.isDemoMode && this.apiKey) {
       try {
-        const response = await fetch("https://api.x.ai/v1/chat/completions", {
+        const response = await fetch(this.getApiUrl(), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -241,7 +252,7 @@ export class LLMClient {
   }): Promise<AdminSynthesis> {
     if (!this.isDemoMode && this.apiKey) {
       try {
-        const response = await fetch("https://api.x.ai/v1/chat/completions", {
+        const response = await fetch(this.getApiUrl(), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
