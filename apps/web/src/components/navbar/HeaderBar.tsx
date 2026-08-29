@@ -32,9 +32,6 @@ export const HeaderBar: React.FC = () => {
     <header className="h-14 px-5 bg-white border-b border-slate-300 flex items-center justify-between z-40 shrink-0 select-none shadow-xs sticky top-0 font-mono">
       {/* 1. Left: Brand & Telemetry */}
       <div className="flex items-center space-x-3">
-        <div className="w-7 h-7 bg-slate-900 text-white flex items-center justify-center shadow-xs">
-          <Activity className="w-4 h-4" />
-        </div>
         <div className="flex items-center space-x-2.5">
           <span className="text-sm font-black tracking-tight text-slate-900 uppercase">
             MARGENT

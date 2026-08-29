@@ -57,8 +57,12 @@ app.get("/health", (req, res) => {
 io.on("connection", (socket) => {
   console.log(`[Socket.IO] Client connected: ${socket.id}`);
   
-  // Send current state immediately on connect
   const state = simulationScheduler.getEngine().getState();
+  
+  // Emit initial agents list to populate web client nodes
+  socket.emit("agents:initial", Object.values(state.agents));
+  
+  // Send current state immediately on connect
   socket.emit("simulation:state", {
     simulationId: state.simulationId,
     status: simulationScheduler.getRunningStatus().isRunning ? "RUNNING" : "PAUSED",

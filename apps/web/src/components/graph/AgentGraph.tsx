@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState } from "react";
+import React, { useMemo, useCallback, useState, useEffect } from "react";
 import {
   ReactFlow,
   Background,
@@ -7,7 +7,8 @@ import {
   Node,
   Edge,
   BackgroundVariant,
-  MarkerType
+  MarkerType,
+  useReactFlow
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useSimulationStore } from "../../stores/simulationStore";
@@ -20,7 +21,11 @@ const nodeTypes = {
   adminNode: AdminNode
 };
 
-export const AgentGraph: React.FC = () => {
+interface AgentGraphProps {
+  sidebarWidth?: number;
+}
+
+export const AgentGraph: React.FC<AgentGraphProps> = ({ sidebarWidth = 320 }) => {
   const agents = useSimulationStore((s) => s.agents);
   const activeAgentIds = useSimulationStore((s) => s.activeAgentIds);
   const activeEdges = useSimulationStore((s) => s.activeEdges);
@@ -31,6 +36,8 @@ export const AgentGraph: React.FC = () => {
   const filterRole = useSimulationStore((s) => s.filterRole);
 
   const [isWebMeshLayout, setIsWebMeshLayout] = useState(false);
+
+  const { fitView } = useReactFlow();
 
   const agentsList = useMemo(() => Object.values(agents), [agents]);
 
@@ -274,6 +281,16 @@ export const AgentGraph: React.FC = () => {
 
     return calculatedNodes;
   }, [agentsList, activeAgentIds, activeEdges, adminAnalysis, selectedAgentId, searchQuery, filterRole, isWebMeshLayout]);
+
+  // Auto-fit nodes on layout change, node list updates, or sidebar resize
+  useEffect(() => {
+    if (nodes.length > 0) {
+      const timer = setTimeout(() => {
+        fitView({ padding: 0.08, duration: 250 });
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [nodes.length, isWebMeshLayout, sidebarWidth, fitView]);
 
   // Compute Sleek Flowing Stream Threads & Web Synaptic Edges
   const edges: Edge[] = useMemo(() => {
