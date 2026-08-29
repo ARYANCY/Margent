@@ -10,10 +10,10 @@ Ensure you have Anaconda or Miniconda installed, then initialize the dedicated e
 
 ```powershell
 # Create Conda Environment with Python 3.11
-conda create -n margent-ml python=3.11 -y
+conda create -n ai-product-hackathon python=3.11 -y
 
 # Activate Environment
-conda activate margent-ml
+conda activate ai-product-hackathon
 
 # Install Core ML, Quantum & API Dependencies
 pip install fastapi uvicorn pandas numpy scikit-learn joblib pydantic pytrends groq pennylane pennylane-lightning
@@ -68,7 +68,7 @@ engagement,purchase_frequency,price_sensitivity,trend_sensitivity,conversion_rat
 To train all 101 nodes simultaneously across all 4 pipelines and output serialized `.joblib` models to `ml/models/`, execute:
 
 ```powershell
-conda run -n margent-ml python datasets/train_nodes.py
+conda run -n ai-product-hackathon python datasets/train_nodes.py
 ```
 
 ---
@@ -227,7 +227,7 @@ Launch the 3 core servers:
 
 ### 1. Start Python FastAPI ML & QML Microservice (Port 8000)
 ```powershell
-conda run -n margent-ml uvicorn ml.app.main:app --host 127.0.0.1 --port 8000
+conda run -n ai-product-hackathon uvicorn ml.app.main:app --host 127.0.0.1 --port 8000
 ```
 
 ### 2. Start Node.js API & Socket.IO Orchestrator (Port 4000)

@@ -50,8 +50,8 @@ graph TD
 ### 1. Environment Setup
 ```powershell
 # Create & Activate Conda Environment (Python 3.11)
-conda create -n margent-ml python=3.11 -y
-conda activate margent-ml
+conda create -n ai-product-hackathon python=3.11 -y
+conda activate ai-product-hackathon
 
 # Install Dependencies
 pip install fastapi uvicorn pandas numpy scikit-learn joblib pydantic pytrends groq pennylane pennylane-lightning
@@ -69,14 +69,14 @@ cp apps/api/.env.example apps/api/.env
 
 ### 3. One-Click Node Training
 ```powershell
-conda run -n margent-ml python datasets/train_nodes.py
+conda run -n ai-product-hackathon python datasets/train_nodes.py
 ```
 
 ### 4. Launch Services
 Run each command in a separate terminal:
 ```powershell
 # Terminal 1: Python FastAPI ML Microservice (Port 8000)
-conda run -n margent-ml uvicorn ml.app.main:app --host 127.0.0.1 --port 8000
+conda run -n ai-product-hackathon uvicorn ml.app.main:app --host 127.0.0.1 --port 8000
 
 # Terminal 2: Node.js Express & Socket.IO API (Port 4000)
 npx tsx apps/api/src/server.ts

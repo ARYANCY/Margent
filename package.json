@@ -2,16 +2,20 @@
   "name": "ai-marketing-intelligence",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
   "description": "101-Node Multi-Agent Marketing Simulation with LangGraph, ML, Real Trends & React Flow Visualizer",
   "scripts": {
     "dev": "npm run dev:all",
     "dev:all": "concurrently -n \"ML,API,WEB\" -c \"magenta,cyan,green\" \"npm run dev:ml\" \"npm run dev:api\" \"npm run dev:web\"",
-    "dev:ml": "conda run -n margent-ml uvicorn ml.app.main:app --host 0.0.0.0 --port 8000 --reload",
+    "dev:ml": "conda run -n ai-product-hackathon uvicorn ml.app.main:app --host 0.0.0.0 --port 8000 --reload",
     "dev:api": "npm --prefix apps/api run dev",
     "dev:web": "npm --prefix apps/web run dev",
     "build": "npm --prefix apps/web run build && npm --prefix apps/api run build",
     "seed": "npm --prefix apps/api run seed",
-    "ml:train": "conda run -n margent-ml python ml/training/train_all.py"
+    "ml:train": "conda run -n ai-product-hackathon python ml/training/train_all.py"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",

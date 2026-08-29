@@ -53,14 +53,14 @@ Margent/
 
 ```powershell
 # 1. Train all 101 Nodes
-conda run -n margent-ml python datasets/train_nodes.py
+conda run -n ai-product-hackathon python datasets/train_nodes.py
 
 # 2. Run End-to-End Test Suite
 npx tsx scripts/test-campaign-flow.ts
 
 # 3. Launch Services
 # Terminal 1:
-conda run -n margent-ml uvicorn ml.app.main:app --port 8000
+conda run -n ai-product-hackathon uvicorn ml.app.main:app --port 8000
 
 # Terminal 2:
 npx tsx apps/api/src/server.ts

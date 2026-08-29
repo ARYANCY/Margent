@@ -20,10 +20,10 @@ This checklist contains the exact step-by-step tasks you need to complete to con
   ```powershell
   conda --version
   ```
-- [ ] **Create & Activate the `margent-ml` Environment**:
+- [ ] **Create & Activate the `ai-product-hackathon` Environment**:
   ```powershell
-  conda create -n margent-ml python=3.11 -y
-  conda activate margent-ml
+  conda create -n ai-product-hackathon python=3.11 -y
+  conda activate ai-product-hackathon
   ```
 - [ ] **Install Required Python Packages**:
   ```powershell
@@ -118,7 +118,7 @@ Download your marketing or e-commerce campaign data from Kaggle (e.g. *Marketing
 
 - [ ] **Run the Master Training Pipeline**:
   ```powershell
-  conda run -n margent-ml python datasets/train_nodes.py
+  conda run -n ai-product-hackathon python datasets/train_nodes.py
   ```
 - [ ] **Verify Generated Model Artifacts** in `ml/models/`:
   - `ml/models/campaign_model.joblib` (RandomForest ROAS & Conversion Regressors)
@@ -134,7 +134,7 @@ Open 3 separate PowerShell terminal tabs:
 
 ### Terminal 1: Python FastAPI ML & Quantum Microservice (Port 8000)
 ```powershell
-conda activate margent-ml
+conda activate ai-product-hackathon
 python -m uvicorn ml.app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 

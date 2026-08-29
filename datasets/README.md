@@ -63,7 +63,7 @@ engagement,purchase_frequency,price_sensitivity,trend_sensitivity,conversion_rat
 Whenever you drop a new dataset into `datasets/`, run:
 
 ```powershell
-conda run -n margent-ml python datasets/train_nodes.py
+conda run -n ai-product-hackathon python datasets/train_nodes.py
 ```
 
 ### What this command does:
