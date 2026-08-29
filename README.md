@@ -64,6 +64,31 @@ All of this is visualized in a real-time React Flow graph with a sliding analyti
 
 8. **Real-Time Interactive Visualizer** — React Flow graph animates all 101 nodes executing in 4 parallel super-steps, with a GSAP sliding dashboard, live WebSocket event stream, and per-agent inspector modal. Stakeholders see the AI *think*, not just the final answer.
 
+## Technology Stack
+
+Margent is constructed as a modern monorepo using a robust, multi-language decoupled architecture:
+
+### 1. Frontend Web Visualizer (`apps/web/`)
+- **Core Library**: React 18, TypeScript, Vite
+- **Graph Engine**: `@xyflow/react` (React Flow) for rendering and interacting with the 101-node agent graph
+- **State Management**: Zustand for global simulation and socket event synchronization
+- **Animations**: GSAP (GreenSock Animation Platform) for smooth slider drawers and UI micro-interactions
+- **Styling**: Tailwind CSS & Vanilla CSS custom design tokens
+- **Data Visualization**: Recharts for rendering consensus comparison bar charts and Google Search Trend Area curves
+- **Icons**: Lucide React
+
+### 2. Backend Orchestration API Server (`apps/api/`)
+- **Server Framework**: Node.js, Express, TypeScript
+- **Real-Time Communication**: Socket.IO for streaming real-time simulation ticks, edge pulses, and agent activity logs to the frontend
+- **Validation**: Zod for strict request validation and compile-time type safety
+
+### 3. ML & Quantum Inference Microservice (`ml/`)
+- **Server Framework**: Python 3.11, FastAPI, Uvicorn
+- **Machine Learning**: Scikit-Learn for training supervised campaign classification, ROAS regression (RandomForest, GradientBoosting), and customer segment clustering (KMeans)
+- **Quantum Computing**: PennyLane for building and simulating 4-qubit Variational Quantum Classifiers (VQC) in Hilbert space
+- **LLM Reasoning**: Groq SDK for ultra-fast LLaMA 3.3 and GPT-OSS model inference
+- **Data Engineering**: Pandas, NumPy, Joblib, PyTrends (Google Search interest data)
+
 ---
 
 ## Architecture
