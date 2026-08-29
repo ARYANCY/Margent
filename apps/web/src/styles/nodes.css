@@ -1,0 +1,46 @@
+/* Agent & Admin Node Cards */
+
+.agent-node-card {
+  position: relative;
+  width: 256px;
+  height: 142px;
+  padding: 0.75rem 0.875rem;
+  background-color: var(--bg-surface);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  user-select: none;
+  border-radius: 0px !important;
+  transition: all 140ms ease;
+  border: 2px solid var(--border-medium);
+  box-shadow: var(--shadow-brutal-sm);
+}
+
+.agent-node-card:hover {
+  border-color: var(--border-dark);
+  box-shadow: var(--shadow-brutal-md);
+}
+
+.agent-node-card.selected {
+  border: 3px solid var(--border-dark);
+  box-shadow: var(--shadow-brutal-lg);
+  transform: scale(1.04);
+  z-index: 30;
+}
+
+.agent-node-card.active {
+  border: 3px solid var(--border-dark);
+  box-shadow: var(--shadow-brutal-md);
+  z-index: 20;
+}
+
+.admin-node-card {
+  position: relative;
+  width: 420px;
+  padding: 1.25rem 1.5rem;
+  background-color: var(--bg-surface);
+  border: 4px solid var(--border-dark);
+  box-shadow: var(--shadow-brutal-lg);
+  user-select: none;
+  border-radius: 0px !important;
+}

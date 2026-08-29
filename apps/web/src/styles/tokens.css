@@ -1,0 +1,50 @@
+:root {
+  /* Color Palette - Refined Modern Enterprise Light Theme */
+  --bg-canvas: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F1F5F9;
+  --bg-muted: #E2E8F0;
+  
+  --ink-primary: #0F172A;
+  --ink-secondary: #334155;
+  --ink-muted: #64748B;
+  
+  --border-dark: #0F172A;
+  --border-medium: #CBD5E1;
+  --border-light: #E2E8F0;
+  --border-subtle: #F1F5F9;
+  
+  /* Pipeline Functional Accents - Soft Clean Harmonies */
+  --pipeline-ml: #0284C7;
+  --pipeline-ml-bg: #F0F9FF;
+  --pipeline-ml-border: #BAE6FD;
+  --pipeline-ml-ink: #0369A1;
+  
+  --pipeline-pytrend: #D97706;
+  --pipeline-pytrend-bg: #FFFBEB;
+  --pipeline-pytrend-border: #FDE68A;
+  --pipeline-pytrend-ink: #B45309;
+  
+  --pipeline-groq: #059669;
+  --pipeline-groq-bg: #ECFDF5;
+  --pipeline-groq-border: #A7F3D0;
+  --pipeline-groq-ink: #047857;
+  
+  --pipeline-qml: #DB2777;
+  --pipeline-qml-bg: #FDF2F8;
+  --pipeline-qml-border: #FBCFE8;
+  --pipeline-qml-ink: #BE185D;
+  
+  --pipeline-admin: #6366F1;
+  --pipeline-admin-bg: #EEF2FF;
+  --pipeline-admin-border: #C7D2FE;
+  --pipeline-admin-ink: #4338CA;
+  
+  /* Strict Zero-Radius Geometry */
+  --radius-zero: 0px;
+  
+  /* Subtle Refined Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+}

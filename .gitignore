@@ -1,0 +1,51 @@
+# Node Dependencies
+node_modules/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build Outputs
+dist/
+build/
+.output/
+.vite/
+
+# Python & ML Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# App Data & Agent Transcripts
+.gemini/
+.antigravity/
+.system_generated/
+uploads/*
+!uploads/.gitkeep
+
+# IDEs & System Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Large Model Caches (Keep baseline lightweight models)
+ml/models/*.tmp

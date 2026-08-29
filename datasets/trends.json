@@ -1,0 +1,38 @@
+[
+  {
+    "trendId": "trend_001",
+    "name": "Autonomous Multi-Agent Systems",
+    "hashtag": "#AgenticAI",
+    "growth": 95.2,
+    "interest": 94.0,
+    "velocity": 91.0,
+    "recency": 96.0,
+    "relevance": 92.0,
+    "score": 93.8,
+    "status": "RISING"
+  },
+  {
+    "trendId": "trend_002",
+    "name": "Quantum Machine Learning",
+    "hashtag": "#QML",
+    "growth": 88.4,
+    "interest": 86.0,
+    "velocity": 89.0,
+    "recency": 90.0,
+    "relevance": 88.0,
+    "score": 88.2,
+    "status": "RISING"
+  },
+  {
+    "trendId": "trend_003",
+    "name": "Spatial Computing Audio",
+    "hashtag": "#SpatialAudio",
+    "growth": 76.5,
+    "interest": 78.0,
+    "velocity": 74.0,
+    "recency": 82.0,
+    "relevance": 79.0,
+    "score": 77.8,
+    "status": "PEAKED"
+  }
+]

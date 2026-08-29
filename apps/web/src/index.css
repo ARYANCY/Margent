@@ -1,0 +1,44 @@
+/* Import Modular Design System Tokens & Classes */
+@import "./styles/tokens.css";
+@import "./styles/buttons.css";
+@import "./styles/nodes.css";
+@import "./styles/graph.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    border-radius: 0px !important;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: var(--bg-canvas);
+    color: var(--ink-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+  }
+}
+
+/* Crisp Minimalist Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border: 1px solid var(--ink-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-primary);
+}

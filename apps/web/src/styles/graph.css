@@ -1,0 +1,34 @@
+/* React Flow Canvas & Controls */
+
+.react-flow__background {
+  background-color: var(--bg-canvas) !important;
+}
+
+.react-flow__controls {
+  border-radius: 0px !important;
+  border: 2px solid var(--border-dark) !important;
+  background-color: var(--bg-surface) !important;
+  box-shadow: var(--shadow-brutal-sm) !important;
+}
+
+.react-flow__controls-button {
+  border-radius: 0px !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  background-color: var(--bg-surface) !important;
+  fill: var(--ink-primary) !important;
+}
+
+.react-flow__controls-button:hover {
+  background-color: var(--bg-muted) !important;
+}
+
+.react-flow__minimap {
+  border-radius: 0px !important;
+  border: 2px solid var(--border-dark) !important;
+  background-color: var(--bg-surface) !important;
+  box-shadow: var(--shadow-brutal-sm) !important;
+}
+
+.react-flow__edge-path {
+  stroke-linecap: square;
+}

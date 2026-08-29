@@ -1,0 +1,151 @@
+campaign_id,campaign_name,channel,audience,date,spend,impressions,clicks,conversions,revenue,engagements,ctr,cpc,conversion_rate,roas,trend_alignment
+camp_001,TikTok Gen Z Trendsetters Campaign 1,TikTok,Gen Z Trendsetters,2026-08-02,2497.42,157039,10521,1030,6917.85,7011,0.067,0.24,0.0979,2.77,91
+camp_002,X Decision Makers Campaign 2,X,Decision Makers,2026-08-03,3766.24,197528,3832,524,6854.56,21055,0.0194,0.98,0.1368,1.82,60
+camp_003,LinkedIn Content Creators Campaign 3,LinkedIn,Content Creators,2026-08-04,1418.22,42385,1627,146,2481.89,3770,0.0384,0.87,0.0901,1.75,56
+camp_004,YouTube Eco-Conscious Buyers Campaign 4,YouTube,Eco-Conscious Buyers,2026-08-05,2036.01,76866,3735,438,4682.82,4302,0.0486,0.55,0.1174,2.3,74
+camp_005,Instagram Growth Hackers Campaign 5,Instagram,Growth Hackers,2026-08-06,3717.52,89210,5236,276,9256.62,8451,0.0587,0.71,0.0529,2.49,71
+camp_006,TikTok Tech Enthusiasts Campaign 6,TikTok,Tech Enthusiasts,2026-08-07,1083.41,46903,952,124,1971.81,2847,0.0203,1.14,0.1305,1.82,81
+camp_007,X Gen Z Trendsetters Campaign 7,X,Gen Z Trendsetters,2026-08-08,2145.58,95184,5197,282,6029.08,4481,0.0546,0.41,0.0544,2.81,59
+camp_008,LinkedIn Decision Makers Campaign 8,LinkedIn,Decision Makers,2026-08-09,653.27,23510,1034,65,1587.45,2499,0.044,0.63,0.0635,2.43,67
+camp_009,YouTube Content Creators Campaign 9,YouTube,Content Creators,2026-08-10,1973.23,89458,2451,292,3630.74,3617,0.0274,0.81,0.1192,1.84,89
+camp_010,Instagram Eco-Conscious Buyers Campaign 10,Instagram,Eco-Conscious Buyers,2026-08-11,4358.4,232508,16205,693,13423.87,15968,0.0697,0.27,0.0428,3.08,55
+camp_011,TikTok Growth Hackers Campaign 11,TikTok,Growth Hackers,2026-08-12,5233.38,255398,10266,428,10309.76,25123,0.0402,0.51,0.0417,1.97,80
+camp_012,X Tech Enthusiasts Campaign 12,X,Tech Enthusiasts,2026-08-13,5368.39,227111,5904,648,8911.53,22907,0.026,0.91,0.1099,1.66,76
+camp_013,LinkedIn Gen Z Trendsetters Campaign 13,LinkedIn,Gen Z Trendsetters,2026-08-14,4717.42,203949,10809,863,12218.12,13286,0.053,0.44,0.0799,2.59,74
+camp_014,YouTube Decision Makers Campaign 14,YouTube,Decision Makers,2026-08-15,5482.37,179380,8161,932,12719.1,10458,0.0455,0.67,0.1143,2.32,53
+camp_015,Instagram Content Creators Campaign 15,Instagram,Content Creators,2026-08-16,2022.61,58519,4699,563,6836.42,6103,0.0803,0.43,0.1199,3.38,58
+camp_016,TikTok Eco-Conscious Buyers Campaign 16,TikTok,Eco-Conscious Buyers,2026-08-17,5398.33,243959,17589,2270,16410.92,15964,0.0721,0.31,0.1291,3.04,55
+camp_017,X Growth Hackers Campaign 17,X,Growth Hackers,2026-08-18,1676.44,67670,4926,617,4962.26,4966,0.0728,0.34,0.1254,2.96,60
+camp_018,LinkedIn Tech Enthusiasts Campaign 18,LinkedIn,Tech Enthusiasts,2026-08-19,1071.25,39119,3176,218,3267.31,3188,0.0812,0.34,0.0689,3.05,83
+camp_019,YouTube Gen Z Trendsetters Campaign 19,YouTube,Gen Z Trendsetters,2026-08-20,2436.33,155405,12820,787,6261.37,9757,0.0825,0.19,0.0614,2.57,51
+camp_020,Instagram Decision Makers Campaign 20,Instagram,Decision Makers,2026-08-21,3813.56,166329,3559,228,7322.04,18738,0.0214,1.07,0.0643,1.92,61
+camp_021,TikTok Content Creators Campaign 21,TikTok,Content Creators,2026-08-22,1211.41,52146,4380,264,4264.16,3077,0.084,0.28,0.0604,3.52,84
+camp_022,X Eco-Conscious Buyers Campaign 22,X,Eco-Conscious Buyers,2026-08-23,2459.59,120985,7307,667,7206.6,5713,0.0604,0.34,0.0913,2.93,90
+camp_023,LinkedIn Growth Hackers Campaign 23,LinkedIn,Growth Hackers,2026-08-24,2196.37,65935,1364,132,3184.74,6040,0.0207,1.61,0.097,1.45,58
+camp_024,YouTube Tech Enthusiasts Campaign 24,YouTube,Tech Enthusiasts,2026-08-25,4269.25,164919,13325,658,13405.44,11096,0.0808,0.32,0.0494,3.14,55
+camp_025,Instagram Gen Z Trendsetters Campaign 25,Instagram,Gen Z Trendsetters,2026-08-26,5578.28,333166,11760,1226,12662.7,27443,0.0353,0.47,0.1043,2.27,61
+camp_026,TikTok Decision Makers Campaign 26,TikTok,Decision Makers,2026-08-27,921.38,55817,4370,443,3187.97,3746,0.0783,0.21,0.1015,3.46,66
+camp_027,X Content Creators Campaign 27,X,Content Creators,2026-08-28,4465.35,270491,20936,2447,12681.59,14317,0.0774,0.21,0.1169,2.84,93
+camp_028,LinkedIn Eco-Conscious Buyers Campaign 28,LinkedIn,Eco-Conscious Buyers,2026-08-01,3796.0,85013,2108,220,7857.72,3434,0.0248,1.8,0.1047,2.07,57
+camp_029,YouTube Growth Hackers Campaign 29,YouTube,Growth Hackers,2026-08-02,3472.91,179728,11089,648,8473.9,11867,0.0617,0.31,0.0585,2.44,85
+camp_030,Instagram Tech Enthusiasts Campaign 30,Instagram,Tech Enthusiasts,2026-08-03,4037.94,236286,14673,1389,12033.06,11222,0.0621,0.28,0.0947,2.98,67
+camp_031,TikTok Gen Z Trendsetters Campaign 31,TikTok,Gen Z Trendsetters,2026-08-04,1885.13,61250,5096,388,6126.67,6344,0.0832,0.37,0.0763,3.25,74
+camp_032,X Decision Makers Campaign 32,X,Decision Makers,2026-08-05,3630.66,156765,4875,540,8604.66,9791,0.0311,0.74,0.1109,2.37,51
+camp_033,LinkedIn Content Creators Campaign 33,LinkedIn,Content Creators,2026-08-06,4014.64,118896,9630,1301,12244.65,4902,0.081,0.42,0.1352,3.05,94
+camp_034,YouTube Eco-Conscious Buyers Campaign 34,YouTube,Eco-Conscious Buyers,2026-08-07,2797.83,177847,14690,1830,9428.69,11303,0.0826,0.19,0.1246,3.37,68
+camp_035,Instagram Growth Hackers Campaign 35,Instagram,Growth Hackers,2026-08-08,5166.37,184065,5411,505,11056.03,15756,0.0294,0.95,0.0935,2.14,54
+camp_036,TikTok Tech Enthusiasts Campaign 36,TikTok,Tech Enthusiasts,2026-08-09,3844.04,248218,6801,608,8303.13,27351,0.0274,0.57,0.0894,2.16,85
+camp_037,X Gen Z Trendsetters Campaign 37,X,Gen Z Trendsetters,2026-08-10,4303.29,224661,9458,622,10758.23,24570,0.0421,0.45,0.0658,2.5,93
+camp_038,LinkedIn Decision Makers Campaign 38,LinkedIn,Decision Makers,2026-08-11,3263.52,142175,10165,1049,10051.64,13671,0.0715,0.32,0.1032,3.08,88
+camp_039,YouTube Content Creators Campaign 39,YouTube,Content Creators,2026-08-12,5384.03,196699,8497,381,11952.55,15194,0.0432,0.63,0.0449,2.22,76
+camp_040,Instagram Eco-Conscious Buyers Campaign 40,Instagram,Eco-Conscious Buyers,2026-08-13,2004.63,95031,1900,73,3848.89,10055,0.02,1.06,0.0389,1.92,67
+camp_041,TikTok Growth Hackers Campaign 41,TikTok,Growth Hackers,2026-08-14,1111.54,49415,3439,198,2967.81,2180,0.0696,0.32,0.0577,2.67,75
+camp_042,X Tech Enthusiasts Campaign 42,X,Tech Enthusiasts,2026-08-15,3427.56,169353,11278,1550,9939.92,13769,0.0666,0.3,0.1375,2.9,65
+camp_043,LinkedIn Gen Z Trendsetters Campaign 43,LinkedIn,Gen Z Trendsetters,2026-08-16,4853.04,163284,7739,334,12617.9,11873,0.0474,0.63,0.0432,2.6,58
+camp_044,YouTube Decision Makers Campaign 44,YouTube,Decision Makers,2026-08-17,1276.05,41803,2290,251,3649.5,3879,0.0548,0.56,0.11,2.86,63
+camp_045,Instagram Content Creators Campaign 45,Instagram,Content Creators,2026-08-18,5747.25,308797,17014,1687,12356.59,21145,0.0551,0.34,0.0992,2.15,86
+camp_046,TikTok Eco-Conscious Buyers Campaign 46,TikTok,Eco-Conscious Buyers,2026-08-19,480.6,12971,273,10,855.47,1406,0.0211,1.76,0.0393,1.78,83
+camp_047,X Growth Hackers Campaign 47,X,Growth Hackers,2026-08-20,3055.37,80071,4075,345,7455.1,5755,0.0509,0.75,0.0847,2.44,79
+camp_048,LinkedIn Tech Enthusiasts Campaign 48,LinkedIn,Tech Enthusiasts,2026-08-21,3956.52,94751,4083,411,7873.47,7603,0.0431,0.97,0.1007,1.99,91
+camp_049,YouTube Gen Z Trendsetters Campaign 49,YouTube,Gen Z Trendsetters,2026-08-22,4088.68,118596,2692,275,8054.7,13664,0.0227,1.52,0.1025,1.97,77
+camp_050,Instagram Decision Makers Campaign 50,Instagram,Decision Makers,2026-08-23,2573.75,127816,6224,574,6074.05,14739,0.0487,0.41,0.0923,2.36,68
+camp_051,TikTok Content Creators Campaign 51,TikTok,Content Creators,2026-08-24,5782.67,352338,10957,463,12779.7,16100,0.0311,0.53,0.0423,2.21,65
+camp_052,X Eco-Conscious Buyers Campaign 52,X,Eco-Conscious Buyers,2026-08-25,5131.3,118023,8568,553,14213.7,5836,0.0726,0.6,0.0646,2.77,83
+camp_053,LinkedIn Growth Hackers Campaign 53,LinkedIn,Growth Hackers,2026-08-26,3922.08,234270,15742,1879,10197.41,23438,0.0672,0.25,0.1194,2.6,88
+camp_054,YouTube Tech Enthusiasts Campaign 54,YouTube,Tech Enthusiasts,2026-08-27,5946.83,236342,10139,1181,13023.56,15897,0.0429,0.59,0.1165,2.19,94
+camp_055,Instagram Gen Z Trendsetters Campaign 55,Instagram,Gen Z Trendsetters,2026-08-28,5207.11,210610,14384,1642,16975.18,13816,0.0683,0.36,0.1142,3.26,92
+camp_056,TikTok Decision Makers Campaign 56,TikTok,Decision Makers,2026-08-01,2579.53,57951,4560,203,7944.95,3798,0.0787,0.57,0.0446,3.08,95
+camp_057,X Content Creators Campaign 57,X,Content Creators,2026-08-02,5723.4,267041,16102,1321,13736.16,25048,0.0603,0.36,0.0821,2.4,86
+camp_058,LinkedIn Eco-Conscious Buyers Campaign 58,LinkedIn,Eco-Conscious Buyers,2026-08-03,4832.84,270414,6516,566,7829.2,12061,0.0241,0.74,0.0869,1.62,76
+camp_059,YouTube Growth Hackers Campaign 59,YouTube,Growth Hackers,2026-08-04,2872.57,172846,7173,339,7037.8,15462,0.0415,0.4,0.0473,2.45,54
+camp_060,Instagram Tech Enthusiasts Campaign 60,Instagram,Tech Enthusiasts,2026-08-05,871.0,45415,1040,126,1559.09,4382,0.0229,0.84,0.1213,1.79,53
+camp_061,TikTok Gen Z Trendsetters Campaign 61,TikTok,Gen Z Trendsetters,2026-08-06,875.09,56378,2429,179,1881.44,5760,0.0431,0.36,0.0739,2.15,76
+camp_062,X Decision Makers Campaign 62,X,Decision Makers,2026-08-07,2775.64,169239,4315,374,5412.5,6923,0.0255,0.64,0.0867,1.95,72
+camp_063,LinkedIn Content Creators Campaign 63,LinkedIn,Content Creators,2026-08-08,715.3,19391,502,51,1552.2,2268,0.0259,1.42,0.1032,2.17,67
+camp_064,YouTube Eco-Conscious Buyers Campaign 64,YouTube,Eco-Conscious Buyers,2026-08-09,1999.99,118698,3917,533,5239.97,4863,0.033,0.51,0.1361,2.62,96
+camp_065,Instagram Growth Hackers Campaign 65,Instagram,Growth Hackers,2026-08-10,641.7,38706,2066,287,1668.42,4549,0.0534,0.31,0.1393,2.6,75
+camp_066,TikTok Tech Enthusiasts Campaign 66,TikTok,Tech Enthusiasts,2026-08-11,3924.63,203755,9882,997,8791.17,17674,0.0485,0.4,0.1009,2.24,93
+camp_067,X Gen Z Trendsetters Campaign 67,X,Gen Z Trendsetters,2026-08-12,654.5,22306,1822,234,2480.55,1387,0.0817,0.36,0.1285,3.79,59
+camp_068,LinkedIn Decision Makers Campaign 68,LinkedIn,Decision Makers,2026-08-13,2996.71,111460,6364,274,7192.1,13146,0.0571,0.47,0.0432,2.4,97
+camp_069,YouTube Content Creators Campaign 69,YouTube,Content Creators,2026-08-14,4309.71,194161,7514,904,8619.42,21915,0.0387,0.57,0.1204,2.0,89
+camp_070,Instagram Eco-Conscious Buyers Campaign 70,Instagram,Eco-Conscious Buyers,2026-08-15,5718.88,304278,17982,1418,16184.43,34875,0.0591,0.32,0.0789,2.83,91
+camp_071,TikTok Growth Hackers Campaign 71,TikTok,Growth Hackers,2026-08-16,653.22,15111,652,78,1208.46,1776,0.0432,1.0,0.1201,1.85,90
+camp_072,X Tech Enthusiasts Campaign 72,X,Tech Enthusiasts,2026-08-17,5094.64,214758,9835,626,14366.88,9558,0.0458,0.52,0.0637,2.82,91
+camp_073,LinkedIn Gen Z Trendsetters Campaign 73,LinkedIn,Gen Z Trendsetters,2026-08-18,4952.25,321836,27291,2546,15153.89,24473,0.0848,0.18,0.0933,3.06,56
+camp_074,YouTube Decision Makers Campaign 74,YouTube,Decision Makers,2026-08-19,5742.69,276025,9191,969,13495.32,24690,0.0333,0.62,0.1055,2.35,67
+camp_075,Instagram Content Creators Campaign 75,Instagram,Content Creators,2026-08-20,1035.92,52705,2788,323,3014.53,4435,0.0529,0.37,0.1161,2.91,76
+camp_076,TikTok Eco-Conscious Buyers Campaign 76,TikTok,Eco-Conscious Buyers,2026-08-21,5309.26,208918,5640,214,10937.08,20977,0.027,0.94,0.038,2.06,79
+camp_077,X Growth Hackers Campaign 77,X,Growth Hackers,2026-08-22,4342.85,135312,3666,133,10249.13,9658,0.0271,1.18,0.0365,2.36,70
+camp_078,LinkedIn Tech Enthusiasts Campaign 78,LinkedIn,Tech Enthusiasts,2026-08-23,5463.29,202005,10585,1241,11035.85,14488,0.0524,0.52,0.1173,2.02,79
+camp_079,YouTube Gen Z Trendsetters Campaign 79,YouTube,Gen Z Trendsetters,2026-08-24,5229.24,328549,9166,1212,8105.32,25209,0.0279,0.57,0.1323,1.55,97
+camp_080,Instagram Decision Makers Campaign 80,Instagram,Decision Makers,2026-08-25,3158.66,114142,6894,415,8496.8,5258,0.0604,0.46,0.0602,2.69,56
+camp_081,TikTok Content Creators Campaign 81,TikTok,Content Creators,2026-08-26,1117.06,31871,870,89,2111.24,3561,0.0273,1.28,0.1023,1.89,72
+camp_082,X Eco-Conscious Buyers Campaign 82,X,Eco-Conscious Buyers,2026-08-27,4138.32,121706,3760,147,7448.98,6513,0.0309,1.1,0.0393,1.8,63
+camp_083,LinkedIn Growth Hackers Campaign 83,LinkedIn,Growth Hackers,2026-08-28,1391.26,35914,937,78,2587.74,2882,0.0261,1.48,0.0834,1.86,83
+camp_084,YouTube Tech Enthusiasts Campaign 84,YouTube,Tech Enthusiasts,2026-08-01,620.15,34960,2101,91,1451.15,3841,0.0601,0.3,0.0436,2.34,94
+camp_085,Instagram Gen Z Trendsetters Campaign 85,Instagram,Gen Z Trendsetters,2026-08-02,742.04,25159,1811,205,2062.87,1752,0.072,0.41,0.1136,2.78,73
+camp_086,TikTok Decision Makers Campaign 86,TikTok,Decision Makers,2026-08-03,3862.23,146236,7165,813,8921.75,6278,0.049,0.54,0.1135,2.31,62
+camp_087,X Content Creators Campaign 87,X,Content Creators,2026-08-04,4394.76,265856,13904,1263,11030.85,21962,0.0523,0.32,0.0909,2.51,61
+camp_088,LinkedIn Eco-Conscious Buyers Campaign 88,LinkedIn,Eco-Conscious Buyers,2026-08-05,1907.76,72920,1407,96,3052.42,4150,0.0193,1.36,0.0688,1.6,65
+camp_089,YouTube Growth Hackers Campaign 89,YouTube,Growth Hackers,2026-08-06,1070.67,64553,3731,396,2837.28,3030,0.0578,0.29,0.1063,2.65,75
+camp_090,Instagram Tech Enthusiasts Campaign 90,Instagram,Tech Enthusiasts,2026-08-07,3686.31,199259,9345,452,10616.57,12493,0.0469,0.39,0.0484,2.88,67
+camp_091,TikTok Gen Z Trendsetters Campaign 91,TikTok,Gen Z Trendsetters,2026-08-08,4017.14,186971,7834,1085,7712.91,9001,0.0419,0.51,0.1386,1.92,57
+camp_092,X Decision Makers Campaign 92,X,Decision Makers,2026-08-09,1777.36,51382,1567,101,4052.38,2767,0.0305,1.13,0.0649,2.28,93
+camp_093,LinkedIn Content Creators Campaign 93,LinkedIn,Content Creators,2026-08-10,849.31,37840,1721,237,1987.39,4448,0.0455,0.49,0.1381,2.34,91
+camp_094,YouTube Eco-Conscious Buyers Campaign 94,YouTube,Eco-Conscious Buyers,2026-08-11,4975.6,164641,4840,509,9055.59,18826,0.0294,1.03,0.1052,1.82,76
+camp_095,Instagram Growth Hackers Campaign 95,Instagram,Growth Hackers,2026-08-12,3601.03,122575,8531,465,9578.74,9880,0.0696,0.42,0.0546,2.66,61
+camp_096,TikTok Tech Enthusiasts Campaign 96,TikTok,Tech Enthusiasts,2026-08-13,1043.09,50336,1877,180,1773.25,2635,0.0373,0.56,0.096,1.7,73
+camp_097,X Gen Z Trendsetters Campaign 97,X,Gen Z Trendsetters,2026-08-14,3382.5,81952,3327,163,8828.32,4947,0.0406,1.02,0.0491,2.61,82
+camp_098,LinkedIn Decision Makers Campaign 98,LinkedIn,Decision Makers,2026-08-15,4657.28,221744,10998,860,10804.89,15058,0.0496,0.42,0.0782,2.32,94
+camp_099,YouTube Content Creators Campaign 99,YouTube,Content Creators,2026-08-16,5051.47,320748,8435,942,10355.51,27570,0.0263,0.6,0.1117,2.05,90
+camp_100,Instagram Eco-Conscious Buyers Campaign 100,Instagram,Eco-Conscious Buyers,2026-08-17,1182.73,66465,2093,109,2460.08,3532,0.0315,0.57,0.0522,2.08,89
+camp_101,TikTok Growth Hackers Campaign 101,TikTok,Growth Hackers,2026-08-18,4125.1,183533,7708,979,11137.77,13788,0.042,0.54,0.1271,2.7,68
+camp_102,X Tech Enthusiasts Campaign 102,X,Tech Enthusiasts,2026-08-19,2991.01,104563,7120,625,8195.37,6124,0.0681,0.42,0.0878,2.74,93
+camp_103,LinkedIn Gen Z Trendsetters Campaign 103,LinkedIn,Gen Z Trendsetters,2026-08-20,2549.79,115691,9104,914,6705.95,5916,0.0787,0.28,0.1005,2.63,88
+camp_104,YouTube Decision Makers Campaign 104,YouTube,Decision Makers,2026-08-21,3872.41,174021,13556,1596,13166.19,9072,0.0779,0.29,0.1178,3.4,64
+camp_105,Instagram Content Creators Campaign 105,Instagram,Content Creators,2026-08-22,1791.54,96724,1953,185,3672.66,6515,0.0202,0.92,0.0948,2.05,89
+camp_106,TikTok Eco-Conscious Buyers Campaign 106,TikTok,Eco-Conscious Buyers,2026-08-23,1019.54,59538,1577,120,2171.62,6179,0.0265,0.65,0.0767,2.13,57
+camp_107,X Growth Hackers Campaign 107,X,Growth Hackers,2026-08-24,1683.81,89337,5914,605,4967.24,5373,0.0662,0.28,0.1023,2.95,66
+camp_108,LinkedIn Tech Enthusiasts Campaign 108,LinkedIn,Tech Enthusiasts,2026-08-25,1416.95,86523,4940,380,4548.41,6658,0.0571,0.29,0.0771,3.21,95
+camp_109,YouTube Gen Z Trendsetters Campaign 109,YouTube,Gen Z Trendsetters,2026-08-26,1258.77,59423,3084,305,3235.04,5688,0.0519,0.41,0.0992,2.57,94
+camp_110,Instagram Decision Makers Campaign 110,Instagram,Decision Makers,2026-08-27,4360.54,124533,7048,695,12427.54,9206,0.0566,0.62,0.0987,2.85,85
+camp_111,TikTok Content Creators Campaign 111,TikTok,Content Creators,2026-08-28,5632.46,348082,16777,786,13968.5,30388,0.0482,0.34,0.0469,2.48,69
+camp_112,X Eco-Conscious Buyers Campaign 112,X,Eco-Conscious Buyers,2026-08-01,706.67,25732,1847,65,2303.74,1715,0.0718,0.38,0.0355,3.26,69
+camp_113,LinkedIn Growth Hackers Campaign 113,LinkedIn,Growth Hackers,2026-08-02,3409.42,209862,8646,617,7568.91,12165,0.0412,0.39,0.0714,2.22,71
+camp_114,YouTube Tech Enthusiasts Campaign 114,YouTube,Tech Enthusiasts,2026-08-03,1188.8,35170,1807,142,3602.06,3980,0.0514,0.66,0.079,3.03,67
+camp_115,Instagram Gen Z Trendsetters Campaign 115,Instagram,Gen Z Trendsetters,2026-08-04,3651.29,179597,3394,355,6572.32,8410,0.0189,1.08,0.1047,1.8,97
+camp_116,TikTok Decision Makers Campaign 116,TikTok,Decision Makers,2026-08-05,3212.29,152910,3440,391,5203.91,8684,0.0225,0.93,0.1137,1.62,93
+camp_117,X Content Creators Campaign 117,X,Content Creators,2026-08-06,1548.78,46772,954,80,2617.44,4772,0.0204,1.62,0.0846,1.69,71
+camp_118,LinkedIn Eco-Conscious Buyers Campaign 118,LinkedIn,Eco-Conscious Buyers,2026-08-07,3336.59,136642,6135,575,8107.91,7162,0.0449,0.54,0.0938,2.43,58
+camp_119,YouTube Growth Hackers Campaign 119,YouTube,Growth Hackers,2026-08-08,5226.0,327581,14085,892,10608.78,13768,0.043,0.37,0.0634,2.03,57
+camp_120,Instagram Tech Enthusiasts Campaign 120,Instagram,Tech Enthusiasts,2026-08-09,4409.44,221943,4394,256,10670.84,12980,0.0198,1.0,0.0583,2.42,82
+camp_121,TikTok Gen Z Trendsetters Campaign 121,TikTok,Gen Z Trendsetters,2026-08-10,510.38,13513,967,51,1311.68,648,0.0716,0.53,0.0537,2.57,61
+camp_122,X Decision Makers Campaign 122,X,Decision Makers,2026-08-11,4444.69,261325,19233,1475,14178.56,24419,0.0736,0.23,0.0767,3.19,59
+camp_123,LinkedIn Content Creators Campaign 123,LinkedIn,Content Creators,2026-08-12,2041.63,123605,2336,102,4042.43,9111,0.0189,0.87,0.044,1.98,92
+camp_124,YouTube Eco-Conscious Buyers Campaign 124,YouTube,Eco-Conscious Buyers,2026-08-13,4977.68,182671,6466,484,9109.15,15933,0.0354,0.77,0.0749,1.83,62
+camp_125,Instagram Growth Hackers Campaign 125,Instagram,Growth Hackers,2026-08-14,3895.23,154269,8484,685,10361.31,15594,0.055,0.46,0.0808,2.66,56
+camp_126,TikTok Tech Enthusiasts Campaign 126,TikTok,Tech Enthusiasts,2026-08-15,5263.42,226114,17614,2096,15948.16,16736,0.0779,0.3,0.119,3.03,51
+camp_127,X Gen Z Trendsetters Campaign 127,X,Gen Z Trendsetters,2026-08-16,1904.59,86259,5210,323,5256.67,10243,0.0604,0.37,0.0621,2.76,75
+camp_128,LinkedIn Decision Makers Campaign 128,LinkedIn,Decision Makers,2026-08-17,1361.4,45891,881,115,2491.36,2267,0.0192,1.55,0.131,1.83,77
+camp_129,YouTube Content Creators Campaign 129,YouTube,Content Creators,2026-08-18,1934.71,88667,5461,666,5436.54,7806,0.0616,0.35,0.1221,2.81,81
+camp_130,Instagram Eco-Conscious Buyers Campaign 130,Instagram,Eco-Conscious Buyers,2026-08-19,1382.08,84748,3906,293,3759.26,6908,0.0461,0.35,0.0752,2.72,52
+camp_131,TikTok Growth Hackers Campaign 131,TikTok,Growth Hackers,2026-08-20,1331.19,71532,1681,165,2382.83,4513,0.0235,0.79,0.0983,1.79,67
+camp_132,X Tech Enthusiasts Campaign 132,X,Tech Enthusiasts,2026-08-21,4426.66,153942,8605,731,9738.65,14331,0.0559,0.51,0.085,2.2,94
+camp_133,LinkedIn Gen Z Trendsetters Campaign 133,LinkedIn,Gen Z Trendsetters,2026-08-22,4502.4,140665,2827,176,7789.15,11212,0.0201,1.59,0.0625,1.73,78
+camp_134,YouTube Decision Makers Campaign 134,YouTube,Decision Makers,2026-08-23,2271.77,125286,3144,134,4634.41,12309,0.0251,0.72,0.0429,2.04,73
+camp_135,Instagram Content Creators Campaign 135,Instagram,Content Creators,2026-08-24,4255.05,173170,5974,722,10127.02,10696,0.0345,0.71,0.121,2.38,78
+camp_136,TikTok Eco-Conscious Buyers Campaign 136,TikTok,Eco-Conscious Buyers,2026-08-25,2421.45,62807,4993,246,8184.5,7286,0.0795,0.48,0.0494,3.38,71
+camp_137,X Growth Hackers Campaign 137,X,Growth Hackers,2026-08-26,1436.74,65086,4979,557,4597.57,6208,0.0765,0.29,0.1119,3.2,90
+camp_138,LinkedIn Tech Enthusiasts Campaign 138,LinkedIn,Tech Enthusiasts,2026-08-27,1798.14,77401,2538,352,4459.39,8941,0.0328,0.71,0.1387,2.48,51
+camp_139,YouTube Gen Z Trendsetters Campaign 139,YouTube,Gen Z Trendsetters,2026-08-28,4351.22,268843,8092,765,7745.17,30635,0.0301,0.54,0.0946,1.78,96
+camp_140,Instagram Decision Makers Campaign 140,Instagram,Decision Makers,2026-08-01,5687.89,241116,18276,2260,18940.67,15799,0.0758,0.31,0.1237,3.33,89
+camp_141,TikTok Content Creators Campaign 141,TikTok,Content Creators,2026-08-02,607.24,28928,966,46,1354.15,1943,0.0334,0.63,0.0477,2.23,84
+camp_142,X Eco-Conscious Buyers Campaign 142,X,Eco-Conscious Buyers,2026-08-03,766.0,27237,1473,173,1869.04,1784,0.0541,0.52,0.118,2.44,80
+camp_143,LinkedIn Growth Hackers Campaign 143,LinkedIn,Growth Hackers,2026-08-04,5361.48,259935,8733,328,11795.26,29925,0.0336,0.61,0.0376,2.2,88
+camp_144,YouTube Tech Enthusiasts Campaign 144,YouTube,Tech Enthusiasts,2026-08-05,5988.43,222054,15410,1189,19222.86,17406,0.0694,0.39,0.0772,3.21,80
+camp_145,Instagram Gen Z Trendsetters Campaign 145,Instagram,Gen Z Trendsetters,2026-08-06,5292.59,340396,23657,1866,17783.1,20118,0.0695,0.22,0.0789,3.36,55
+camp_146,TikTok Decision Makers Campaign 146,TikTok,Decision Makers,2026-08-07,2385.88,81958,3106,184,5010.35,3554,0.0379,0.77,0.0595,2.1,50
+camp_147,X Content Creators Campaign 147,X,Content Creators,2026-08-08,5931.25,239588,10469,1113,15836.44,27691,0.0437,0.57,0.1064,2.67,72
+camp_148,LinkedIn Eco-Conscious Buyers Campaign 148,LinkedIn,Eco-Conscious Buyers,2026-08-09,3835.1,111917,9445,560,11965.51,12917,0.0844,0.41,0.0593,3.12,81
+camp_149,YouTube Growth Hackers Campaign 149,YouTube,Growth Hackers,2026-08-10,3803.33,167519,5611,300,7530.59,17148,0.0335,0.68,0.0535,1.98,66
+camp_150,Instagram Tech Enthusiasts Campaign 150,Instagram,Tech Enthusiasts,2026-08-11,723.92,46093,3558,471,2084.89,5512,0.0772,0.2,0.1324,2.88,58
