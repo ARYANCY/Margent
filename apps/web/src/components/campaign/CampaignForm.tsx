@@ -82,48 +82,48 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm select-none">
-      <div className="relative w-full max-w-xl bg-white border-4 border-slate-950 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-md select-none">
+      <div className="relative w-full max-w-xl bg-white border border-slate-200 shadow-2xl overflow-hidden flex flex-col max-h-[92vh] rounded-2xl">
         {/* Header */}
-        <div className="px-6 py-4 border-b-2 border-slate-900 bg-slate-100 flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/70 flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-mono font-black text-slate-600 uppercase tracking-widest block">CAMPAIGN DISPATCH</span>
-            <h2 className="text-sm font-black text-slate-950 uppercase tracking-tight">
-              LAUNCH 101-AGENT SIMULATION
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Campaign Dispatch</span>
+            <h2 className="text-sm font-extrabold text-slate-800 uppercase tracking-tight mt-0.5">
+              Launch 101-Agent Simulation
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 border border-slate-900 text-slate-950 hover:bg-slate-200 transition"
+            className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-all"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-4 text-xs text-slate-950 flex-1 bg-white">
+        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-4 text-xs text-slate-750 flex-1 bg-white">
           {/* Campaign Title */}
           <div>
-            <label className="block text-[10px] font-mono font-black text-slate-700 uppercase tracking-wider mb-1">
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
               Campaign Name
             </label>
             <input
               type="text"
               value={campaignName}
               onChange={(e) => setCampaignName(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 border-2 border-slate-900 text-xs text-slate-950 font-bold focus:outline-none focus:bg-white font-mono transition"
+              className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:bg-white rounded-xl focus:border-indigo-500/70 transition-all font-semibold"
               required
             />
           </div>
 
           {/* Photo Upload & Preview */}
           <div>
-            <label className="block text-[10px] font-mono font-black text-slate-700 uppercase tracking-wider mb-1">
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
               Creative Asset / Ad Visual
             </label>
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-slate-900 hover:bg-slate-100 bg-slate-50 p-4 text-center cursor-pointer transition flex flex-col items-center justify-center min-h-[100px]"
+              className="border-2 border-dashed border-slate-200 hover:border-slate-350 hover:bg-slate-50/50 bg-slate-50/20 p-4 text-center cursor-pointer rounded-2xl transition-all flex flex-col items-center justify-center min-h-[100px]"
             >
               <input
                 ref={fileInputRef}
@@ -134,17 +134,17 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({ onClose }) => {
               />
               {previewUrl ? (
                 <div className="flex items-center space-x-3">
-                  <img src={previewUrl} alt="Preview" className="w-16 h-16 object-cover border-2 border-slate-900" />
-                  <div className="text-left font-mono text-xs">
-                    <div className="font-black text-slate-950">{selectedPhoto?.name}</div>
-                    <div className="text-[10px] text-slate-600 font-bold">Click to change image</div>
+                  <img src={previewUrl} alt="Preview" className="w-16 h-16 object-cover border border-slate-200 rounded-xl" />
+                  <div className="text-left font-semibold text-xs">
+                    <div className="text-slate-800">{selectedPhoto?.name}</div>
+                    <div className="text-[10px] text-slate-400 mt-0.5">Click to change image</div>
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center space-y-1">
-                  <Upload className="w-6 h-6 text-slate-950" />
-                  <span className="text-xs font-black text-slate-950 uppercase">Upload Ad Image</span>
-                  <span className="text-[10px] text-slate-600 font-mono font-bold">PNG, JPG, WEBP (Max 10MB)</span>
+                <div className="flex flex-col items-center space-y-1.5">
+                  <Upload className="w-5 h-5 text-slate-400" />
+                  <span className="text-xs font-semibold text-slate-700">Upload Ad Image</span>
+                  <span className="text-[10px] text-slate-400">PNG, JPG, WEBP (Max 10MB)</span>
                 </div>
               )}
             </div>
@@ -153,13 +153,13 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({ onClose }) => {
           {/* Channel & Audience */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[10px] font-mono font-black text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
                 Channel
               </label>
               <select
                 value={channel}
                 onChange={(e) => setChannel(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border-2 border-slate-900 text-xs text-slate-950 font-bold focus:outline-none focus:bg-white font-mono transition"
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:bg-white rounded-xl focus:border-indigo-500/70 transition-all font-semibold"
               >
                 <option value="TikTok">TikTok</option>
                 <option value="Instagram">Instagram</option>
@@ -170,50 +170,50 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({ onClose }) => {
               </select>
             </div>
             <div>
-              <label className="block text-[10px] font-mono font-black text-slate-700 uppercase tracking-wider mb-1">
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
                 Target Audience
               </label>
               <input
                 type="text"
                 value={audience}
                 onChange={(e) => setAudience(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 border-2 border-slate-900 text-xs text-slate-950 font-bold focus:outline-none focus:bg-white font-mono transition"
+                className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:bg-white rounded-xl focus:border-indigo-500/70 transition-all font-semibold"
               />
             </div>
           </div>
 
           {/* Caption */}
           <div>
-            <label className="block text-[10px] font-mono font-black text-slate-700 uppercase tracking-wider mb-1">
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
               Ad Copy & Caption
             </label>
             <textarea
               rows={2}
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 border-2 border-slate-900 text-xs text-slate-950 font-bold focus:outline-none focus:bg-white font-mono transition resize-none"
+              className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 text-xs text-slate-850 focus:outline-none focus:bg-white rounded-xl focus:border-indigo-500/70 transition-all font-medium resize-none leading-relaxed"
               required
             />
           </div>
 
           {/* Hashtags & Quick Pills */}
           <div>
-            <label className="block text-[10px] font-mono font-black text-slate-700 uppercase tracking-wider mb-1">
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
               Hashtags
             </label>
             <input
               type="text"
               value={hashtags}
               onChange={(e) => setHashtags(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 border-2 border-slate-900 text-xs text-slate-950 font-bold focus:outline-none focus:bg-white font-mono transition"
+              className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 text-xs text-slate-850 focus:outline-none focus:bg-white rounded-xl focus:border-indigo-500/70 transition-all font-semibold"
             />
-            <div className="flex flex-wrap gap-1.5 mt-2">
+            <div className="flex flex-wrap gap-1.5 mt-2.5">
               {["#AgenticAI", "#QML", "#MarketingTech", "#SpatialAudio", "#AutonomousAI"].map((tag) => (
                 <button
                   type="button"
                   key={tag}
                   onClick={() => handleAddHashtag(tag)}
-                  className="px-2 py-0.5 text-[10px] font-mono font-black bg-slate-100 hover:bg-slate-200 text-slate-950 border-2 border-slate-900 transition"
+                  className="px-2.5 py-1 rounded-full text-[10px] bg-slate-100 hover:bg-slate-200/80 text-slate-650 transition-all border border-transparent font-medium"
                 >
                   +{tag}
                 </button>
@@ -222,11 +222,11 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({ onClose }) => {
           </div>
 
           {/* Spend & Trend Alignment */}
-          <div className="grid grid-cols-2 gap-3 p-3 bg-slate-100 border-2 border-slate-900">
+          <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
             <div>
-              <div className="flex justify-between text-[10px] font-mono font-black text-slate-700 mb-1">
-                <span>BUDGET (USD)</span>
-                <span className="text-slate-950 text-xs">${spend}</span>
+              <div className="flex justify-between text-[10px] font-bold text-slate-400 mb-1">
+                <span>Budget (USD)</span>
+                <span className="text-slate-800 font-extrabold text-xs">${spend}</span>
               </div>
               <input
                 type="range"
@@ -235,13 +235,13 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({ onClose }) => {
                 step={100}
                 value={spend}
                 onChange={(e) => setSpend(Number(e.target.value))}
-                className="w-full accent-slate-950"
+                className="w-full accent-slate-900 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer"
               />
             </div>
             <div>
-              <div className="flex justify-between text-[10px] font-mono font-black text-slate-700 mb-1">
-                <span>TREND ALIGNMENT</span>
-                <span className="text-slate-950 text-xs">{trendAlignment}%</span>
+              <div className="flex justify-between text-[10px] font-bold text-slate-400 mb-1">
+                <span>Trend Alignment</span>
+                <span className="text-slate-800 font-extrabold text-xs">{trendAlignment}%</span>
               </div>
               <input
                 type="range"
@@ -249,7 +249,7 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({ onClose }) => {
                 max={100}
                 value={trendAlignment}
                 onChange={(e) => setTrendAlignment(Number(e.target.value))}
-                className="w-full accent-slate-950"
+                className="w-full accent-slate-900 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer"
               />
             </div>
           </div>
@@ -259,14 +259,14 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({ onClose }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 text-xs font-mono font-black uppercase tracking-widest bg-slate-950 hover:bg-slate-800 text-white border-2 border-slate-950 flex items-center justify-center gap-2 shadow-md transition"
+              className="w-full py-3.5 text-xs font-bold uppercase tracking-widest bg-slate-900 hover:bg-slate-850 text-white rounded-full flex items-center justify-center gap-2 shadow-md shadow-slate-900/10 transition-all duration-200"
             >
               {loading ? (
                 <>Simulating across 101 Nodes...</>
               ) : (
                 <>
                   <Play className="w-4 h-4 fill-current" />
-                  Post & Launch 101-Agent Simulation
+                  Post & Launch Simulation
                 </>
               )}
             </button>

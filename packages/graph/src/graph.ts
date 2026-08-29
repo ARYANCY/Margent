@@ -36,7 +36,7 @@ export class SimulationGraphEngine {
   async executeTick(customActiveCount?: number): Promise<SimulationGraphState> {
     this.state.tick += 1;
     const activeCampaign = this.state.activeCampaign || this.state.campaigns[0];
-    const topTrend = this.state.trends.sort((a, b) => b.score - a.score)[0];
+    const topTrend = this.state.trends.sort((a, b) => b.score - a.score)[0] || { name: "Autonomous AI", score: 95.0, volume: 15000, category: "Technology" };
 
     // Pick active representatives from each of the 4 pipelines
     const mlIds = Object.keys(this.state.agents).filter(id => id.startsWith("ml_"));
@@ -198,14 +198,14 @@ export class SimulationGraphEngine {
       timestamp: new Date().toISOString(),
       priority: consensusPriority,
       decision: consensusDecision,
-      summary: `30-30-30-10 Multi-Modal Consensus: ML models (${pb?.trained_ml?.predicted_roas || activeCampaign.roas}x), PyTrends (${pb?.pytrends_search?.velocity_score || 88}/100), Groq (${pb?.groq_reasoning?.creative_score || 85}/100), and PennyLane QML (${pb?.quantum_qml?.quantum_predicted_roas || 3.9}x) align with ${Math.round(consensusConfidence * 100)}% confidence.`,
-      evidence: [
+      summary: es?.summary || `30-30-30-10 Multi-Modal Consensus: ML models (${pb?.trained_ml?.predicted_roas || activeCampaign.roas}x), PyTrends (${pb?.pytrends_search?.velocity_score || 88}/100), Groq (${pb?.groq_reasoning?.creative_score || 85}/100), and PennyLane QML (${pb?.quantum_qml?.quantum_predicted_roas || 3.9}x) align with ${Math.round(consensusConfidence * 100)}% confidence.`,
+      evidence: es?.evidence || [
         `Trained ML Models (30 Agents): Predicted ROAS ${pb?.trained_ml?.predicted_roas || activeCampaign.roas}x with healthy unit economics.`,
         `PyTrends Google Signals (30 Agents): Search velocity reached ${pb?.pytrends_search?.velocity_score || 88}/100 for '${topTrend.name}'.`,
         `Groq LLaMA 3.3 70B (30 Agents): Creative hook rated at ${pb?.groq_reasoning?.creative_score || 85}/100 with positive sentiment (+${pb?.groq_reasoning?.sentiment_score || 0.72}).`,
         `PennyLane QML Circuits (10 Agents): 4-Qubit quantum expectation calculated optimal resonance (${pb?.quantum_qml?.quantum_predicted_roas || 3.95}x ROAS).`
       ],
-      recommendedActions: [
+      recommendedActions: es?.recommended_actions || [
         `Scale primary budget by 35% on ${activeCampaign.channel} targeting high-resonance trendsets.`,
         `Maintain 80% exploitation allocation on verified signals and 20% on emerging quantum-entangled variants.`,
         `Deploy creator hooks optimized by Groq LLaMA 3.3 reasoning.`

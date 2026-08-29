@@ -94,12 +94,30 @@ class EnsembleAggregator:
             decision = "INVESTIGATE"
             priority = "CRITICAL"
 
+        # Generate dynamic qualitative executive consensus using Groq LLM
+        consensus_analysis = groq_service.generate_executive_consensus(
+            campaign_name=trend_keyword,
+            channel=channel,
+            spend=spend,
+            audience=str(params.get("audience", "Gen Z & Tech Creators")),
+            decision=decision,
+            consensus_roas=ensemble_roas,
+            confidence=ensemble_confidence,
+            ml_roas=ml_res.predicted_roas,
+            pytrends_velocity=pytrends_res["velocity_score"],
+            groq_score=groq_res["creative_score"],
+            qml_roas=qml_res["quantum_predicted_roas"]
+        )
+
         return {
             "ensemble_summary": {
                 "decision": decision,
                 "priority": priority,
                 "consensus_roas": ensemble_roas,
                 "ensemble_confidence": ensemble_confidence,
+                "summary": consensus_analysis["summary"],
+                "evidence": consensus_analysis["evidence"],
+                "recommended_actions": consensus_analysis["recommended_actions"],
                 "agent_distribution": {
                     "ml_agents_count": 30,
                     "pytrend_agents_count": 30,

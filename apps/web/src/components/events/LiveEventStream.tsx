@@ -45,24 +45,24 @@ export const LiveEventStream: React.FC = () => {
   };
 
   return (
-    <aside className="w-full h-full bg-white border-l border-slate-200 flex flex-col select-none shadow-sm">
+    <aside className="w-full h-full bg-white border-l border-slate-200/60 flex flex-col select-none shadow-xs">
       {/* Header */}
-      <div className="p-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+      <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <Radio className="w-3.5 h-3.5 text-slate-800 animate-pulse" />
-          <span className="text-[11px] font-mono font-bold text-slate-900 uppercase tracking-wider">
+          <Radio className="w-4 h-4 text-slate-800 animate-pulse" />
+          <span className="text-xs font-bold text-slate-850 uppercase tracking-wider">
             Live Stream Feed
           </span>
         </div>
-        <span className="text-[9px] font-mono font-medium text-slate-600 bg-white px-1.5 py-0.2 border border-slate-200">
-          {events.length} EVENTS
+        <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200/50">
+          {events.length} Events
         </span>
       </div>
 
       {/* Events List */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-2.5 space-y-2 font-mono">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 font-mono">
         {events.length === 0 ? (
-          <div className="text-center py-10 text-xs text-slate-400 font-mono">
+          <div className="text-center py-12 text-xs text-slate-400 font-medium italic">
             Awaiting simulation signals...
           </div>
         ) : (
@@ -71,25 +71,25 @@ export const LiveEventStream: React.FC = () => {
             return (
               <div
                 key={event.eventId}
-                className={`p-2 border shadow-xs transition ${meta.color}`}
+                className={`p-3 border rounded-xl shadow-xs transition-all duration-200 ${meta.color}`}
               >
-                <div className="flex items-center justify-between text-[9px] mb-0.5">
+                <div className="flex items-center justify-between text-[9px] mb-1">
                   <div className="flex items-center space-x-1.5 font-bold uppercase tracking-wider">
                     {meta.icon}
                     <span>{event.type}</span>
                   </div>
-                  <span className="text-slate-500">
+                  <span className="text-slate-400 font-medium">
                     {new Date(event.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                   </span>
                 </div>
 
-                <div className="text-[11px] font-bold text-slate-900 flex items-center justify-between">
-                  <span>#{event.source}</span>
-                  {event.target && <span className="text-slate-500 font-normal">→ #{event.target}</span>}
+                <div className="text-[11px] font-extrabold text-slate-800 flex items-center justify-between">
+                  <span>Node #{event.source}</span>
+                  {event.target && <span className="text-slate-400 font-medium">→ #{event.target}</span>}
                 </div>
 
                 {event.payload && (
-                  <div className="text-[10px] text-slate-700 mt-1 font-sans line-clamp-2 leading-tight">
+                  <div className="text-[10px] text-slate-650 mt-1.5 font-sans line-clamp-2 leading-relaxed font-medium">
                     {event.payload.comment ||
                       event.payload.summary ||
                       event.payload.critique ||

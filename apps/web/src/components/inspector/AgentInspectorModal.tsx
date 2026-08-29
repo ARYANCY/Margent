@@ -40,219 +40,215 @@ export const AgentInspectorModal: React.FC = () => {
   const getPipelineInfo = () => {
     if (isQML) {
       return {
-        title: "PennyLane Quantum Machine Learning",
-        badge: "QML QUANTUM NODE",
+        title: "PennyLane QML",
+        badge: "Quantum Node",
         color: "text-pink-950",
-        border: "border-pink-600",
-        bg: "bg-pink-100",
-        icon: <Atom className="w-5 h-5 text-pink-700" />,
-        engine: "PennyLane 4-Qubit Variational Quantum Circuit (VQC)",
+        border: "border-pink-200/65",
+        bg: "bg-pink-50/80",
+        icon: <Atom className="w-5 h-5 text-pink-500" />,
+        engine: "PennyLane 4-Qubit Variational Quantum Circuit",
         description:
-          "Computes quantum state vector expectation values <PauliZ> across non-linear Hilbert Space feature entanglements (Spend ↔ CTR ↔ Velocity ↔ Affinity)."
+          "Computes quantum state vector expectation values across non-linear Hilbert Space feature entanglements."
       };
     }
     if (isML) {
       return {
-        title: "Trained Classical ML Model",
-        badge: "SUPERVISED / UNSUPERVISED ML",
+        title: "Trained ML Model",
+        badge: "Classical ML",
         color: "text-sky-950",
-        border: "border-sky-600",
-        bg: "bg-sky-100",
-        icon: <Cpu className="w-5 h-5 text-sky-700" />,
-        engine: agent.modelType || "Scikit-Learn RandomForest + KMeans",
+        border: "border-sky-200/65",
+        bg: "bg-sky-50/80",
+        icon: <Cpu className="w-5 h-5 text-sky-500" />,
+        engine: agent.modelType || "RandomForest + KMeans Clusterer",
         description:
-          "Predicts return on ad spend (ROAS), conversion rates, and detects cost per click anomalies based on historical canonical campaign datasets."
+          "Predicts ROAS, conversion rates, and anomalies based on historical campaign datasets."
       };
     }
     if (isGroq) {
       return {
-        title: "Groq / Grok LLM Reasoning Agent",
-        badge: "LANGUAGE REASONING MODEL",
+        title: "Linguistic Reasoning",
+        badge: "Cognitive AI",
         color: "text-emerald-950",
-        border: "border-emerald-600",
-        bg: "bg-emerald-100",
-        icon: <Brain className="w-5 h-5 text-emerald-700" />,
-        engine: "Groq LLaMA 3.3 70B & xAI Grok Structured Reasoning",
+        border: "border-emerald-200/65",
+        bg: "bg-emerald-50/80",
+        icon: <Brain className="w-5 h-5 text-emerald-500" />,
+        engine: "Groq LLaMA 3.3 70B Model",
         description:
-          "Evaluates creative hook resonance, sentiment nuances, customer persona perspectives, and linguistic conversion friction."
+          "Evaluates copy hooks, sentiment nuances, and target persona perspective resonance."
       };
     }
     if (isPyTrends) {
       return {
-        title: "PyTrends Google Search Trends Agent",
-        badge: "SEARCH MOMENTUM SIGNAL",
+        title: "Google Search Trends",
+        badge: "Search Momentum",
         color: "text-amber-950",
-        border: "border-amber-600",
-        bg: "bg-amber-100",
-        icon: <TrendingUp className="w-5 h-5 text-amber-700" />,
-        engine: "PyTrends Google API + Search Velocity Scoring",
+        border: "border-amber-200/65",
+        bg: "bg-amber-50/80",
+        icon: <TrendingUp className="w-5 h-5 text-amber-500" />,
+        engine: "Google PyTrends API",
         description:
-          "Extracts real search volume momentum, keyword breakouts, and 90-day search velocity for trending topics."
+          "Extracts live interest volume growth and momentum indicators for target keywords."
       };
     }
     return {
-      title: "Master Admin Intelligence Node",
-      badge: "ENSEMBLE MASTER ORCHESTRATOR",
+      title: "Master Orchestrator",
+      badge: "Ensemble Admin",
       color: "text-indigo-950",
-      border: "border-indigo-600",
-      bg: "bg-indigo-100",
-      icon: <ShieldCheck className="w-5 h-5 text-indigo-700" />,
-      engine: "Quantum-Classical Bayesian Ensemble Aggregator",
+      border: "border-indigo-200/65",
+      bg: "bg-indigo-50/80",
+      icon: <ShieldCheck className="w-5 h-5 text-indigo-500" />,
+      engine: "Bayesian Ensemble Consensus",
       description:
-        "Fuses predictions from 30 ML, 30 PyTrends, 30 Groq, and 10 PennyLane QML agents to issue executive consensus recommendations."
+        "Fuses pipeline metrics from all 101 nodes into unified campaign recommendations."
     };
   };
 
   const info = getPipelineInfo();
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-md select-none">
       <div
         ref={modalRef}
-        className="relative w-full max-w-lg bg-white border-4 border-slate-950 shadow-2xl overflow-hidden flex flex-col"
+        className="relative w-full max-w-lg bg-white border border-slate-200 shadow-2xl rounded-2xl overflow-hidden flex flex-col"
       >
         {/* Modal Header */}
-        <div className={`px-6 py-4 border-b-2 border-slate-900 flex items-center justify-between ${info.bg}`}>
+        <div className={`px-6 py-5 border-b border-slate-100 flex items-center justify-between ${info.bg}`}>
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 bg-white border-2 border-slate-900 flex items-center justify-center shadow-sm">
+            <div className="w-10 h-10 bg-white border border-slate-200/80 flex items-center justify-center rounded-xl shadow-xs">
               {info.icon}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className={`text-[10px] font-mono font-black px-2 py-0.5 border-2 uppercase ${info.bg} ${info.color} ${info.border}`}>
+                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border uppercase ${info.bg} ${info.color} ${info.border}`}>
                   {info.badge}
                 </span>
-                <span className="text-[11px] font-mono font-black text-slate-700">#{agent.agentId}</span>
+                <span className="text-[11px] font-mono text-slate-400">#{agent.agentId}</span>
               </div>
-              <h2 className="text-sm font-black text-slate-950 uppercase mt-0.5">{agent.name}</h2>
+              <h2 className="text-sm font-extrabold text-slate-800 uppercase mt-1">{agent.name}</h2>
             </div>
           </div>
           <button
             onClick={() => setSelectedAgentId(null)}
-            className="p-1.5 border border-slate-900 text-slate-950 hover:bg-slate-200 transition"
+            className="p-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-500 transition-all"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Content Body */}
-        <div className="p-6 space-y-4 text-xs text-slate-950 bg-white">
-          {/* Engine & Role Info */}
-          <div className="p-3.5 bg-slate-100 border-2 border-slate-900">
-            <div className="text-[10px] uppercase font-mono font-black text-slate-700 tracking-wider mb-1 flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-slate-950" />
-              INTELLIGENCE SPECIFICATION
+        <div className="p-6 space-y-4 text-xs text-slate-700 bg-white">
+          {/* Spec Card */}
+          <div className="p-4 bg-slate-50 rounded-xl border border-slate-100/80">
+            <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1.5 flex items-center gap-1.5">
+              <Zap className="w-4 h-4 text-slate-650" />
+              Intelligence Specification
             </div>
-            <div className={`font-mono font-black text-xs ${info.color}`}>{info.engine}</div>
-            <p className="text-slate-900 text-xs mt-1 font-medium leading-relaxed">{info.description}</p>
+            <div className={`font-bold text-xs ${info.color}`}>{info.engine}</div>
+            <p className="text-slate-600 text-xs mt-1 leading-relaxed font-medium">{info.description}</p>
           </div>
 
-          {/* Model Traits / Live Parameters */}
-          <div className="grid grid-cols-3 gap-2 font-mono">
-            <div className="p-2.5 bg-slate-100 border-2 border-slate-900 text-center">
-              <div className="text-[10px] text-slate-700 uppercase font-black">Status</div>
-              <div className="font-black text-xs text-slate-950 mt-0.5 uppercase">{agent.status}</div>
+          {/* Model Traits */}
+          <div className="grid grid-cols-3 gap-3 font-semibold">
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-center">
+              <div className="text-[10px] text-slate-400 uppercase">Status</div>
+              <div className="font-extrabold text-xs text-slate-800 mt-1 uppercase">{agent.status}</div>
             </div>
-            <div className="p-2.5 bg-slate-100 border-2 border-slate-900 text-center">
-              <div className="text-[10px] text-slate-700 uppercase font-black">Sentiment</div>
-              <div className="font-black text-xs text-slate-950 mt-0.5">
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-center">
+              <div className="text-[10px] text-slate-400 uppercase">Sentiment</div>
+              <div className="font-extrabold text-xs text-slate-800 mt-1">
                 {agent.sentiment > 0 ? `+${agent.sentiment.toFixed(2)}` : agent.sentiment.toFixed(2)}
               </div>
             </div>
-            <div className="p-2.5 bg-slate-100 border-2 border-slate-900 text-center">
-              <div className="text-[10px] text-slate-700 uppercase font-black">Resonance</div>
-              <div className="font-black text-xs text-slate-950 mt-0.5">{agent.engagementScore}%</div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-center">
+              <div className="text-[10px] text-slate-400 uppercase">Resonance</div>
+              <div className="font-extrabold text-xs text-slate-800 mt-1">{agent.engagementScore}%</div>
             </div>
           </div>
 
-          {/* Type Specific Live Deep-Dive */}
+          {/* Special Diagnostics Section */}
           {isQML && (
-            <div className="p-3.5 bg-pink-100 border-2 border-pink-600">
-              <div className="text-[10px] uppercase font-mono font-black text-pink-950 tracking-wider mb-1.5 flex items-center gap-1.5">
-                <Atom className="w-4 h-4 text-pink-700" />
-                QUANTUM CIRCUIT ENTANGLEMENT
+            <div className="p-4 bg-pink-50/50 rounded-xl border border-pink-100">
+              <div className="text-[10px] uppercase font-bold text-pink-700 tracking-wider mb-2 flex items-center gap-1.5">
+                <Atom className="w-4 h-4 text-pink-500" />
+                Quantum Diagnostics
               </div>
-              <div className="space-y-1 font-mono text-xs text-pink-950 font-bold">
+              <div className="space-y-1.5 font-mono text-[11px] text-pink-950">
                 <div className="flex justify-between">
-                  <span>State Vector:</span>
-                  <span className="font-black">|ψ⟩ = α|0000⟩ + β|1111⟩</span>
+                  <span className="text-pink-700">Expectation Expectation Value:</span>
+                  <span className="font-bold">⟨σ_z⟩ = -0.824</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Pauli-Z Expectation:</span>
-                  <span className="font-black">-0.824 (High ROAS Resonance)</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Quantum Resonance:</span>
-                  <span className="font-black">89.4%</span>
+                  <span className="text-pink-700">Quantum Resonance Affinity:</span>
+                  <span className="font-bold">89.4% (Strong Correlation)</span>
                 </div>
               </div>
             </div>
           )}
 
           {isML && (
-            <div className="p-3.5 bg-sky-100 border-2 border-sky-600">
-              <div className="text-[10px] uppercase font-mono font-black text-sky-950 tracking-wider mb-1.5 flex items-center gap-1.5">
-                <Cpu className="w-4 h-4 text-sky-700" />
-                SUPERVISED STATISTICAL INFERENCE
+            <div className="p-4 bg-sky-50/50 rounded-xl border border-sky-100">
+              <div className="text-[10px] uppercase font-bold text-sky-700 tracking-wider mb-2 flex items-center gap-1.5">
+                <Cpu className="w-4 h-4 text-sky-500" />
+                Statistical Inference
               </div>
-              <div className="space-y-1 font-mono text-xs text-sky-950 font-bold">
+              <div className="space-y-1.5 font-mono text-[11px] text-sky-950">
                 <div className="flex justify-between">
-                  <span>RandomForest Model:</span>
-                  <span className="font-black">ml/models/campaign_model.joblib</span>
+                  <span className="text-sky-700">Model File Path:</span>
+                  <span className="font-bold">campaign_model.joblib</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Predicted ROAS:</span>
-                  <span className="font-black">{activeCampaign?.roas || 3.5}x</span>
+                  <span className="text-sky-700">Predicted Channel ROAS:</span>
+                  <span className="font-bold">{activeCampaign?.roas || 3.5}x</span>
                 </div>
               </div>
             </div>
           )}
 
           {isGroq && (
-            <div className="p-3.5 bg-emerald-100 border-2 border-emerald-600">
-              <div className="text-[10px] uppercase font-mono font-black text-emerald-950 tracking-wider mb-1.5 flex items-center gap-1.5">
-                <Brain className="w-4 h-4 text-emerald-700" />
-                LLM LINGUISTIC CRITIQUE
+            <div className="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
+              <div className="text-[10px] uppercase font-bold text-emerald-700 tracking-wider mb-1.5 flex items-center gap-1.5">
+                <Brain className="w-4 h-4 text-emerald-500" />
+                Cognitive Critique
               </div>
-              <p className="text-emerald-950 text-xs italic font-sans font-medium leading-relaxed">
-                "{agent.lastAction || "High viral hook velocity with strong trend alignment on social copy."}"
+              <p className="text-emerald-950 text-xs italic font-medium leading-relaxed">
+                "{agent.lastAction || "Optimal click hook resonance with targeted copy alignment."}"
               </p>
             </div>
           )}
 
           {isPyTrends && (
-            <div className="p-3.5 bg-amber-100 border-2 border-amber-600">
-              <div className="text-[10px] uppercase font-mono font-black text-amber-950 tracking-wider mb-1.5 flex items-center gap-1.5">
-                <TrendingUp className="w-4 h-4 text-amber-700" />
-                GOOGLE SEARCH MOMENTUM
+            <div className="p-4 bg-amber-50/50 rounded-xl border border-amber-100">
+              <div className="text-[10px] uppercase font-bold text-amber-700 tracking-wider mb-2 flex items-center gap-1.5">
+                <TrendingUp className="w-4 h-4 text-amber-500" />
+                Search Trends Data
               </div>
-              <div className="space-y-1 font-mono text-xs text-amber-950 font-bold">
+              <div className="space-y-1.5 font-mono text-[11px] text-amber-950">
                 <div className="flex justify-between">
-                  <span>Search Velocity Score:</span>
-                  <span className="font-black">88.5 / 100</span>
+                  <span className="text-amber-700">Growth Velocity:</span>
+                  <span className="font-bold text-emerald-700">+94.5% (Breakout)</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Growth Velocity:</span>
-                  <span className="font-black text-emerald-900">+94.5% (Breakout)</span>
+                  <span className="text-amber-700">90-Day Search Curve Peak:</span>
+                  <span className="font-bold">88.5 / 100</span>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Last Action Log */}
+          {/* Action Log */}
           {agent.lastAction && (
-            <div className="p-3 bg-slate-100 border-2 border-slate-800">
-              <div className="text-[10px] text-slate-700 uppercase font-mono font-black mb-0.5">Latest Action Log</div>
-              <div className="text-xs text-slate-950 font-mono font-bold">"{agent.lastAction}"</div>
+            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+              <div className="text-[10px] text-slate-400 uppercase font-bold mb-1">Latest Log Action</div>
+              <div className="text-xs text-slate-700 font-medium">"{agent.lastAction}"</div>
             </div>
           )}
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-3.5 border-t-2 border-slate-900 flex items-center justify-end bg-slate-100">
+        <div className="px-6 py-4 border-t border-slate-100 flex items-center justify-end bg-slate-50/70">
           <button
             onClick={() => setSelectedAgentId(null)}
-            className="px-5 py-2 text-xs font-mono font-black uppercase bg-slate-950 hover:bg-slate-800 text-white border border-slate-950 transition shadow"
+            className="px-5 py-2 text-xs font-semibold rounded-full bg-slate-900 hover:bg-slate-800 text-white transition-all shadow-xs"
           >
             Dismiss
           </button>
