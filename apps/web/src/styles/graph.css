@@ -81,3 +81,31 @@
   stroke-dasharray: 6 4;
   animation: flowDash 0.75s linear infinite;
 }
+
+/* Neural Web Mesh Strands & Synaptic Bridge Lines */
+.edge-web-strand path {
+  stroke: #94A3B8 !important;
+  stroke-width: 1px !important;
+  stroke-dasharray: 4 4;
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
+
+.edge-web-strand:hover path {
+  opacity: 0.8;
+  stroke: #475569 !important;
+  stroke-width: 1.5px !important;
+}
+
+.edge-web-bridge path {
+  stroke: #64748B !important;
+  stroke-width: 1.2px !important;
+  stroke-dasharray: 6 3;
+  opacity: 0.45;
+  animation: flowDash 3s linear infinite;
+}
+
+.edge-web-bridge:hover path {
+  opacity: 0.9;
+  stroke: #0F172A !important;
+}

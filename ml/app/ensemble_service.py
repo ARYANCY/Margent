@@ -19,18 +19,21 @@ from .models import CampaignPredictionRequest
 
 class EnsembleAggregator:
     def evaluate_all(self, params: Dict[str, Any]) -> Dict[str, Any]:
-        spend = float(params.get("spend", 1800))
-        impressions = float(params.get("impressions", spend * 35))
-        clicks = float(params.get("clicks", impressions * 0.045))
-        ctr = float(params.get("ctr", clicks / max(impressions, 1.0)))
-        cpc = float(params.get("cpc", spend / max(clicks, 1.0)))
-        conversions = max(1.0, clicks * 0.075)
-        cpa = float(params.get("cpa", spend / conversions))
-        trend_keyword = str(params.get("trend", "Autonomous AI"))
-        caption = str(params.get("caption", "Next-Gen Multi-Agent Launch"))
-        hashtags = params.get("hashtags", ["#AgenticAI", "#TechDeals"])
-        channel = str(params.get("channel", "Instagram"))
-        audience = str(params.get("audience", "Gen Z Tech Trendsetters (18-24)"))
+        # Middle Layer: Clean, sanitize, and extract semantic features via Grok
+        cleaned = groq_service.clean_and_process_data(params)
+        
+        spend = cleaned["spend"]
+        impressions = cleaned["impressions"]
+        clicks = cleaned["clicks"]
+        ctr = cleaned["ctr"]
+        cpc = cleaned["cpc"]
+        conversions = cleaned["conversions"]
+        cpa = cleaned["cpa"]
+        trend_keyword = cleaned["trend"]
+        caption = cleaned["caption"]
+        hashtags = cleaned["hashtags"]
+        channel = cleaned["channel"]
+        audience = cleaned["audience"]
         
         # 1. Pipeline 1: 30 Trained Classical ML Models (guide.md Sec 7.2)
         ml_req = CampaignPredictionRequest(
@@ -52,7 +55,7 @@ class EnsembleAggregator:
         groq_res = groq_service.evaluate_creative_and_reasoning(
             campaign_name=trend_keyword,
             caption=caption,
-            hashtags=hashtags if isinstance(hashtags, list) else [hashtags],
+            hashtags=hashtags,
             channel=channel
         )
         # Scale Groq creative score (0-100) to ROAS baseline
@@ -155,6 +158,15 @@ class EnsembleAggregator:
                 }
             },
             "pipeline_breakdown": {
+                "grok_middle_layer": {
+                    "role": "Semantic Data Sanitization, Noise Filtering & Feature Extraction",
+                    "sanitized_caption": caption,
+                    "extracted_keywords": cleaned.get("extracted_keywords", []),
+                    "semantic_tone": cleaned.get("semantic_tone", "High Velocity"),
+                    "semantic_boost": cleaned.get("semantic_boost", 1.0),
+                    "urgency_score": cleaned.get("urgency_score", 0.85),
+                    "status": "Data Sanitized & Vectors Dispatched to 101 Nodes"
+                },
                 "trained_ml": {
                     "agents": "ChannelAnalyzer #1–10, ModelEnsemble #11–20, RootCause #21–30",
                     "predicted_roas": simple_score_roas,

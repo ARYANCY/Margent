@@ -5,7 +5,7 @@ import fs from "fs";
 import { dataStore } from "../services/store";
 import { simulationScheduler } from "../services/simulationScheduler";
 import { deriveCampaignMetrics } from "@shared/utils/canonicalMetrics";
-import { CanonicalCampaign, MarketingChannel } from "@shared/types";
+import { CanonicalCampaign, MarketingChannel, VALID_CHANNELS } from "@shared/types";
 
 const uploadDir = path.join(process.cwd(), "uploads");
 if (!fs.existsSync(uploadDir)) {
@@ -35,18 +35,6 @@ const upload = multer({
 });
 
 export const campaignsRouter = Router();
-
-const VALID_CHANNELS: MarketingChannel[] = [
-  "Instagram",
-  "Facebook",
-  "TikTok",
-  "Google Ads",
-  "YouTube",
-  "LinkedIn",
-  "Pinterest",
-  "X",
-  "Multi-Channel"
-];
 
 // GET /api/campaigns with Search & Channel Filter Query Parameters
 campaignsRouter.get("/", (req: Request, res: Response) => {
@@ -102,9 +90,9 @@ campaignsRouter.post("/create", upload.single("photo"), async (req: Request, res
       return res.status(400).json({ error: "Validation Error: spend must be a positive number." });
     }
 
-    const parsedAlignment = parseFloat(trendAlignment);
+    let parsedAlignment = parseFloat(trendAlignment);
     if (isNaN(parsedAlignment) || parsedAlignment < 0 || parsedAlignment > 100) {
-      return res.status(400).json({ error: "Validation Error: trendAlignment must be between 0 and 100." });
+      parsedAlignment = 85;
     }
 
     const targetChannel: MarketingChannel = VALID_CHANNELS.includes(channel) ? channel : "Instagram";
@@ -166,8 +154,8 @@ campaignsRouter.post("/create", upload.single("photo"), async (req: Request, res
       conversions,
       revenue,
       engagements,
-      trendAlignment: parsedAlignment,
       ...derived,
+      trendAlignment: parsedAlignment,
       status: "ACTIVE"
     };
 

@@ -41,6 +41,100 @@ class GroqService:
             except Exception as e:
                 print(f"Warning: Could not initialize Groq client: {e}")
 
+    def clean_and_process_data(self, raw_params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Grok Middle Layer: Cleans, sanitizes, normalizes, and extracts semantic feature vectors
+        from raw unstructured campaign and trend data before feeding into downstream agent pipelines.
+        """
+        raw_caption = str(raw_params.get("caption", "Autonomous AI Marketing Initiative")).strip()
+        raw_trend = str(raw_params.get("trend", "Autonomous AI")).strip()
+        raw_channel = str(raw_params.get("channel", "Instagram")).strip()
+        raw_audience = str(raw_params.get("audience", "Gen Z Tech Trendsetters (18-24)")).strip()
+        raw_spend = float(raw_params.get("spend", 1800.0))
+        
+        # Parse and sanitize hashtags
+        raw_hashtags = raw_params.get("hashtags", [])
+        if isinstance(raw_hashtags, str):
+            cleaned_hashtags = [h.strip() if h.startswith("#") else f"#{h.strip()}" for h in raw_hashtags.replace(",", " ").split() if h.strip()]
+        elif isinstance(raw_hashtags, list):
+            cleaned_hashtags = [str(h).strip() if str(h).startswith("#") else f"#{str(h).strip()}" for h in raw_hashtags if str(h).strip()]
+        else:
+            cleaned_hashtags = ["#AgenticAI", "#MarketingTech"]
+
+        if not cleaned_hashtags:
+            cleaned_hashtags = ["#AgenticAI", "#TechTrends"]
+
+        # Call Groq / Grok LLM for semantic cleaning and structured feature extraction
+        cleaned_summary = raw_caption
+        semantic_tone = "High Velocity / Tech Innovator"
+        semantic_boost = 1.0
+        urgency_score = 0.85
+        extracted_kw = [raw_trend]
+
+        if self.client:
+            try:
+                prompt = (
+                    f"Perform data cleaning, semantic extraction, and noise filtering on this campaign input:\n"
+                    f"Raw Caption: {raw_caption}\n"
+                    f"Trend: {raw_trend}\n"
+                    f"Tags: {' '.join(cleaned_hashtags)}\n"
+                    f"Target Audience: {raw_audience}\n\n"
+                    "Output JSON only with keys:\n"
+                    "- sanitized_caption: string (cleaned, high-impact copy without emojis/spam artifacts)\n"
+                    "- extracted_keywords: list of strings (top 3 high-intent search keywords)\n"
+                    "- semantic_tone: string\n"
+                    "- quality_score: float (0.0 to 1.0)\n"
+                    "- semantic_multiplier: float (0.8 to 1.3 based on linguistic clarity)\n"
+                    "- urgency_score: float (0.0 to 1.0)"
+                )
+                completion = self.client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
+                    messages=[{"role": "user", "content": prompt}],
+                    response_format={"type": "json_object"},
+                    temperature=0.2
+                )
+                res = json.loads(completion.choices[0].message.content)
+                cleaned_summary = str(res.get("sanitized_caption", raw_caption))
+                semantic_tone = str(res.get("semantic_tone", semantic_tone))
+                semantic_boost = float(res.get("semantic_multiplier", 1.0))
+                urgency_score = float(res.get("urgency_score", 0.85))
+                extracted_kw = res.get("extracted_keywords", [raw_trend])
+            except Exception as e:
+                print(f"Grok data cleaning live call fallback: {e}")
+                extracted_kw = [raw_trend]
+        else:
+            extracted_kw = [h.replace("#", "") for h in cleaned_hashtags[:3]]
+            semantic_boost = 1.05
+
+        # Clean numerical boundaries and canonical metrics
+        cleaned_spend = max(100.0, min(raw_spend, 100000.0))
+        impressions = float(raw_params.get("impressions", cleaned_spend * (30.0 * semantic_boost)))
+        clicks = float(raw_params.get("clicks", impressions * 0.045 * semantic_boost))
+        ctr = float(raw_params.get("ctr", clicks / max(impressions, 1.0)))
+        cpc = float(raw_params.get("cpc", cleaned_spend / max(clicks, 1.0)))
+        conversions = max(1.0, clicks * 0.075 * semantic_boost)
+        cpa = float(raw_params.get("cpa", cleaned_spend / conversions))
+
+        return {
+            "spend": cleaned_spend,
+            "impressions": impressions,
+            "clicks": clicks,
+            "ctr": ctr,
+            "cpc": cpc,
+            "cpa": cpa,
+            "conversions": conversions,
+            "trend": raw_trend,
+            "caption": cleaned_summary,
+            "hashtags": cleaned_hashtags,
+            "extracted_keywords": extracted_kw,
+            "channel": raw_channel,
+            "audience": raw_audience,
+            "semantic_tone": semantic_tone,
+            "semantic_boost": semantic_boost,
+            "urgency_score": urgency_score,
+            "cleaned_by": "grok-middle-layer"
+        }
+
     def evaluate_creative_and_reasoning(self, campaign_name: str, caption: str, hashtags: List[str], channel: str) -> Dict[str, Any]:
         """
         Runs qualitative LLM critique of campaign creative and generates customer sentiment distribution.

@@ -42,6 +42,18 @@ export const AdminSynthesisSchema = z.object({
 
 export type AdminSynthesis = z.infer<typeof AdminSynthesisSchema>;
 
+export const CleanedDataSchema = z.object({
+  sanitizedCaption: z.string(),
+  extractedKeywords: z.array(z.string()),
+  semanticTone: z.string(),
+  semanticBoost: z.number(),
+  urgencyScore: z.number(),
+  cleanedSpend: z.number(),
+  cleanedHashtags: z.array(z.string())
+});
+
+export type CleanedData = z.infer<typeof CleanedDataSchema>;
+
 export class LLMClient {
   private apiKey: string;
   private model: string;
@@ -51,6 +63,75 @@ export class LLMClient {
     this.apiKey = process.env.XAI_API_KEY || "";
     this.model = process.env.XAI_MODEL || "grok-4.6";
     this.isDemoMode = !this.apiKey || process.env.DEMO_MODE === "true";
+  }
+
+  async cleanAndProcessCampaignData(params: {
+    campaignName: string;
+    caption: string;
+    hashtags: string[];
+    channel: string;
+    spend: number;
+    audience: string;
+    trend: string;
+  }): Promise<CleanedData> {
+    const rawCaption = (params.caption || "").trim();
+    const rawTags = params.hashtags || ["#AgenticAI", "#MarketingTech"];
+    const tagsStr = rawTags.join(" ");
+
+    if (!this.isDemoMode && this.apiKey) {
+      try {
+        const response = await fetch("https://api.x.ai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.apiKey}`
+          },
+          body: JSON.stringify({
+            model: this.model,
+            messages: [
+              {
+                role: "system",
+                content:
+                  "You are the Grok Data Cleaning & Semantic Feature Middleware. Sanitize the campaign input, remove spam/artifacts, extract high-intent keywords, and score semantic tone. Output JSON with: sanitizedCaption, extractedKeywords (array of strings), semanticTone (string), semanticBoost (number 0.8-1.3), urgencyScore (number 0.0-1.0), cleanedSpend (number), cleanedHashtags (array of strings). Raw JSON only."
+              },
+              {
+                role: "user",
+                content: `Campaign: "${params.campaignName}" on ${params.channel}\nCaption: ${rawCaption}\nHashtags: ${tagsStr}\nSpend: ${params.spend}\nAudience: ${params.audience}\nTrend: ${params.trend}`
+              }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.2
+          })
+        });
+
+        if (response.ok) {
+          const data: any = await response.json();
+          const parsed = JSON.parse(data.choices[0].message.content);
+          return CleanedDataSchema.parse(parsed);
+        }
+      } catch (err) {
+        console.warn(`[Grok Data Cleaning] Fallback to deterministic cleaning: ${err}`);
+      }
+    }
+
+    const cleanedTags = rawTags
+      .map((t) => t.trim())
+      .filter(Boolean)
+      .map((t) => (t.startsWith("#") ? t : `#${t}`));
+
+    const sanitizedCaption =
+      rawCaption.replace(/[<>{}|\\]/g, "").trim() || "Autonomous AI Marketing Initiative";
+    const extractedKeywords = cleanedTags.slice(0, 3).map((t) => t.replace("#", ""));
+
+    return {
+      sanitizedCaption,
+      extractedKeywords: extractedKeywords.length > 0 ? extractedKeywords : [params.trend || "AI Marketing"],
+      semanticTone: "High Velocity / Tech Innovator",
+      semanticBoost: 1.05,
+      urgencyScore: 0.88,
+      cleanedSpend: Math.max(100, params.spend || 1800),
+      cleanedHashtags: cleanedTags.length > 0 ? cleanedTags : ["#AgenticAI", "#TechGrowth"]
+    };
   }
 
   async generateCustomerReaction(params: {

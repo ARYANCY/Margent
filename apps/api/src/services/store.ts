@@ -83,8 +83,8 @@ export class DataStore {
               conversions,
               revenue,
               engagements: clicks * 2,
-              trendAlignment,
               ...derived,
+              trendAlignment,
               status: "ACTIVE"
             });
           }

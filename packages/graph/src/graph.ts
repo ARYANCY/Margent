@@ -1,13 +1,16 @@
 import { SimulationGraphState } from "./state";
 import { AgentEvent, RealTrend, CanonicalCampaign, AdminAnalysis } from "../../shared/src/types/index";
+import { LLMClient } from "../../agents/src/llm/grok";
 
 export class SimulationGraphEngine {
   private state: SimulationGraphState;
+  private llmClient: LLMClient;
   private onEventCallback?: (event: AgentEvent) => void;
   private onStateUpdateCallback?: (state: SimulationGraphState) => void;
 
   constructor(initialState: SimulationGraphState) {
     this.state = initialState;
+    this.llmClient = new LLMClient();
   }
 
   setCallbacks(
@@ -61,6 +64,17 @@ export class SimulationGraphEngine {
 
     const newEvents: AgentEvent[] = [];
 
+    // Middle Layer: Grok Data Cleaning, Sanitization & Semantic Feature Processing
+    const cleanedData = await this.llmClient.cleanAndProcessCampaignData({
+      campaignName: activeCampaign.campaignName,
+      caption: activeCampaign.caption || "Autonomous AI Launch",
+      hashtags: activeCampaign.hashtags || ["#AgenticAI"],
+      channel: activeCampaign.channel,
+      spend: activeCampaign.spend,
+      audience: activeCampaign.audience,
+      trend: topTrend.name
+    });
+
     // Call Python Ensemble Microservice
     let ensembleData: any = null;
     try {
@@ -69,14 +83,14 @@ export class SimulationGraphEngine {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          spend: activeCampaign.spend,
+          spend: cleanedData.cleanedSpend,
           impressions: activeCampaign.impressions,
           clicks: activeCampaign.clicks,
           ctr: activeCampaign.ctr,
           cpc: activeCampaign.cpc,
           trend: topTrend.name,
-          caption: activeCampaign.caption || "Autonomous AI Launch",
-          hashtags: activeCampaign.hashtags || ["#AgenticAI"],
+          caption: cleanedData.sanitizedCaption,
+          hashtags: cleanedData.cleanedHashtags,
           channel: activeCampaign.channel,
           audience: activeCampaign.audience
         })

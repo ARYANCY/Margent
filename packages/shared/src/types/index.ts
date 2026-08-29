@@ -64,16 +64,19 @@ export interface AgentProfile {
   searchMomentumScore?: number;
 }
 
-export type MarketingChannel =
-  | "Instagram"
-  | "Facebook"
-  | "TikTok"
-  | "Google Ads"
-  | "YouTube"
-  | "LinkedIn"
-  | "Pinterest"
-  | "X"
-  | "Multi-Channel";
+export const VALID_CHANNELS = [
+  "Instagram",
+  "Facebook",
+  "TikTok",
+  "Google Ads",
+  "YouTube",
+  "LinkedIn",
+  "Pinterest",
+  "X",
+  "Multi-Channel"
+] as const;
+
+export type MarketingChannel = (typeof VALID_CHANNELS)[number];
 
 export interface CanonicalCampaign {
   campaignId: string;
@@ -133,7 +136,7 @@ export interface EnsembleBreakdown {
 }
 
 export interface AdminAnalysis {
-  decision: "SCALE" | "MAINTAIN" | "INVESTIGATE" | "STOP";
+  decision: "SCALE" | "MAINTAIN" | "INVESTIGATE" | "STOP" | "EXPERIMENT" | "REDUCE";
   confidence: number;
   simulatedRoas: number;
   summary: string;
