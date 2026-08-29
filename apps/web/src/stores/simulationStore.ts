@@ -41,9 +41,9 @@ interface SimulationStore {
   setIsCampaignModalOpen: (open: boolean) => void;
   startSimulation: () => void;
   pauseSimulation: () => void;
-  stopSimulation: () => void;
   stepSimulation: () => void;
   setSpeed: (speed: number) => void;
+  setExplorationRatio: (explorationPct: number) => void;
 }
 
 export const useSimulationStore = create<SimulationStore>((set, get) => ({
@@ -77,14 +77,21 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
 
   initSocket: () => {
     if (get().socket) return;
-    const socket = io("http://localhost:4000", {
-      reconnectionAttempts: 5,
+    
+    // Dynamic Environment URL with fallback to current origin host
+    const apiUrl = (import.meta as any).env?.VITE_API_URL || (typeof window !== "undefined" ? `${window.location.protocol}//${window.location.hostname}:4000` : "http://localhost:4000");
+
+    const socket = io(apiUrl, {
+      reconnection: true,
+      reconnectionAttempts: 10,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
       timeout: 10000
     });
 
     socket.on("connect", () => {
       set({ isConnected: true });
-      console.log("[Socket.IO] Connected to backend on port 4000");
+      console.log(`[Socket.IO] Connected to backend on ${apiUrl}`);
     });
 
     socket.on("disconnect", () => {
@@ -107,9 +114,9 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
 
     socket.on("agent:event", (event: AgentEvent) => {
       set((state) => {
-        const newEvents = [event, ...state.events].slice(0, 100);
+        const newEvents = [event, ...state.events].slice(0, 150);
         const updatedEdges = event.target 
-          ? [{ source: event.source, target: event.target, eventType: event.type }, ...state.activeEdges].slice(0, 15)
+          ? [{ source: event.source, target: event.target, eventType: event.type }, ...state.activeEdges].slice(0, 20)
           : state.activeEdges;
         
         const isNewAdmin = event.type === "ADMIN_ANALYSIS";
@@ -123,28 +130,27 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
     });
 
     socket.on("admin:analysis", (analysis: AdminAnalysis) => {
-      set({ adminAnalysis: analysis, isDashboardOpen: true });
+      set({
+        adminAnalysis: analysis,
+        isDashboardOpen: true
+      });
+    });
+
+    socket.on("agents:initial", (agentsList: AgentProfile[]) => {
+      const map: Record<string, AgentProfile> = {};
+      agentsList.forEach((a) => {
+        map[a.agentId] = a;
+      });
+      set({ agents: map });
     });
 
     set({ socket });
-
-    // Fetch initial agents
-    fetch("http://localhost:4000/api/agents")
-      .then(res => res.json())
-      .then(data => {
-        const agentMap: Record<string, AgentProfile> = {};
-        for (const a of data.agents) {
-          agentMap[a.agentId] = a;
-        }
-        set({ agents: agentMap });
-      })
-      .catch(err => console.warn("Could not load initial agents:", err));
   },
 
   disconnectSocket: () => {
-    const s = get().socket;
-    if (s) {
-      s.disconnect();
+    const { socket } = get();
+    if (socket) {
+      socket.disconnect();
       set({ socket: null, isConnected: false });
     }
   },
@@ -156,39 +162,44 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
   setIsCampaignModalOpen: (open) => set({ isCampaignModalOpen: open }),
 
   startSimulation: () => {
-    fetch("http://localhost:4000/api/simulation/start", { method: "POST" })
-      .then(r => r.json())
-      .then(() => set({ simulationStatus: "RUNNING" }))
-      .catch(e => console.error(e));
+    const { socket } = get();
+    if (socket) {
+      socket.emit("simulation:start");
+      set({ simulationStatus: "RUNNING" });
+    }
   },
 
   pauseSimulation: () => {
-    fetch("http://localhost:4000/api/simulation/pause", { method: "POST" })
-      .then(r => r.json())
-      .then(() => set({ simulationStatus: "PAUSED" }))
-      .catch(e => console.error(e));
-  },
-
-  stopSimulation: () => {
-    fetch("http://localhost:4000/api/simulation/stop", { method: "POST" })
-      .then(r => r.json())
-      .then(() => set({ simulationStatus: "STOPPED" }))
-      .catch(e => console.error(e));
+    const { socket } = get();
+    if (socket) {
+      socket.emit("simulation:pause");
+      set({ simulationStatus: "PAUSED" });
+    }
   },
 
   stepSimulation: () => {
-    fetch("http://localhost:4000/api/simulation/step", { method: "POST" })
-      .catch(e => console.error(e));
+    const { socket } = get();
+    if (socket) {
+      socket.emit("simulation:step");
+    }
   },
 
   setSpeed: (speed) => {
-    fetch("http://localhost:4000/api/simulation/speed", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ speed })
-    })
-      .then(r => r.json())
-      .then(() => set({ speed }))
-      .catch(e => console.error(e));
+    const { socket } = get();
+    if (socket) {
+      socket.emit("simulation:speed", { speed });
+      set({ speed });
+    }
+  },
+
+  setExplorationRatio: (explorationPct) => {
+    const expl = Math.max(5, Math.min(95, explorationPct));
+    set((state) => ({
+      stats: {
+        ...state.stats,
+        explorationPct: expl,
+        exploitationPct: 100 - expl
+      }
+    }));
   }
 }));

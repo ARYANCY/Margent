@@ -9,7 +9,8 @@ export async function executeCustomerNode(
   updatedAgent: AgentProfile;
   event: AgentEvent;
 }> {
-  const trendAlignment = campaign.trendAlignment || (trend ? trend.score : 75);
+  const trendScore = trend ? (trend.growth * 0.4 + trend.velocity * 0.4 + trend.interest * 0.2) : 75;
+  const trendAlignment = campaign.trendAlignment || trendScore;
   
   const reaction = await llmClient.generateCustomerReaction({
     agentId: agent.agentId,
@@ -35,11 +36,10 @@ export async function executeCustomerNode(
 
   const event: AgentEvent = {
     eventId: `evt_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
-    simulationId: "sim_live",
-    timestamp: new Date().toISOString(),
+    timestamp: Date.now(),
     source: agent.agentId,
     target: "marketing_001",
-    type: reaction.action === "LIKE" ? "LIKE" : (reaction.action === "COMMENT" ? "COMMENT" : (reaction.action === "CONVERSION" ? "CONVERSION" : "CAMPAIGN_VIEWED")),
+    type: "COMMENT",
     payload: {
       action: reaction.action,
       sentiment: reaction.sentiment,

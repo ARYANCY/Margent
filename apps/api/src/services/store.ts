@@ -4,6 +4,34 @@ import { AgentProfile, CanonicalCampaign, RealTrend, AgentEvent, AdminAnalysis }
 import { generateAgentRegistry } from "@agents/registry";
 import { deriveCampaignMetrics } from "@shared/utils/canonicalMetrics";
 
+/**
+ * Robust CSV line parser supporting quoted strings and embedded commas.
+ */
+function parseCsvLine(line: string): string[] {
+  const result: string[] = [];
+  let current = "";
+  let insideQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"') {
+      if (insideQuotes && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        insideQuotes = !insideQuotes;
+      }
+    } else if (char === ',' && !insideQuotes) {
+      result.push(current.trim());
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
+
 export class DataStore {
   public agents: AgentProfile[] = [];
   public trends: RealTrend[] = [];
@@ -23,16 +51,17 @@ export class DataStore {
       try {
         this.trends = JSON.parse(fs.readFileSync(trendsPath, "utf-8"));
       } catch (err) {
-        console.warn("Could not read trends.json:", err);
+        console.warn("[DataStore] Could not read trends.json:", err);
       }
     }
 
     const campaignsCsvPath = path.join(process.cwd(), "datasets", "campaigns.csv");
     if (fs.existsSync(campaignsCsvPath)) {
       try {
-        const rawLines = fs.readFileSync(campaignsCsvPath, "utf-8").trim().split("\n");
+        const rawLines = fs.readFileSync(campaignsCsvPath, "utf-8").trim().split(/\r?\n/);
         for (let i = 1; i < rawLines.length; i++) {
-          const cols = rawLines[i].split(",");
+          if (!rawLines[i].trim()) continue;
+          const cols = parseCsvLine(rawLines[i]);
           if (cols.length >= 9) {
             const spend = parseFloat(cols[3]) || 1000;
             const impressions = parseInt(cols[4], 10) || 50000;
@@ -45,7 +74,7 @@ export class DataStore {
             this.campaigns.push({
               campaignId: cols[0],
               campaignName: cols[0],
-              channel: (cols[1] || "TikTok") as any,
+              channel: (cols[1] || "Instagram") as any,
               audience: cols[2] || "General Audience",
               date: new Date().toISOString().split("T")[0],
               spend,
@@ -61,7 +90,7 @@ export class DataStore {
           }
         }
       } catch (err) {
-        console.warn("Could not read campaigns.csv:", err);
+        console.warn("[DataStore] Could not parse campaigns.csv:", err);
       }
     }
   }

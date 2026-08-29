@@ -1,12 +1,15 @@
 """
-Quantum-Classical Multi-Modal Ensemble Aggregator
-Fuses predictions from:
-1. 30 Trained ML Models (RandomForest, KMeans, IsolationForest)
-2. 30 PyTrends Google Search Signals
-3. 30 Groq / LLM Reasoning Outputs
-4. 10 QML Quantum Variational Circuits
-into a unified maximum-accuracy consensus recommendation.
+Quantum-Classical Multi-Modal Ensemble Aggregator (guide.md Section 7)
+Formula:
+final_score = 0.30 * grok_score + 0.30 * qml_score + 0.30 * simple_score + 0.10 * rule_score
+
+Subsystems:
+1. 30 Classical ML Models (GradientBoosting + RandomForest) - 0.30 weight
+2. 30 Groq / LLM Qualitative Reasoning Agents - 0.30 weight
+3. 10 PennyLane QML Variational Quantum Circuits - 0.30 weight
+4. Rule Guardrail (CPA & Impressions threshold guardrails) - 0.10 weight
 """
+import numpy as np
 from typing import Dict, Any, List
 from .services import ml_service
 from .pytrends_service import pytrends_service
@@ -16,108 +19,132 @@ from .models import CampaignPredictionRequest
 
 class EnsembleAggregator:
     def evaluate_all(self, params: Dict[str, Any]) -> Dict[str, Any]:
-        spend = float(params.get("spend", 1500))
+        spend = float(params.get("spend", 1800))
         impressions = float(params.get("impressions", spend * 35))
         clicks = float(params.get("clicks", impressions * 0.045))
-        ctr = float(params.get("ctr", clicks / max(impressions, 1)))
-        cpc = float(params.get("cpc", spend / max(clicks, 1)))
+        ctr = float(params.get("ctr", clicks / max(impressions, 1.0)))
+        cpc = float(params.get("cpc", spend / max(clicks, 1.0)))
+        conversions = max(1.0, clicks * 0.075)
+        cpa = float(params.get("cpa", spend / conversions))
         trend_keyword = str(params.get("trend", "Autonomous AI"))
         caption = str(params.get("caption", "Next-Gen Multi-Agent Launch"))
         hashtags = params.get("hashtags", ["#AgenticAI", "#TechDeals"])
         channel = str(params.get("channel", "Instagram"))
+        audience = str(params.get("audience", "Gen Z Tech Trendsetters (18-24)"))
         
-        # 1. Pipeline 1: 30 Trained Classical ML Models
+        # 1. Pipeline 1: 30 Trained Classical ML Models (guide.md Sec 7.2)
         ml_req = CampaignPredictionRequest(
             spend=spend,
             impressions=impressions,
             clicks=clicks,
             ctr=ctr,
             cpc=cpc,
-            trend_alignment=88.0
+            trend_alignment=float(params.get("trendAlignment", 92.0))
         )
         ml_res = ml_service.predict_campaign(ml_req)
+        simple_score_roas = ml_res.predicted_roas
         
-        # 2. Pipeline 2: 30 PyTrends Search Momentum
+        # 2. Pipeline 2: 30 PyTrends Google Search Signals (guide.md Sec 8 Hybrid Signal)
         pytrends_res = pytrends_service.get_search_momentum(trend_keyword)
+        pytrends_velocity = pytrends_res["velocity_score"]
         
-        # 3. Pipeline 3: 30 Groq / LLM Qualitative Reasoning
+        # 3. Pipeline 3: 30 Groq / Grok LLM Qualitative Reasoning (guide.md Sec 7.4)
         groq_res = groq_service.evaluate_creative_and_reasoning(
             campaign_name=trend_keyword,
             caption=caption,
             hashtags=hashtags if isinstance(hashtags, list) else [hashtags],
             channel=channel
         )
+        # Scale Groq creative score (0-100) to ROAS baseline
+        grok_score_roas = 1.5 + (groq_res["creative_score"] / 100.0) * 2.8
         
-        # 4. Pipeline 4: 10 QML Quantum Variational Circuits
+        # 4. Pipeline 4: 10 QML Quantum Variational Circuits (guide.md Sec 7.3)
         qml_res = qml_service.evaluate_quantum_resonance(
             spend=spend,
             ctr=ctr,
-            velocity=pytrends_res["velocity_score"],
+            velocity=pytrends_velocity,
             affinity=groq_res["creative_score"]
         )
+        qml_score_roas = qml_res["quantum_predicted_roas"]
         
-        # 5. Bayesian Model Averaging (Ensemble Synthesis)
-        # Weights: ML (0.30), PyTrends (0.30), Groq (0.30), QML (0.10)
-        w_ml = 0.30
-        w_pytrends = 0.30
-        w_groq = 0.30
-        w_qml = 0.10
+        # 5. Pipeline 5: Rule Guardrail & Combiner (guide.md Sec 7.5)
+        # Rules: Penalize CPA > 3x average ($18.00) & impressions < 500
+        rule_penalty = 1.0
+        guardrail_notes = []
         
-        pytrends_norm_score = pytrends_res["velocity_score"]
-        pytrends_est_roas = 1.8 + (pytrends_norm_score / 100.0) * 2.2
-        groq_est_roas = 1.6 + (groq_res["creative_score"] / 100.0) * 2.4
+        if cpa > 18.0:
+            rule_penalty *= 0.65
+            guardrail_notes.append(f"CPA penalty: ${cpa:.2f} exceeds $18.00 threshold (x0.65)")
+        if impressions < 500:
+            rule_penalty *= 0.70
+            guardrail_notes.append("Low volume penalty: Impressions < 500 (x0.70)")
+            
+        rule_score_roas = max(0.8, 3.2 * rule_penalty)
         
-        ensemble_roas = round(
-            w_ml * ml_res.predicted_roas +
-            w_pytrends * pytrends_est_roas +
-            w_groq * groq_est_roas +
-            w_qml * qml_res["quantum_predicted_roas"],
-            2
+        # Exact guide.md Section 7 Equation:
+        # final_score = 0.30 * grok_score + 0.30 * qml_score + 0.30 * simple_score + 0.10 * rule_score
+        w_grok = 0.30
+        w_qml = 0.30
+        w_simple = 0.30
+        w_rule = 0.10
+        
+        raw_consensus_roas = (
+            w_grok * grok_score_roas +
+            w_qml * qml_score_roas +
+            w_simple * simple_score_roas +
+            w_rule * rule_score_roas
         )
+        consensus_roas = round(raw_consensus_roas, 2)
         
-        ensemble_confidence = round(
-            w_ml * ml_res.confidence +
-            w_pytrends * 0.92 +
-            w_groq * 0.88 +
-            w_qml * qml_res["quantum_confidence"],
-            3
+        # Divergence Dampener (guide.md Sec 7.5)
+        scores = [grok_score_roas, qml_score_roas, simple_score_roas]
+        score_std = float(np.std(scores))
+        base_confidence = (
+            0.30 * 0.90 +
+            0.30 * qml_res["quantum_confidence"] +
+            0.30 * ml_res.confidence +
+            0.10 * 0.95
         )
+        # Dampen confidence if models diverge significantly
+        divergence_penalty = max(0.0, (score_std - 0.8) * 0.15)
+        ensemble_confidence = round(max(0.60, min(0.98, base_confidence - divergence_penalty)), 3)
         
-        # Consensus decision
-        if ensemble_roas >= 3.2:
+        # Consensus Decision
+        if consensus_roas >= 3.2:
             decision = "SCALE"
             priority = "HIGH"
-        elif ensemble_roas >= 2.0:
+        elif consensus_roas >= 2.0:
             decision = "MAINTAIN"
             priority = "MEDIUM"
         else:
             decision = "INVESTIGATE"
             priority = "CRITICAL"
 
-        # Generate dynamic qualitative executive consensus using Groq LLM
+        # Generate qualitative executive consensus using Groq
         consensus_analysis = groq_service.generate_executive_consensus(
             campaign_name=trend_keyword,
             channel=channel,
             spend=spend,
-            audience=str(params.get("audience", "Gen Z & Tech Creators")),
+            audience=audience,
             decision=decision,
-            consensus_roas=ensemble_roas,
+            consensus_roas=consensus_roas,
             confidence=ensemble_confidence,
-            ml_roas=ml_res.predicted_roas,
-            pytrends_velocity=pytrends_res["velocity_score"],
+            ml_roas=simple_score_roas,
+            pytrends_velocity=pytrends_velocity,
             groq_score=groq_res["creative_score"],
-            qml_roas=qml_res["quantum_predicted_roas"]
+            qml_roas=qml_score_roas
         )
 
         return {
             "ensemble_summary": {
                 "decision": decision,
                 "priority": priority,
-                "consensus_roas": ensemble_roas,
+                "consensus_roas": consensus_roas,
                 "ensemble_confidence": ensemble_confidence,
                 "summary": consensus_analysis["summary"],
                 "evidence": consensus_analysis["evidence"],
                 "recommended_actions": consensus_analysis["recommended_actions"],
+                "guardrail_notes": guardrail_notes or ["All campaign unit economics pass compliance guardrails."],
                 "agent_distribution": {
                     "ml_agents_count": 30,
                     "pytrend_agents_count": 30,
@@ -129,35 +156,41 @@ class EnsembleAggregator:
             },
             "pipeline_breakdown": {
                 "trained_ml": {
-                    "agents": "ml_001 → ml_030",
-                    "predicted_roas": ml_res.predicted_roas,
+                    "agents": "ChannelAnalyzer #1–10, ModelEnsemble #11–20, RootCause #21–30",
+                    "predicted_roas": simple_score_roas,
                     "predicted_conversion_rate": ml_res.predicted_conversion_rate,
                     "confidence": ml_res.confidence,
-                    "status": "RandomForest + KMeans Active"
+                    "status": "GradientBoosting + RandomForest Active"
                 },
                 "pytrends_search": {
-                    "agents": "pytrend_001 → pytrend_030",
+                    "agents": "TrendAgent #1–30",
                     "current_interest": pytrends_res["current_interest"],
                     "growth_rate_pct": pytrends_res["growth_rate_pct"],
-                    "velocity_score": pytrends_res["velocity_score"],
-                    "historical_curve": pytrends_res["historical_curve"],
-                    "status": pytrends_res["status"]
+                    "velocity_score": pytrends_velocity,
+                    "status": pytrends_res["status"],
+                    "historical_curve": pytrends_res.get("historical_curve", [60, 68, 75, 82, 89, 94, 98])
                 },
-                "groq_reasoning": {
-                    "agents": "groq_001 → groq_030",
+                "groq_llm": {
+                    "agents": "RecommenderAgent #1–30",
                     "creative_score": groq_res["creative_score"],
                     "hook_strength": groq_res["hook_strength"],
                     "sentiment_score": groq_res["sentiment_score"],
+                    "target_appeal": groq_res["target_appeal"],
                     "critique": groq_res["critique"],
-                    "model": groq_res["model_used"]
+                    "grok_estimated_roas": round(grok_score_roas, 2)
                 },
-                "quantum_qml": {
-                    "agents": "qml_001 → qml_010",
+                "qml_quantum": {
+                    "agents": "QuantumVQC #1–10",
+                    "quantum_predicted_roas": qml_score_roas,
+                    "quantum_confidence": qml_res["quantum_confidence"],
                     "quantum_resonance_score": qml_res["quantum_resonance_score"],
-                    "quantum_predicted_roas": qml_res["quantum_predicted_roas"],
-                    "qubits_used": qml_res["qubits_used"],
                     "expectation_value": qml_res["expectation_value"],
                     "entanglement_interactions": qml_res["entanglement_interactions"]
+                },
+                "rule_guardrail": {
+                    "weight": 0.10,
+                    "rule_score_roas": round(rule_score_roas, 2),
+                    "notes": guardrail_notes
                 }
             }
         }

@@ -1,4 +1,4 @@
-/* React Flow Canvas & Controls */
+/* High-End Enterprise Graph Animations & Edge Styling */
 
 .react-flow__background {
   background-color: var(--bg-canvas) !important;
@@ -6,9 +6,10 @@
 
 .react-flow__controls {
   border-radius: 0px !important;
-  border: 2px solid var(--border-dark) !important;
+  border: 1px solid var(--border-medium) !important;
   background-color: var(--bg-surface) !important;
-  box-shadow: var(--shadow-brutal-sm) !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .react-flow__controls-button {
@@ -16,19 +17,67 @@
   border-bottom: 1px solid var(--border-light) !important;
   background-color: var(--bg-surface) !important;
   fill: var(--ink-primary) !important;
+  transition: background-color 0.15s ease;
 }
 
 .react-flow__controls-button:hover {
-  background-color: var(--bg-muted) !important;
+  background-color: var(--bg-subtle) !important;
 }
 
 .react-flow__minimap {
   border-radius: 0px !important;
-  border: 2px solid var(--border-dark) !important;
+  border: 1px solid var(--border-medium) !important;
   background-color: var(--bg-surface) !important;
-  box-shadow: var(--shadow-brutal-sm) !important;
+  box-shadow: var(--shadow-md) !important;
 }
 
-.react-flow__edge-path {
-  stroke-linecap: square;
+/* Flowing Data Stream Animation */
+@keyframes flowDash {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 1px rgba(15, 23, 42, 0.1));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 4px rgba(2, 132, 199, 0.3));
+  }
+}
+
+.react-flow__edge.animated path {
+  stroke-dasharray: 6 6;
+  animation: flowDash 0.8s linear infinite;
+  stroke-linecap: round;
+}
+
+.edge-active-ml {
+  stroke: var(--pipeline-ml) !important;
+  stroke-dasharray: 6 4;
+  animation: flowDash 0.75s linear infinite;
+}
+
+.edge-active-pytrend {
+  stroke: var(--pipeline-pytrend) !important;
+  stroke-dasharray: 6 4;
+  animation: flowDash 0.75s linear infinite;
+}
+
+.edge-active-groq {
+  stroke: var(--pipeline-groq) !important;
+  stroke-dasharray: 6 4;
+  animation: flowDash 0.75s linear infinite;
+}
+
+.edge-active-qml {
+  stroke: var(--pipeline-qml) !important;
+  stroke-dasharray: 6 4;
+  animation: flowDash 0.75s linear infinite;
 }

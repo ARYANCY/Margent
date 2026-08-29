@@ -16,72 +16,74 @@ export const AdminNode = memo(({ data }: AdminNodeProps) => {
 
   const decisionBadgeColor =
     adminAnalysis?.decision === "SCALE"
-      ? "bg-emerald-500 text-white shadow-sm font-bold"
+      ? "bg-emerald-50 text-emerald-800 border-emerald-300 font-bold shadow-xs"
       : adminAnalysis?.decision === "STOP"
-      ? "bg-rose-500 text-white shadow-sm font-bold"
+      ? "bg-rose-50 text-rose-800 border-rose-300 font-bold shadow-xs"
       : adminAnalysis?.decision === "INVESTIGATE"
-      ? "bg-amber-500 text-white shadow-sm font-bold"
-      : "bg-slate-500 text-white shadow-sm font-bold";
+      ? "bg-amber-50 text-amber-800 border-amber-300 font-bold shadow-xs"
+      : "bg-slate-50 text-slate-800 border-slate-300 font-bold shadow-xs";
 
   return (
-    <div className="relative px-6 py-5 bg-white/95 backdrop-blur border border-slate-200 shadow-xl rounded-2xl w-[420px] select-none">
-      {/* Handles */}
-      <Handle type="target" position={Position.Top} className="!w-2 !h-2 !bg-slate-400 !border-0 !rounded-full" />
-      <Handle type="target" position={Position.Bottom} id="target-bottom" className="!w-2 !h-2 !bg-slate-400 !border-0 !rounded-full" />
-      <Handle type="source" position={Position.Bottom} id="source-bottom" className="!w-2 !h-2 !bg-slate-400 !border-0 !rounded-full" />
+    <div className={`relative px-5 py-4 bg-white border-2 border-slate-800 shadow-xl w-[420px] select-none transition-all duration-300 ${
+      isActive ? "ring-4 ring-indigo-100/80 scale-101" : ""
+    }`}>
+      {/* Precision Handles */}
+      <Handle type="target" position={Position.Top} className="!w-2.5 !h-2.5 !bg-slate-800 !border !border-white !rounded-none" />
+      <Handle type="target" position={Position.Bottom} id="target-bottom" className="!w-2.5 !h-2.5 !bg-slate-800 !border !border-white !rounded-none !-bottom-1.5" />
+      <Handle type="source" position={Position.Bottom} id="source-bottom" className="!w-2.5 !h-2.5 !bg-slate-800 !border !border-white !rounded-none !-bottom-1.5" />
 
-      {/* Header Badge */}
+      {/* Synthesis Active Pulse Tag */}
       {isActive && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-3 py-0.5 rounded-full text-[8px] font-bold uppercase flex items-center gap-1.5 tracking-wider shadow-md border border-slate-800">
-          <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping" />
-          <span>Synthesizing Multi-Modal Stream</span>
+        <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-2.5 py-0.2 border border-slate-700 text-[8px] font-mono font-bold uppercase flex items-center gap-1.5 tracking-wider shadow-sm animate-pulse">
+          <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full beacon-live" />
+          <span>SYNTHESIZING MULTI-MODAL STREAM</span>
         </div>
       )}
 
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white flex items-center justify-center rounded-lg shadow-md shadow-indigo-100">
-            <ShieldCheck className="w-4.5 h-4.5" />
+      <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-2.5">
+        <div className="flex items-center space-x-2.5">
+          <div className="w-7 h-7 bg-slate-900 text-white flex items-center justify-center shadow-sm">
+            <ShieldCheck className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-[9px] font-bold text-indigo-500 uppercase tracking-wider block">Master Orchestrator</span>
-            <h3 className="text-sm font-extrabold tracking-tight text-slate-800 uppercase">{agent.name}</h3>
+            <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-wider block">MASTER ORCHESTRATOR</span>
+            <h3 className="text-xs font-black tracking-tight text-slate-900 uppercase">{agent.name}</h3>
           </div>
         </div>
-        <span className="px-2.5 py-0.5 text-[9px] font-bold uppercase rounded-full bg-slate-100 text-slate-600 tracking-wider">
-          Admin #001
+        <span className="px-2 py-0.5 text-[9px] font-mono font-bold uppercase bg-slate-100 border border-slate-200 text-slate-800 tracking-wider">
+          ADMIN #001
         </span>
       </div>
 
       {/* Consensus Decision */}
-      <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 mb-3">
-        <div className="flex items-center justify-between mb-1.5 text-xs font-semibold">
-          <span className="text-slate-600 font-bold uppercase tracking-wider text-[10px]">Consensus:</span>
-          <span className={`px-2.5 py-0.5 rounded-full uppercase tracking-wider text-[9px] ${decisionBadgeColor}`}>
+      <div className="p-2.5 bg-slate-50 border border-slate-200 mb-2.5 transition-colors">
+        <div className="flex items-center justify-between mb-1 text-[10px] font-mono">
+          <span className="text-slate-600 font-bold uppercase">Consensus Decision:</span>
+          <span className={`px-2 py-0.2 uppercase tracking-wider text-[10px] border transition-all ${decisionBadgeColor}`}>
             {adminAnalysis?.decision || "SCALE"}
           </span>
         </div>
-        <p className="text-xs text-slate-700 font-medium leading-relaxed">
+        <p className="text-xs text-slate-800 font-medium leading-snug">
           {adminAnalysis?.summary || "Synthesizing 30 ML, 30 PyTrends, 30 Groq, and 10 PennyLane QML nodes into unified Bayesian consensus."}
         </p>
       </div>
 
       {/* Live Metrics Grid */}
-      <div className="grid grid-cols-3 gap-3 text-center">
-        <div className="p-2 bg-slate-50 rounded-xl border border-slate-100">
-          <span className="text-slate-400 block text-[9px] font-bold uppercase tracking-wider">Consensus ROAS</span>
-          <span className="font-extrabold text-slate-800 text-sm mt-0.5 block">{adminAnalysis?.simulatedRoas || 3.85}x</span>
+      <div className="grid grid-cols-3 gap-2 text-center font-mono">
+        <div className="p-1.5 bg-slate-50 border border-slate-200 transition hover:border-slate-300">
+          <span className="text-slate-500 block text-[8px] font-bold uppercase">ROAS</span>
+          <span className="font-bold text-slate-900 text-xs">{adminAnalysis?.simulatedRoas || 3.85}x</span>
         </div>
-        <div className="p-2 bg-slate-50 rounded-xl border border-slate-100">
-          <span className="text-slate-400 block text-[9px] font-bold uppercase tracking-wider">Confidence</span>
-          <span className="font-extrabold text-slate-800 text-sm mt-0.5 block">
+        <div className="p-1.5 bg-slate-50 border border-slate-200 transition hover:border-slate-300">
+          <span className="text-slate-500 block text-[8px] font-bold uppercase">CONFIDENCE</span>
+          <span className="font-bold text-slate-900 text-xs">
             {adminAnalysis ? `${Math.round(adminAnalysis.confidence * 100)}%` : "91%"}
           </span>
         </div>
-        <div className="p-2 bg-slate-50 rounded-xl border border-slate-100">
-          <span className="text-slate-400 block text-[9px] font-bold uppercase tracking-wider">Total Nodes</span>
-          <span className="font-extrabold text-slate-800 text-sm mt-0.5 block">101</span>
+        <div className="p-1.5 bg-slate-50 border border-slate-200 transition hover:border-slate-300">
+          <span className="text-slate-500 block text-[8px] font-bold uppercase">TOTAL NODES</span>
+          <span className="font-bold text-slate-900 text-xs">101</span>
         </div>
       </div>
     </div>

@@ -34,7 +34,7 @@ export const AgentGraph: React.FC = () => {
 
   const agentsList = useMemo(() => Object.values(agents), [agents]);
 
-  // Precise Symmetrical Geometry
+  // Symmetrical Grid Geometry
   const CARD_WIDTH = 256;
   const CARD_HEIGHT = 142;
   const COL_GAP = 24;
@@ -59,25 +59,24 @@ export const AgentGraph: React.FC = () => {
       return matchSearch && matchRole;
     });
 
-    // 1. Section Coordinates
+    // Section Coordinates
     const sec1_X = 60;
-    const sec1_width = 3 * CARD_WIDTH + 2 * COL_GAP; // 816px
+    const sec1_width = 3 * CARD_WIDTH + 2 * COL_GAP;
     
-    const sec2_X = sec1_X + sec1_width + SECTION_GAP; // 948px
-    const sec2_width = 3 * CARD_WIDTH + 2 * COL_GAP; // 816px
+    const sec2_X = sec1_X + sec1_width + SECTION_GAP;
+    const sec2_width = 3 * CARD_WIDTH + 2 * COL_GAP;
     
-    const sec3_X = sec2_X + sec2_width + SECTION_GAP; // 1836px
-    const sec3_width = 3 * CARD_WIDTH + 2 * COL_GAP; // 816px
+    const sec3_X = sec2_X + sec2_width + SECTION_GAP;
+    const sec3_width = 3 * CARD_WIDTH + 2 * COL_GAP;
     
-    const sec4_X = sec3_X + sec3_width + SECTION_GAP; // 2724px
-    const sec4_width = 2 * CARD_WIDTH + 1 * COL_GAP; // 536px
-    const grid_total_end_X = sec4_X + sec4_width; // 3260px
+    const sec4_X = sec3_X + sec3_width + SECTION_GAP;
+    const sec4_width = 2 * CARD_WIDTH + 1 * COL_GAP;
+    const grid_total_end_X = sec4_X + sec4_width;
 
-    // Exact horizontal midpoint of all 4 columns:
-    const grid_midpoint_X = (sec1_X + grid_total_end_X) / 2; // 1660px
-    const admin_X = grid_midpoint_X - ADMIN_WIDTH / 2; // 1450px
+    const grid_midpoint_X = (sec1_X + grid_total_end_X) / 2;
+    const admin_X = grid_midpoint_X - ADMIN_WIDTH / 2;
 
-    // 1. Admin Master Node (Centered horizontally above the 4 pipelines)
+    // Admin Master Node
     const admin = agentsList.find((a) => a.type === "admin");
     if (admin) {
       calculatedNodes.push({
@@ -113,7 +112,7 @@ export const AgentGraph: React.FC = () => {
         });
       });
     } else {
-      // 1. Section 1: 30 ML Agents (3 cols x 10 rows)
+      // 1. 30 ML Agents (3 cols x 10 rows)
       const mlAgents = filtered.filter((a) => a.type === "ml");
       mlAgents.forEach((a, index) => {
         const row = Math.floor(index / 3);
@@ -133,7 +132,7 @@ export const AgentGraph: React.FC = () => {
         });
       });
 
-      // 2. Section 2: 30 PyTrends Agents (3 cols x 10 rows)
+      // 2. 30 PyTrends Agents (3 cols x 10 rows)
       const pytrendAgents = filtered.filter((a) => a.type === "pytrend");
       pytrendAgents.forEach((a, index) => {
         const row = Math.floor(index / 3);
@@ -153,7 +152,7 @@ export const AgentGraph: React.FC = () => {
         });
       });
 
-      // 3. Section 3: 30 Groq Agents (3 cols x 10 rows)
+      // 3. 30 Groq Agents (3 cols x 10 rows)
       const groqAgents = filtered.filter((a) => a.type === "groq");
       groqAgents.forEach((a, index) => {
         const row = Math.floor(index / 3);
@@ -173,7 +172,7 @@ export const AgentGraph: React.FC = () => {
         });
       });
 
-      // 4. Section 4: 10 QML Quantum Agents (2 cols x 5 rows)
+      // 4. 10 QML Quantum Agents (2 cols x 5 rows)
       const qmlAgents = filtered.filter((a) => a.type === "qml");
       qmlAgents.forEach((a, index) => {
         const row = Math.floor(index / 2);
@@ -197,11 +196,11 @@ export const AgentGraph: React.FC = () => {
     return calculatedNodes;
   }, [agentsList, activeAgentIds, activeEdges, adminAnalysis, selectedAgentId, searchQuery, filterRole, isRandomLayout]);
 
-  // Compute Sleek Connecting Threads & Refined Animation Edges
+  // Compute Sleek Flowing Stream Threads
   const edges: Edge[] = useMemo(() => {
     const edgeList: Edge[] = [];
 
-    // Subtle Structural Hub Lines
+    // Structural Hub Lines
     const structuralHubs = [
       { id: "ml_001", color: "#BAE6FD" },
       { id: "ml_002", color: "#BAE6FD" },
@@ -222,11 +221,11 @@ export const AgentGraph: React.FC = () => {
         source: hub.id,
         target: "admin_001",
         type: "smoothstep",
-        style: { stroke: hub.color, strokeWidth: 1.5, opacity: 0.7 }
+        style: { stroke: hub.color, strokeWidth: 1.5, opacity: 0.6 }
       });
     });
 
-    // Active Animated Simulation Edges (Sleek 2px animated paths)
+    // Active Animated Simulation Edges (Flowing dashed pulse paths)
     activeAgentIds.forEach((agentId, idx) => {
       if (agentId === "admin_001") return;
 
@@ -245,12 +244,23 @@ export const AgentGraph: React.FC = () => {
         ? "#DB2777"
         : "#0F172A";
 
+      const className = isML
+        ? "edge-active-ml"
+        : isPyTrend
+        ? "edge-active-pytrend"
+        : isGroq
+        ? "edge-active-groq"
+        : isQML
+        ? "edge-active-qml"
+        : "";
+
       edgeList.push({
         id: `e-active-${agentId}-admin-${idx}`,
         source: agentId,
         target: "admin_001",
         animated: true,
         type: "smoothstep",
+        className,
         style: {
           stroke: edgeColor,
           strokeWidth: 2
@@ -258,8 +268,8 @@ export const AgentGraph: React.FC = () => {
         markerEnd: {
           type: MarkerType.ArrowClosed,
           color: edgeColor,
-          width: 10,
-          height: 10
+          width: 9,
+          height: 9
         }
       });
     });
@@ -272,14 +282,14 @@ export const AgentGraph: React.FC = () => {
   }, [setSelectedAgentId]);
 
   return (
-    <div className="w-full h-full relative bg-slate-50">
+    <div className="w-full h-full relative bg-slate-50 overflow-hidden">
       {/* Layout Toggle Button Bar */}
-      <div className="absolute top-3 left-3 z-20 flex items-center border border-slate-200 bg-white shadow-sm p-0.5 gap-1">
+      <div className="absolute top-3 left-3 z-20 flex items-center border border-slate-200 bg-white/95 backdrop-blur shadow-sm p-0.5 gap-1 transition-all">
         <button
           onClick={() => setIsRandomLayout(false)}
           className={`px-2.5 py-1 text-[11px] font-mono font-bold flex items-center gap-1.5 uppercase transition border ${
             !isRandomLayout
-              ? "bg-slate-900 text-white border-slate-900 shadow-sm"
+              ? "bg-slate-900 text-white border-slate-900 shadow-xs"
               : "bg-white text-slate-700 border-transparent hover:bg-slate-100"
           }`}
         >
@@ -290,7 +300,7 @@ export const AgentGraph: React.FC = () => {
           onClick={() => setIsRandomLayout(true)}
           className={`px-2.5 py-1 text-[11px] font-mono font-bold flex items-center gap-1.5 uppercase transition border ${
             isRandomLayout
-              ? "bg-slate-900 text-white border-slate-900 shadow-sm"
+              ? "bg-slate-900 text-white border-slate-900 shadow-xs"
               : "bg-white text-slate-700 border-transparent hover:bg-slate-100"
           }`}
         >
@@ -321,7 +331,7 @@ export const AgentGraph: React.FC = () => {
             if (n.id.startsWith("qml_")) return "#DB2777";
             return "#64748B";
           }}
-          maskColor="rgba(248, 250, 252, 0.7)"
+          maskColor="rgba(248, 250, 252, 0.75)"
           position="bottom-right"
         />
       </ReactFlow>

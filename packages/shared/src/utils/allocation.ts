@@ -13,20 +13,28 @@ export interface AllocationResult {
  */
 export function compute8020Allocation(
   campaigns: CanonicalCampaign[],
-  trends: RealTrend[]
+  trends: RealTrend[],
+  customExploitationRatio: number = 0.80
 ): AllocationResult {
-  // Sort trends by score
-  const sortedTrends = [...trends].sort((a, b) => b.score - a.score);
+  const getTrendScore = (t: RealTrend): number => {
+    return (t.growth || 0) * 0.4 + (t.velocity || 0) * 0.4 + (t.interest || 0) * 0.2;
+  };
+
+  // Sort trends by computed composite score
+  const sortedTrends = [...trends].sort((a, b) => getTrendScore(b) - getTrendScore(a));
   
-  // High scoring trends (>80) are candidates for exploitation
-  const highTraction = sortedTrends.filter(t => t.score >= 80).map(t => t.name);
-  const emerging = sortedTrends.filter(t => t.score < 80).map(t => t.name);
+  // High scoring trends (>75) are candidates for exploitation
+  const highTraction = sortedTrends.filter(t => getTrendScore(t) >= 75).map(t => t.name);
+  const emerging = sortedTrends.filter(t => getTrendScore(t) < 75).map(t => t.name);
   
+  const exploitation = Math.max(0.1, Math.min(0.95, customExploitationRatio));
+  const exploration = Number((1.0 - exploitation).toFixed(2));
+
   return {
-    exploitationAllocation: 0.80,
-    explorationAllocation: 0.20,
+    exploitationAllocation: exploitation,
+    explorationAllocation: exploration,
     promotedTrends: highTraction.slice(0, 3),
     exploratoryOpportunities: emerging.slice(0, 3),
-    summary: `Allocating 80% budget to proven campaigns & high-traction trends (${highTraction.slice(0, 2).join(", ") || "Core Channels"}), and 20% to emerging trend variants (${emerging.slice(0, 2).join(", ") || "Emerging Signals"}).`
+    summary: `Allocating ${Math.round(exploitation * 100)}% budget to proven campaigns & high-traction trends (${highTraction.slice(0, 2).join(", ") || "Core Channels"}), and ${Math.round(exploration * 100)}% to emerging trend variants (${emerging.slice(0, 2).join(", ") || "Emerging Signals"}).`
   };
 }
