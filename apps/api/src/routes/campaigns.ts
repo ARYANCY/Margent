@@ -3,6 +3,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { dataStore } from "../services/store";
+import { prisma } from "../services/prisma";
 import { simulationScheduler } from "../services/simulationScheduler";
 import { deriveCampaignMetrics } from "@shared/utils/canonicalMetrics";
 import { CanonicalCampaign, MarketingChannel, VALID_CHANNELS } from "@shared/types";
@@ -173,5 +174,104 @@ campaignsRouter.post("/create", upload.single("photo"), async (req: Request, res
   } catch (err: any) {
     console.error("[Campaigns Router] Dispatch error:", err);
     res.status(500).json({ error: "Failed to dispatch campaign", details: err.message });
+  }
+});
+
+// PUT update campaign (Admin)
+campaignsRouter.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const campaignData = req.body;
+
+    const spend = parseFloat(campaignData.spend);
+    const impressions = parseInt(campaignData.impressions, 10);
+    const clicks = parseInt(campaignData.clicks, 10);
+    const conversions = parseInt(campaignData.conversions, 10);
+    const revenue = parseFloat(campaignData.revenue);
+
+    const derived = deriveCampaignMetrics({
+      spend: isNaN(spend) ? 0 : spend,
+      impressions: isNaN(impressions) ? 0 : impressions,
+      clicks: isNaN(clicks) ? 0 : clicks,
+      conversions: isNaN(conversions) ? 0 : conversions,
+      revenue: isNaN(revenue) ? 0 : revenue,
+      engagements: clicks * 2
+    });
+
+    const updatedDbCampaign = await prisma.canonicalCampaign.update({
+      where: { campaignId: id },
+      data: {
+        campaignName: campaignData.campaignName,
+        channel: campaignData.channel,
+        goal: campaignData.goal,
+        audience: campaignData.audience,
+        caption: campaignData.caption,
+        hashtags: campaignData.hashtags || [],
+        imageUrl: campaignData.imageUrl,
+        date: campaignData.date,
+        spend: spend || undefined,
+        impressions: impressions || undefined,
+        clicks: clicks || undefined,
+        conversions: conversions || undefined,
+        revenue: revenue || undefined,
+        engagements: clicks * 2 || undefined,
+        ...derived,
+        trendAlignment: campaignData.trendAlignment ? parseFloat(campaignData.trendAlignment) : undefined,
+        status: campaignData.status,
+      }
+    });
+
+    const formattedCampaign: CanonicalCampaign = {
+      ...updatedDbCampaign,
+      channel: updatedDbCampaign.channel as any,
+      status: updatedDbCampaign.status as any,
+      goal: updatedDbCampaign.goal || undefined,
+      caption: updatedDbCampaign.caption || undefined,
+      imageUrl: updatedDbCampaign.imageUrl || undefined,
+    };
+
+    // Update in memory & active state
+    const dsIndex = dataStore.campaigns.findIndex(c => c.campaignId === id);
+    if (dsIndex !== -1) {
+      dataStore.campaigns[dsIndex] = formattedCampaign;
+    }
+    const stateCampaigns = simulationScheduler.getEngine().getState().campaigns || [];
+    const stateIndex = stateCampaigns.findIndex(c => c.campaignId === id);
+    if (stateIndex !== -1) {
+      stateCampaigns[stateIndex] = formattedCampaign;
+    }
+
+    if (simulationScheduler.getEngine().getState().activeCampaign?.campaignId === id) {
+      simulationScheduler.getEngine().setActiveCampaign(formattedCampaign);
+    }
+
+    res.json(formattedCampaign);
+  } catch (err: any) {
+    res.status(500).json({ error: "Failed to update campaign", details: err.message });
+  }
+});
+
+// DELETE campaign (Admin)
+campaignsRouter.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    // Delete from PostgreSQL
+    await prisma.canonicalCampaign.delete({
+      where: { campaignId: id }
+    });
+
+    // Delete from in-memory arrays & state
+    dataStore.campaigns = dataStore.campaigns.filter(c => c.campaignId !== id);
+    const engineState = simulationScheduler.getEngine().getState();
+    engineState.campaigns = (engineState.campaigns || []).filter(c => c.campaignId !== id);
+
+    if (engineState.activeCampaign?.campaignId === id) {
+      engineState.activeCampaign = engineState.campaigns[0] || undefined;
+    }
+
+    res.json({ success: true, message: `Campaign ${id} deleted successfully.` });
+  } catch (err: any) {
+    res.status(500).json({ error: "Failed to delete campaign", details: err.message });
   }
 });

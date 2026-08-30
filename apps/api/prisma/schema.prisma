@@ -1,0 +1,91 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model AgentProfile {
+  agentId             String   @id
+  name                String
+  type                String   // Matches AgentRole
+  roleDescription     String
+  avatar              String
+  pipelineGroup       String   // e.g. "ML_TRAINED", "PYTREND_SEARCH"
+  status              String   // Matches AgentStatus
+  sentiment           Float
+  engagementScore     Float
+  lastAction          String?
+  lastActionTime      String?
+  segment             String?  // CustomerSegment
+  trendSensitivity    Float?
+  priceSensitivity    Float?
+  brandAffinity       Float?
+  engagementProbability Float?
+  specialization      String?
+  modelType           String?
+  quantumExpectation  Float?
+  searchMomentumScore Float?
+}
+
+model CanonicalCampaign {
+  campaignId     String   @id @default(uuid())
+  campaignName   String
+  channel        String   // Matches MarketingChannel
+  goal           String?
+  audience       String
+  caption        String?
+  hashtags       String[]
+  imageUrl       String?
+  date           String
+  spend          Float
+  impressions    Int
+  clicks         Int
+  conversions    Int
+  revenue        Float
+  engagements    Int
+  ctr            Float
+  cpc            Float
+  conversionRate Float
+  roas           Float
+  engagementRate Float
+  trendAlignment Float
+  status         String   // "ACTIVE", "PAUSED", "COMPLETED", "SIMULATED"
+}
+
+model RealTrend {
+  trendId   String   @id
+  name      String
+  hashtag   String
+  source    String
+  timestamp String
+  growth    Float
+  interest  Float
+  velocity  Float
+  status    String   // "RISING", "FALLING", "PEAK", "STEADY"
+}
+
+model AgentEvent {
+  eventId   String   @id @default(uuid())
+  source    String
+  target    String?
+  type      String   // "COMMENT", "ANOMALY_DETECTED", etc.
+  timestamp BigInt   // Milliseconds
+  payload   Json     // Raw unstructured event payload
+}
+
+model AdminAnalysis {
+  analysisId          String   @id @default(uuid())
+  decision            String   // "SCALE", "MAINTAIN", "INVESTIGATE"
+  confidence          Float
+  simulatedRoas       Float
+  summary             String
+  evidence            String[]
+  recommendedActions  String[]
+  ensembleBreakdown   Json     // Store JSON structure of EnsembleBreakdown
+  nodeEvaluations     Json?    // Array of NodeEvaluation JSON structures
+  activeAgentsCount   Int
+  timestamp           String
+}
