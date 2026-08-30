@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "start": "node src/server.js",
+    "start": "node -r tsconfig-paths/register src/server.js",
     "seed": "tsx src/scripts/seed.ts"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "express": "^4.19.2",
     "multer": "^1.4.5-lts.1",
     "socket.io": "^4.7.5",
+    "tsconfig-paths": "^4.2.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
