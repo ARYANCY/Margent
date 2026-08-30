@@ -19,7 +19,6 @@ export default defineConfig({
   },
   resolve: {
     alias: [
-      { find: /^d3-(.*)$/, replacement: path.resolve(__dirname, 'node_modules/d3-$1/dist/d3-$1.js') },
       { find: /^@\/(.*)$/, replacement: path.resolve(__dirname, 'src/$1') },
       { find: /^@shared\/(.*)$/, replacement: path.resolve(__dirname, '../../packages/shared/src/$1') },
       { find: /^@shared$/, replacement: path.resolve(__dirname, '../../packages/shared/src/index.ts') },
