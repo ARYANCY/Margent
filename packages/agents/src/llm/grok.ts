@@ -59,18 +59,22 @@ export class LLMClient {
   private model: string;
   private isDemoMode: boolean;
 
-  constructor() {
-    this.apiKey = process.env.GROQ_API_KEY || process.env.XAI_API_KEY || "";
-    if (process.env.GROQ_API_KEY) {
-      this.model = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
+  constructor(options?: { apiKey?: string; model?: string }) {
+    const env = typeof process !== "undefined" && process?.env ? process.env : {};
+    this.apiKey = options?.apiKey || env.GROQ_API_KEY || env.XAI_API_KEY || "";
+    if (options?.model) {
+      this.model = options.model;
+    } else if (env.GROQ_API_KEY) {
+      this.model = env.GROQ_MODEL || "llama-3.3-70b-versatile";
     } else {
-      this.model = process.env.XAI_MODEL || "grok-4.6";
+      this.model = env.XAI_MODEL || "grok-4.6";
     }
-    this.isDemoMode = !this.apiKey || process.env.DEMO_MODE === "true";
+    this.isDemoMode = !this.apiKey || env.DEMO_MODE === "true";
   }
 
   private getApiUrl(): string {
-    if (process.env.GROQ_API_KEY) {
+    const env = typeof process !== "undefined" && process?.env ? process.env : {};
+    if (env.GROQ_API_KEY || this.model.includes("llama") || this.model.includes("groq")) {
       return "https://api.groq.com/openai/v1/chat/completions";
     }
     return "https://api.x.ai/v1/chat/completions";

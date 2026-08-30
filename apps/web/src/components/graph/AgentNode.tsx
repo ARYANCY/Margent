@@ -68,14 +68,25 @@ export const AgentNode = memo(({ data }: AgentNodeProps) => {
       ? "text-rose-800 bg-rose-50 border-rose-200 font-bold"
       : "text-slate-700 bg-slate-50 border-slate-200 font-bold";
 
+  const activeClass =
+    agent.type === "ml"
+      ? "node-active-ml"
+      : agent.type === "pytrend"
+      ? "node-active-pytrend"
+      : agent.type === "groq"
+      ? "node-active-groq"
+      : agent.type === "qml"
+      ? "node-active-qml"
+      : "node-card-active";
+
   return (
     <div
       className={`relative w-64 h-[142px] px-3 py-2.5 bg-white flex flex-col justify-between select-none node-card ${
         isSelected
-          ? "border-2 border-slate-900 shadow-md ring-2 ring-slate-200 scale-102 z-30"
+          ? "border-2 border-slate-900 shadow-lg ring-2 ring-slate-400 scale-102 z-30"
           : isActive
-          ? `border-2 border-slate-800 shadow-md ring-2 ${meta.activeRing} scale-101 z-20 node-card-active`
-          : "border border-slate-200 hover:border-slate-400 shadow-sm"
+          ? `border-2 shadow-lg scale-102 z-20 ${activeClass}`
+          : "border border-slate-200 hover:border-slate-400 shadow-xs"
       }`}
     >
       {/* Precision Handles */}
@@ -85,13 +96,16 @@ export const AgentNode = memo(({ data }: AgentNodeProps) => {
       <Handle type="target" position={Position.Bottom} id="target-bottom" className="!w-2 !h-2 !bg-slate-800 !border !border-white !rounded-none !-bottom-1 transition-transform hover:scale-125" />
 
       {/* Left Colored Accent Bar */}
-      <div className={`absolute top-0 left-0 bottom-0 w-1 ${meta.accentBar} transition-all duration-300`} />
+      <div className={`absolute top-0 left-0 bottom-0 w-1.5 ${meta.accentBar} transition-all duration-300`} />
+
+      {/* Active Scanline Overlay */}
+      {isActive && <div className="scanline-overlay" />}
 
       {/* Active Pulse Tag */}
       {isActive && (
-        <div className="absolute -top-2 right-2 bg-slate-900 text-white px-2 py-0.2 border border-slate-700 text-[8px] font-mono font-bold uppercase flex items-center gap-1.5 shadow-sm transition-all duration-200">
+        <div className="absolute -top-2.5 right-2 bg-slate-900 text-white px-2 py-0.2 border border-slate-700 text-[8px] font-mono font-bold uppercase flex items-center gap-1.5 shadow-md">
           <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full beacon-live" />
-          <span className="tracking-wider">LIVE</span>
+          <span className="tracking-wider">INFERENCING</span>
         </div>
       )}
 

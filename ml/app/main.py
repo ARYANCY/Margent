@@ -15,6 +15,7 @@ from .pytrends_service import pytrends_service
 from .groq_service import groq_service
 from .qml_service import qml_service
 from .ensemble_service import ensemble_aggregator
+from .monte_carlo_service import monte_carlo_engine
 
 app = FastAPI(
     title="AI Marketing Intelligence 30-30-30-10 Ensemble Service",
@@ -107,6 +108,38 @@ def reason_groq(payload: Dict[str, Any] = Body(...)):
 def predict_ensemble(payload: Dict[str, Any] = Body(...)):
     try:
         return ensemble_aggregator.evaluate_all(payload)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/simulate/monte-carlo")
+def simulate_monte_carlo(payload: Dict[str, Any] = Body(...)):
+    try:
+        base_roas = float(payload.get("base_roas", 3.5))
+        spend = float(payload.get("spend", 1800.0))
+        volatility = float(payload.get("volatility", 0.15))
+        competitor_intensity = float(payload.get("competitor_intensity", 0.20))
+        days = int(payload.get("days", 14))
+        num_sims = int(payload.get("num_simulations", 500))
+        return monte_carlo_engine.run_simulation(
+            base_roas=base_roas,
+            spend=spend,
+            volatility=volatility,
+            competitor_intensity=competitor_intensity,
+            days=days,
+            num_sims=num_sims
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/groq/generate-variants")
+def generate_variants(payload: Dict[str, Any] = Body(...)):
+    try:
+        product_or_topic = payload.get("topic", "Autonomous AI Marketing")
+        audience = payload.get("audience", "Gen Z Tech Trendsetters")
+        channel = payload.get("channel", "Instagram")
+        return {
+            "variants": groq_service.generate_creative_variants(product_or_topic, audience, channel)
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

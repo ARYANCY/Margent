@@ -59,8 +59,8 @@ class MLService:
         # Build feature DataFrame matching trained model schema
         conv_est = max(1.0, req.clicks * 0.08)
         X = pd.DataFrame([{
-            "channel": "Instagram",
-            "audience": "General",
+            "channel": req.channel or "Instagram",
+            "audience": req.audience or "General",
             "spend": float(req.spend),
             "impressions": float(req.impressions),
             "clicks": float(req.clicks),

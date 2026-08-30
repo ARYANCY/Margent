@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
 import { Radio, AlertTriangle, ShieldCheck, Atom, TrendingUp, Cpu, Brain, Activity } from "lucide-react";
 import { useSimulationStore } from "../../stores/simulationStore";
 import { AgentEvent } from "@shared/types";
@@ -6,6 +7,16 @@ import { AgentEvent } from "@shared/types";
 export const LiveEventStream: React.FC = () => {
   const events = useSimulationStore((s) => s.events);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current && scrollRef.current.firstElementChild) {
+      gsap.fromTo(
+        scrollRef.current.firstElementChild,
+        { y: -6, opacity: 0.4, scale: 0.99 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.22, ease: "power2.out" }
+      );
+    }
+  }, [events[0]?.eventId]);
 
   const getEventMeta = (event: AgentEvent) => {
     switch (event.type) {

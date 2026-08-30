@@ -102,32 +102,34 @@ export class SimulationScheduler {
     }
   }
 
+  private tickQueue: Promise<void> = Promise.resolve();
+
   async triggerCampaignPost(campaign: CanonicalCampaign) {
     this.engine.setActiveCampaign(campaign);
     dataStore.addCampaign(campaign);
     this.io?.emit("campaign:created", campaign);
     await this.step();
-    await this.step();
   }
 
-  async step() {
-    if (this.isTickLocked) return;
-    this.isTickLocked = true;
-    try {
-      await this.engine.executeTick();
-    } catch (err) {
-      console.error("Tick execution error:", err);
-    } finally {
-      this.isTickLocked = false;
-    }
+  async step(): Promise<void> {
+    this.tickQueue = this.tickQueue.then(async () => {
+      try {
+        await this.engine.executeTick();
+      } catch (err) {
+        console.error("Tick execution error:", err);
+      }
+    });
+    return this.tickQueue;
   }
 
   private scheduleNextTick() {
     if (!this.isRunning) return;
-    const interval = Math.max(500, Math.floor(this.tickIntervalMs / this.speedMultiplier));
+    const interval = Math.max(400, Math.floor(this.tickIntervalMs / this.speedMultiplier));
     this.timer = setTimeout(async () => {
-      await this.step();
-      this.scheduleNextTick();
+      if (this.isRunning) {
+        await this.step();
+        this.scheduleNextTick();
+      }
     }, interval);
   }
 }

@@ -18,7 +18,7 @@ class PyTrendsService:
         
         if TrendReq is not None:
             try:
-                self.pytrend = TrendReq(hl="en-US", tz=360, timeout=(8, 15))
+                self.pytrend = TrendReq(hl="en-US", tz=360, timeout=(3, 5))
             except Exception as e:
                 print(f"[PyTrends] TrendReq init notice: {e}")
 

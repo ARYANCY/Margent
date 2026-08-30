@@ -1,46 +1,111 @@
-/* Node Card Animations & Transitions */
+/* High-Impact Enterprise Node Card Animations & Transitions */
 
 .node-card {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.15s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease;
   will-change: transform, box-shadow;
 }
 
 .node-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.12), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
 }
 
-.node-card-active {
-  animation: nodeLivePulse 2s ease-in-out infinite;
+/* Pipeline-Specific Electric Live Pulse Animations */
+.node-active-ml {
+  animation: pulseML 1.8s ease-in-out infinite;
+  border-color: #0284C7 !important;
 }
 
-@keyframes nodeLivePulse {
+.node-active-pytrend {
+  animation: pulsePyTrend 1.8s ease-in-out infinite;
+  border-color: #D97706 !important;
+}
+
+.node-active-groq {
+  animation: pulseGroq 1.8s ease-in-out infinite;
+  border-color: #059669 !important;
+}
+
+.node-active-qml {
+  animation: pulseQML 1.8s ease-in-out infinite;
+  border-color: #DB2777 !important;
+}
+
+@keyframes pulseML {
   0%, 100% {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 0 0 1px rgba(15, 23, 42, 0.1);
+    box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4), 0 4px 12px rgba(2, 132, 199, 0.15);
   }
   50% {
-    box-shadow: 0 8px 14px -2px rgba(0, 0, 0, 0.12), 0 0 0 2px rgba(15, 23, 42, 0.25);
+    box-shadow: 0 0 0 6px rgba(2, 132, 199, 0), 0 8px 20px rgba(2, 132, 199, 0.35);
+  }
+}
+
+@keyframes pulsePyTrend {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.4), 0 4px 12px rgba(217, 119, 6, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(217, 119, 6, 0), 0 8px 20px rgba(217, 119, 6, 0.35);
+  }
+}
+
+@keyframes pulseGroq {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.4), 0 4px 12px rgba(5, 150, 105, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(5, 150, 105, 0), 0 8px 20px rgba(5, 150, 105, 0.35);
+  }
+}
+
+@keyframes pulseQML {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(219, 39, 119, 0.4), 0 4px 12px rgba(219, 39, 119, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(219, 39, 119, 0), 0 8px 20px rgba(219, 39, 119, 0.35);
   }
 }
 
 /* Beacon live ripple effect */
 @keyframes beaconRipple {
   0% {
-    transform: scale(0.95);
-    opacity: 0.9;
+    transform: scale(0.9);
+    opacity: 1;
   }
   50% {
-    transform: scale(1.3);
-    opacity: 0.4;
+    transform: scale(1.5);
+    opacity: 0.3;
   }
   100% {
-    transform: scale(0.95);
-    opacity: 0.9;
+    transform: scale(0.9);
+    opacity: 1;
   }
 }
 
 .beacon-live {
-  animation: beaconRipple 1.6s infinite ease-in-out;
+  animation: beaconRipple 1.2s infinite ease-in-out;
+}
+
+/* Scanline animation for active inferencing cards */
+@keyframes scanlineAnim {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+.scanline-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  animation: scanlineAnim 1.5s linear infinite;
+  pointer-events: none;
 }

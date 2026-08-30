@@ -11,6 +11,8 @@ class CampaignPredictionRequest(BaseModel):
     ctr: float = Field(..., description="Click-through rate (0-1)")
     cpc: float = Field(..., description="Cost per click in USD")
     trend_alignment: float = Field(..., description="Alignment score with trending topics (0-100)")
+    channel: Optional[str] = Field("Instagram", description="Marketing channel")
+    audience: Optional[str] = Field("General", description="Target audience")
 
 class CampaignPredictionResponse(BaseModel):
     predicted_roas: float

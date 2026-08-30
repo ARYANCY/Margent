@@ -45,10 +45,16 @@ class QMLService:
         try:
             if os.path.exists(MODEL_PATH):
                 artifact = joblib.load(MODEL_PATH)
-                self.weights = np.array(artifact["weights"]).T
-                print("Loaded PennyLane QML Model successfully.")
+                raw_w = np.array(artifact["weights"])
+                if raw_w.shape == (NUM_QUBITS, 3):
+                    self.weights = raw_w
+                elif raw_w.shape == (3, NUM_QUBITS):
+                    self.weights = raw_w.T
+                else:
+                    self.weights = raw_w.reshape((NUM_QUBITS, 3))
+                print("[QMLService] Loaded PennyLane QML Model successfully with shape", self.weights.shape)
         except Exception as e:
-            print(f"Warning: Could not load QML model: {e}")
+            print(f"[QMLService] Warning: Could not load QML model ({e}), using initialized parameters.")
             self.weights = np.random.uniform(0, 2 * np.pi, (NUM_QUBITS, 3))
 
     def evaluate_quantum_resonance(self, spend: float, ctr: float, velocity: float, affinity: float) -> Dict[str, Any]:
@@ -82,12 +88,31 @@ class QMLService:
             {"pair": "Spend ↔ Affinity", "entanglement": round(float(np.sin(norm_spend * norm_affinity)), 3)},
         ]
 
+        # 3D Bloch Sphere Coordinates (rx, ry, rz) for all 4 Qubits
+        bloch_vectors = []
+        labels = ["Spend Q0", "CTR Q1", "Velocity Q2", "Affinity Q3"]
+        for i, angle in enumerate([norm_spend, norm_ctr, norm_velocity, norm_affinity]):
+            rx = float(np.sin(angle) * np.cos(self.weights[i, 0]))
+            ry = float(np.sin(angle) * np.sin(self.weights[i, 1]))
+            rz = float(np.cos(angle))
+            bloch_vectors.append({
+                "qubit": i,
+                "label": labels[i],
+                "x": round(rx, 3),
+                "y": round(ry, 3),
+                "z": round(rz, 3),
+                "theta_deg": round(float(angle * 180 / np.pi), 1),
+                "phi_deg": round(float(self.weights[i, 0] * 180 / np.pi), 1)
+            })
+
         return {
             "quantum_resonance_score": quantum_score,
             "quantum_predicted_roas": quantum_roas,
             "qubits_used": NUM_QUBITS,
             "expectation_value": round(raw_exp, 4),
             "entanglement_interactions": entanglement_matrix,
+            "bloch_vectors": bloch_vectors,
+            "von_neumann_entropy": round(float(-raw_exp * np.log(abs(raw_exp) + 1e-6)), 3),
             "quantum_confidence": round(0.85 + (quantum_score / 1000.0), 3),
             "state_description": "Hilbert Space Angle-Embedded Superposition State"
         }

@@ -30,16 +30,10 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      initSocket();
-    }
-  }, [initSocket, isAuthenticated]);
-
-  useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!isResizing.current) return;
       const newWidth = window.innerWidth - e.clientX;
-      if (newWidth >= 180 && newWidth <= 650) {
+      if (newWidth >= 240 && newWidth <= 520) {
         setSidebarWidth(newWidth);
       }
     };
@@ -54,6 +48,55 @@ export function App() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      initSocket();
+    }
+  }, [initSocket, isAuthenticated]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if typing in an input, textarea, or contentEditable
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) {
+        return;
+      }
+
+      const store = useSimulationStore.getState();
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (store.simulationStatus === "RUNNING") {
+          store.pauseSimulation();
+        } else {
+          store.startSimulation();
+        }
+      } else if (e.key === ".") {
+        e.preventDefault();
+        store.stepSimulation();
+      } else if (e.key === "d" || e.key === "D") {
+        e.preventDefault();
+        store.setIsDashboardOpen(!store.isDashboardOpen);
+      } else if (e.key === "c" || e.key === "C") {
+        e.preventDefault();
+        store.setIsCampaignModalOpen(!store.isCampaignModalOpen);
+      } else if (e.key === "1") {
+        store.setSpeed(1.0);
+      } else if (e.key === "2") {
+        store.setSpeed(2.0);
+      } else if (e.key === "5") {
+        store.setSpeed(5.0);
+      } else if (e.key === "Escape") {
+        store.setIsCampaignModalOpen(false);
+        store.setIsDashboardOpen(false);
+        store.setSelectedAgentId(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   if (!isAuthenticated) {

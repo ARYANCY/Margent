@@ -88,7 +88,7 @@ class GroqService:
                     "- urgency_score: float (0.0 to 1.0)"
                 )
                 completion = self.client.chat.completions.create(
-                    model=os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b"),
+                    model=os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     temperature=0.2
@@ -149,7 +149,7 @@ class GroqService:
                     "target_appeal (string), sample_critique (string)."
                 )
                 completion = self.client.chat.completions.create(
-                    model=os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b"),
+                    model=os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     temperature=0.4
@@ -161,7 +161,7 @@ class GroqService:
                     "sentiment_score": float(res.get("sentiment_score", 0.72)),
                     "target_appeal": str(res.get("target_appeal", "Tech Creators & Trendsetters")),
                     "critique": str(res.get("sample_critique", "Strong visual hook with clear trend-aligned positioning.")),
-                    "model_used": "groq/openai/gpt-oss-120b"
+                    "model_used": "groq/llama-3.3-70b-versatile"
                 }
             except Exception as e:
                 print(f"Groq API live call fallback: {e}")
@@ -209,7 +209,7 @@ class GroqService:
                     f"3. recommended_actions: An array of 3 actionable, specific marketing optimization steps."
                 )
                 completion = self.client.chat.completions.create(
-                    model=os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b"),
+                    model=os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     temperature=0.6
@@ -238,5 +238,67 @@ class GroqService:
                 f"Monitor PyTrends search momentum to adjust keyword targeting parameters dynamically."
             ]
         }
+
+    def generate_creative_variants(self, product_or_topic: str, target_audience: str, channel: str) -> List[Dict[str, Any]]:
+        """
+        Generates 4 demographic-tailored marketing hooks (Direct-Response, Viral Gen-Z, Analytical, Urgency)
+        """
+        if self.client:
+            try:
+                prompt = (
+                    f"You are an elite creative director for performance marketing.\n"
+                    f"Product/Topic: {product_or_topic}\n"
+                    f"Target Audience: {target_audience}\n"
+                    f"Channel: {channel}\n\n"
+                    "Generate exactly 4 distinct copywriting variants in JSON with a 'variants' array containing objects with:\n"
+                    "- angle: string ('Direct-Response Problem/Agitation', 'Viral Gen-Z Cultural Hook', 'Data-Driven Analytical Proof', 'High-Urgency Early Access')\n"
+                    "- hook: string (the opening 1-2 sentence hook)\n"
+                    "- body: string (supporting 1-2 sentences with CTA)\n"
+                    "- suggested_tags: list of strings (e.g. ['#AI', '#Marketing'])\n"
+                    "- predicted_ctr_boost: string (e.g. '+28%')\n"
+                )
+                completion = self.client.chat.completions.create(
+                    model=os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                    messages=[{"role": "user", "content": prompt}],
+                    response_format={"type": "json_object"},
+                    temperature=0.75
+                )
+                res = json.loads(completion.choices[0].message.content)
+                if "variants" in res and isinstance(res["variants"], list):
+                    return res["variants"]
+            except Exception as e:
+                print(f"Groq API variant generation fallback: {e}")
+
+        # Deterministic rich fallback
+        return [
+            {
+                "angle": "Direct-Response Problem/Agitation",
+                "hook": f"Stop burning ad budget on guesswork. Let 101 AI agents stress-test your campaign before you spend $1.",
+                "body": f"Margent predicts exact cross-channel ROAS and viral momentum in seconds. Test your first campaign now.",
+                "suggested_tags": ["#AdOptimization", "#MarketingROI", "#GrowthHack"],
+                "predicted_ctr_boost": "+32%"
+            },
+            {
+                "angle": "Viral Gen-Z Cultural Hook",
+                "hook": f"POV: You replaced 10 ad agency dashboards with one quantum AI consensus engine.",
+                "body": f"The algorithm just scaled our ROAS by 4.2x. Link in bio to see how it works. #QML #AgenticAI",
+                "suggested_tags": ["#TechTok", "#AgenticAI", "#FutureOfTech"],
+                "predicted_ctr_boost": "+45%"
+            },
+            {
+                "angle": "Data-Driven Analytical Proof",
+                "hook": f"Empirical proof: 4-qubit Hilbert space entanglement predicts campaign CTR with 91% consensus confidence.",
+                "body": f"Fusing GradientBoosting with Google PyTrends signals for mathematically verified scaling decisions.",
+                "suggested_tags": ["#DataScience", "#MachineLearning", "#QuantumAI"],
+                "predicted_ctr_boost": "+24%"
+            },
+            {
+                "angle": "High-Urgency Early Access",
+                "hook": f"Warning: Ad costs on {channel} are surging. Lock in your AI-optimized keyword bids before competitors catch up.",
+                "body": f"Deploy autonomous Bayesian marketing workflows today.",
+                "suggested_tags": ["#EarlyAccess", "#CompetitiveAdvantage", "#ScaleFast"],
+                "predicted_ctr_boost": "+38%"
+            }
+        ]
 
 groq_service = GroqService()

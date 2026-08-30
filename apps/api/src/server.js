@@ -78,6 +78,31 @@ io.on("connection", (socket) => {
             explorationPct: 20
         }
     });
+    // Simulation control listeners from WebSocket clients
+    socket.on("simulation:start", () => {
+        console.log(`[Socket.IO] simulation:start received from ${socket.id}`);
+        simulationScheduler_1.simulationScheduler.start();
+    });
+    socket.on("simulation:pause", () => {
+        console.log(`[Socket.IO] simulation:pause received from ${socket.id}`);
+        simulationScheduler_1.simulationScheduler.pause();
+    });
+    socket.on("simulation:stop", () => {
+        console.log(`[Socket.IO] simulation:stop received from ${socket.id}`);
+        simulationScheduler_1.simulationScheduler.stop();
+    });
+    socket.on("simulation:step", async () => {
+        console.log(`[Socket.IO] simulation:step received from ${socket.id}`);
+        await simulationScheduler_1.simulationScheduler.step();
+    });
+    socket.on("simulation:speed", ({ speed }) => {
+        console.log(`[Socket.IO] simulation:speed received: ${speed}x from ${socket.id}`);
+        simulationScheduler_1.simulationScheduler.setSpeed(Number(speed));
+    });
+    socket.on("campaign:post", async (campaign) => {
+        console.log(`[Socket.IO] campaign:post received from ${socket.id}`);
+        await simulationScheduler_1.simulationScheduler.triggerCampaignPost(campaign);
+    });
     socket.on("disconnect", () => {
         console.log(`[Socket.IO] Client disconnected: ${socket.id}`);
     });

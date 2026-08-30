@@ -162,34 +162,77 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
   setIsCampaignModalOpen: (open) => set({ isCampaignModalOpen: open }),
 
   startSimulation: () => {
-    const { socket } = get();
+    const { socket, agents } = get();
+    const apiUrl = (import.meta as any).env?.VITE_API_URL || (typeof window !== "undefined" ? `${window.location.protocol}//${window.location.hostname}:4000` : "http://localhost:4000");
+
     if (socket) {
       socket.emit("simulation:start");
-      set({ simulationStatus: "RUNNING" });
     }
+    // Also dispatch HTTP trigger
+    fetch(`${apiUrl}/api/simulation/start`, { method: "POST" }).catch(() => {});
+
+    // Activate initial sample of nodes immediately for instantaneous visual feedback
+    const agentIds = Object.keys(agents);
+    const mlSample = agentIds.filter(id => id.startsWith("ml_")).slice(0, 3);
+    const pytrendSample = agentIds.filter(id => id.startsWith("pytrend_")).slice(0, 3);
+    const groqSample = agentIds.filter(id => id.startsWith("groq_")).slice(0, 3);
+    const qmlSample = agentIds.filter(id => id.startsWith("qml_")).slice(0, 2);
+
+    set({
+      simulationStatus: "RUNNING",
+      activeAgentIds: [...mlSample, ...pytrendSample, ...groqSample, ...qmlSample, "admin_001"]
+    });
   },
 
   pauseSimulation: () => {
     const { socket } = get();
+    const apiUrl = (import.meta as any).env?.VITE_API_URL || (typeof window !== "undefined" ? `${window.location.protocol}//${window.location.hostname}:4000` : "http://localhost:4000");
+
     if (socket) {
       socket.emit("simulation:pause");
-      set({ simulationStatus: "PAUSED" });
     }
+    fetch(`${apiUrl}/api/simulation/pause`, { method: "POST" }).catch(() => {});
+
+    set({ simulationStatus: "PAUSED", activeAgentIds: [] });
   },
 
   stepSimulation: () => {
-    const { socket } = get();
+    const { socket, agents, tick } = get();
+    const apiUrl = (import.meta as any).env?.VITE_API_URL || (typeof window !== "undefined" ? `${window.location.protocol}//${window.location.hostname}:4000` : "http://localhost:4000");
+
     if (socket) {
       socket.emit("simulation:step");
     }
+    fetch(`${apiUrl}/api/simulation/step`, { method: "POST" }).catch(() => {});
+
+    // Rotate active representative nodes for immediate step animation
+    const agentIds = Object.keys(agents);
+    const pickSample = (arr: string[], n: number) => [...arr].sort(() => 0.5 - Math.random()).slice(0, n);
+    const mlSample = pickSample(agentIds.filter(id => id.startsWith("ml_")), 3);
+    const pytrendSample = pickSample(agentIds.filter(id => id.startsWith("pytrend_")), 3);
+    const groqSample = pickSample(agentIds.filter(id => id.startsWith("groq_")), 3);
+    const qmlSample = pickSample(agentIds.filter(id => id.startsWith("qml_")), 2);
+
+    set({
+      tick: tick + 1,
+      activeAgentIds: [...mlSample, ...pytrendSample, ...groqSample, ...qmlSample, "admin_001"]
+    });
   },
 
   setSpeed: (speed) => {
     const { socket } = get();
+    const apiUrl = (import.meta as any).env?.VITE_API_URL || (typeof window !== "undefined" ? `${window.location.protocol}//${window.location.hostname}:4000` : "http://localhost:4000");
+
     if (socket) {
       socket.emit("simulation:speed", { speed });
-      set({ speed });
     }
+    fetch(`${apiUrl}/api/simulation/speed`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ speed })
+    }).catch(() => {});
+
+    set({ speed });
   },
 
   setExplorationRatio: (explorationPct) => {

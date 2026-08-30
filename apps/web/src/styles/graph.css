@@ -34,52 +34,58 @@
 /* Flowing Data Stream Animation */
 @keyframes flowDash {
   0% {
-    stroke-dashoffset: 24;
+    stroke-dashoffset: 32;
   }
   100% {
     stroke-dashoffset: 0;
   }
 }
 
-@keyframes subtlePulse {
+@keyframes glowPulse {
   0%, 100% {
-    opacity: 0.85;
-    filter: drop-shadow(0 0 1px rgba(15, 23, 42, 0.1));
+    filter: drop-shadow(0 0 2px rgba(15, 23, 42, 0.2));
   }
   50% {
-    opacity: 1;
-    filter: drop-shadow(0 0 4px rgba(2, 132, 199, 0.3));
+    filter: drop-shadow(0 0 6px currentColor);
   }
 }
 
 .react-flow__edge.animated path {
-  stroke-dasharray: 6 6;
-  animation: flowDash 0.8s linear infinite;
+  stroke-dasharray: 8 6;
+  animation: flowDash 0.6s linear infinite;
   stroke-linecap: round;
 }
 
-.edge-active-ml {
-  stroke: var(--pipeline-ml) !important;
-  stroke-dasharray: 6 4;
-  animation: flowDash 0.75s linear infinite;
+.edge-active-ml path {
+  stroke: #0284C7 !important;
+  stroke-width: 2.8px !important;
+  stroke-dasharray: 8 6;
+  animation: flowDash 0.5s linear infinite;
+  filter: drop-shadow(0 0 4px rgba(2, 132, 199, 0.6));
 }
 
-.edge-active-pytrend {
-  stroke: var(--pipeline-pytrend) !important;
-  stroke-dasharray: 6 4;
-  animation: flowDash 0.75s linear infinite;
+.edge-active-pytrend path {
+  stroke: #D97706 !important;
+  stroke-width: 2.8px !important;
+  stroke-dasharray: 8 6;
+  animation: flowDash 0.5s linear infinite;
+  filter: drop-shadow(0 0 4px rgba(217, 119, 6, 0.6));
 }
 
-.edge-active-groq {
-  stroke: var(--pipeline-groq) !important;
-  stroke-dasharray: 6 4;
-  animation: flowDash 0.75s linear infinite;
+.edge-active-groq path {
+  stroke: #059669 !important;
+  stroke-width: 2.8px !important;
+  stroke-dasharray: 8 6;
+  animation: flowDash 0.5s linear infinite;
+  filter: drop-shadow(0 0 4px rgba(5, 150, 105, 0.6));
 }
 
-.edge-active-qml {
-  stroke: var(--pipeline-qml) !important;
-  stroke-dasharray: 6 4;
-  animation: flowDash 0.75s linear infinite;
+.edge-active-qml path {
+  stroke: #DB2777 !important;
+  stroke-width: 2.8px !important;
+  stroke-dasharray: 8 6;
+  animation: flowDash 0.5s linear infinite;
+  filter: drop-shadow(0 0 4px rgba(219, 39, 119, 0.6));
 }
 
 /* Neural Web Mesh Strands & Synaptic Bridge Lines */
@@ -92,20 +98,20 @@
 }
 
 .edge-web-strand:hover path {
-  opacity: 0.8;
+  opacity: 0.85;
   stroke: #475569 !important;
   stroke-width: 1.5px !important;
 }
 
 .edge-web-bridge path {
   stroke: #64748B !important;
-  stroke-width: 1.2px !important;
+  stroke-width: 1.5px !important;
   stroke-dasharray: 6 3;
-  opacity: 0.45;
-  animation: flowDash 3s linear infinite;
+  opacity: 0.55;
+  animation: flowDash 2.5s linear infinite;
 }
 
 .edge-web-bridge:hover path {
-  opacity: 0.9;
+  opacity: 0.95;
   stroke: #0F172A !important;
 }

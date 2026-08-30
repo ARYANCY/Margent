@@ -18,11 +18,15 @@ export default defineConfig({
     }
   },
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@shared': path.resolve(__dirname, '../../packages/shared/src'),
-      '@agents': path.resolve(__dirname, '../../packages/agents/src'),
-      '@graph': path.resolve(__dirname, '../../packages/graph/src')
-    }
+    alias: [
+      { find: /^d3-(.*)$/, replacement: path.resolve(__dirname, 'node_modules/d3-$1/dist/d3-$1.js') },
+      { find: /^@\/(.*)$/, replacement: path.resolve(__dirname, 'src/$1') },
+      { find: /^@shared\/(.*)$/, replacement: path.resolve(__dirname, '../../packages/shared/src/$1') },
+      { find: /^@shared$/, replacement: path.resolve(__dirname, '../../packages/shared/src/index.ts') },
+      { find: /^@agents\/(.*)$/, replacement: path.resolve(__dirname, '../../packages/agents/src/$1') },
+      { find: /^@agents$/, replacement: path.resolve(__dirname, '../../packages/agents/src/index.ts') },
+      { find: /^@graph\/(.*)$/, replacement: path.resolve(__dirname, '../../packages/graph/src/$1') },
+      { find: /^@graph$/, replacement: path.resolve(__dirname, '../../packages/graph/src/index.ts') }
+    ]
   }
 });

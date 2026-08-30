@@ -16,7 +16,7 @@ export async function executeMarketingNode(
     eventId: `evt_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
     timestamp: Date.now(),
     source: agent.agentId,
-    target: "content_001",
+    target: "admin_001",
     type: "ALLOCATION_CHANGED",
     payload: {
       action: "CHANNEL_ALLOCATION_UPDATED",
@@ -45,7 +45,7 @@ export async function executeContentNode(
     eventId: `evt_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
     timestamp: Date.now(),
     source: agent.agentId,
-    target: "customer_001",
+    target: "admin_001",
     type: "GROQ_CRITIQUE",
     payload: {
       action: "CONTENT_HOOK_GENERATED",
@@ -73,7 +73,7 @@ export async function executeTrendNode(
     eventId: `evt_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
     timestamp: Date.now(),
     source: agent.agentId,
-    target: "strategy_001",
+    target: "admin_001",
     type: "PYTREND_SPIKE",
     payload: {
       trendId: trend.trendId,

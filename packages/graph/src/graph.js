@@ -67,6 +67,7 @@ class SimulationGraphEngine {
             const resp = await fetch(`${mlUrl}/ensemble/predict`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                signal: AbortSignal.timeout(4000),
                 body: JSON.stringify({
                     spend: cleanedData.cleanedSpend,
                     impressions: activeCampaign.impressions,
