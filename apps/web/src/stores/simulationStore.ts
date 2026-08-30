@@ -42,8 +42,11 @@ interface SimulationStore {
   startSimulation: () => void;
   pauseSimulation: () => void;
   stepSimulation: () => void;
+  setView: (view: "home" | "campaigns" | "manage-agents" | "dashboard") => void;
+  currentView: "home" | "campaigns" | "manage-agents" | "dashboard";
   setSpeed: (speed: number) => void;
   setExplorationRatio: (explorationPct: number) => void;
+  loadInitialData: () => Promise<void>;
 }
 
 export const useSimulationStore = create<SimulationStore>((set, get) => ({
@@ -74,7 +77,8 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
     exploitationPct: 80,
     explorationPct: 20
   },
-
+  currentView: "home",
+  setView: (view) => set({ currentView: view }),
   initSocket: () => {
     if (get().socket) return;
     
@@ -237,5 +241,37 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
         exploitationPct: 100 - expl
       }
     }));
+  },
+
+  loadInitialData: async () => {
+    const apiUrl = (import.meta as any).env?.VITE_API_URL || (typeof window !== "undefined" ? `${window.location.protocol}//${window.location.hostname}:4000` : "http://localhost:4000");
+    try {
+      // 1. Fetch campaigns
+      const campRes = await fetch(`${apiUrl}/api/campaigns`);
+      if (campRes.ok) {
+        const camps = await campRes.json();
+        set({ campaigns: camps });
+      }
+
+      // 2. Fetch trends
+      const trendRes = await fetch(`${apiUrl}/api/trends`);
+      if (trendRes.ok) {
+        const trs = await trendRes.json();
+        set({ trends: trs });
+      }
+
+      // 3. Fetch agents
+      const agentRes = await fetch(`${apiUrl}/api/agents`);
+      if (agentRes.ok) {
+        const agentsList = await agentRes.json();
+        const map: Record<string, AgentProfile> = {};
+        agentsList.forEach((a: any) => {
+          map[a.agentId] = a;
+        });
+        set({ agents: map });
+      }
+    } catch (e) {
+      console.error("Failed to load initial REST data", e);
+    }
   }
 }));

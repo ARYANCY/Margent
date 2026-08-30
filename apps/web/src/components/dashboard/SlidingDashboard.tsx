@@ -53,6 +53,7 @@ export const SlidingDashboard: React.FC = () => {
   const trends = useSimulationStore((s) => s.trends);
   const events = useSimulationStore((s) => s.events);
   const agents = useSimulationStore((s) => s.agents);
+  const currentView = useSimulationStore((s) => s.currentView);
 
   const drawerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -67,6 +68,11 @@ export const SlidingDashboard: React.FC = () => {
 
   useEffect(() => {
     if (!drawerRef.current) return;
+
+    if (currentView === "dashboard") {
+      gsap.set(drawerRef.current, { x: "0%" });
+      return;
+    }
 
     if (isOpen) {
       gsap.to(drawerRef.current, {
@@ -89,7 +95,7 @@ export const SlidingDashboard: React.FC = () => {
         ease: "power3.in"
       });
     }
-  }, [isOpen]);
+  }, [isOpen, currentView]);
 
   useEffect(() => {
     if (tabViewRef.current) {
@@ -343,9 +349,13 @@ ${(adminAnalysis?.recommendedActions || [
   return (
     <div
       ref={drawerRef}
-      style={{ transform: "translateX(100%)" }}
-      className={`fixed top-0 right-0 h-full z-50 bg-white border-l border-slate-300 shadow-2xl flex flex-col transition-all duration-300 select-none ${
-        isFullScreen ? "w-full" : "w-[680px] max-w-[96vw]"
+      style={currentView === "dashboard" ? {} : { transform: "translateX(100%)" }}
+      className={`select-none flex flex-col bg-white ${
+        currentView === "dashboard"
+          ? "w-full h-full relative border-none shadow-none z-10"
+          : `fixed top-0 right-0 h-full z-50 border-l border-slate-300 shadow-2xl transition-all duration-300 ${
+              isFullScreen ? "w-full" : "w-[680px] max-w-[96vw]"
+            }`
       }`}
     >
       {/* Top Header */}
@@ -384,7 +394,7 @@ ${(adminAnalysis?.recommendedActions || [
             {isFullScreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={() => currentView === "dashboard" ? useSimulationStore.getState().setView("home") : setIsOpen(false)}
             className="p-1 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 transition"
           >
             <X className="w-3.5 h-3.5" />

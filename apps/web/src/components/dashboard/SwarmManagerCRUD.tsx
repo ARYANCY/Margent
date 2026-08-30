@@ -15,6 +15,11 @@ export const SwarmManagerCRUD: React.FC = () => {
   const trends = useSimulationStore((s) => s.trends);
   const campaigns = useSimulationStore((s) => s.campaigns);
   const socket = useSimulationStore((s) => s.socket);
+  const loadInitialData = useSimulationStore((s) => s.loadInitialData);
+
+  useEffect(() => {
+    loadInitialData();
+  }, [loadInitialData]);
 
   // Forms states
   const [agentForm, setAgentForm] = useState({
@@ -43,6 +48,7 @@ export const SwarmManagerCRUD: React.FC = () => {
 
   // Trigger refetch / refresh to sync store
   const triggerRefresh = () => {
+    loadInitialData();
     if (socket) {
       // Re-emit start / step / fetch to trigger websocket sync
       socket.emit("simulation:state");

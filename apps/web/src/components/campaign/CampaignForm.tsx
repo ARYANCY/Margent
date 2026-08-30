@@ -26,6 +26,7 @@ interface CampaignFormProps {
 
 export const CampaignForm: React.FC<CampaignFormProps> = ({ onClose }) => {
   const setIsDashboardOpen = useSimulationStore((s) => s.setIsDashboardOpen);
+  const loadInitialData = useSimulationStore((s) => s.loadInitialData);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<"basics" | "creative" | "economics">("basics");
 
@@ -284,6 +285,7 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({ onClose }) => {
       });
 
       if (!res.ok) throw new Error("Failed to post campaign");
+      await loadInitialData();
       onClose();
       setTimeout(() => {
         setIsDashboardOpen(true);
