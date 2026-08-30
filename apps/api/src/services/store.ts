@@ -40,8 +40,10 @@ export class DataStore {
   public events: AgentEvent[] = [];
   public adminAnalyses: AdminAnalysis[] = [];
 
+  public isReady: Promise<void>;
+
   constructor() {
-    this.initializeData();
+    this.isReady = this.initializeData();
   }
 
   private async initializeData() {

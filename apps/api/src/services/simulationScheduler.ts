@@ -13,16 +13,28 @@ export class SimulationScheduler {
   private isTickLocked: boolean = false;
 
   constructor() {
-    const initialState = createInitialSimulationState(
-      dataStore.agents,
-      dataStore.trends,
-      dataStore.campaigns
-    );
+    const initialState = createInitialSimulationState([], [], []);
     this.engine = new SimulationGraphEngine(initialState);
     this.engine.setCallbacks(
       (event: AgentEvent) => this.handleEvent(event),
       (state) => this.handleStateUpdate(state)
     );
+
+    // Dynamic sync once database is connected and seeded
+    dataStore.isReady.then(() => {
+      console.log("[SimulationScheduler] PostgreSQL is ready. Synchronizing simulation engine state...");
+      const loadedState = createInitialSimulationState(
+        dataStore.agents,
+        dataStore.trends,
+        dataStore.campaigns
+      );
+      this.engine = new SimulationGraphEngine(loadedState);
+      this.engine.setCallbacks(
+        (event: AgentEvent) => this.handleEvent(event),
+        (state) => this.handleStateUpdate(state)
+      );
+      this.handleStateUpdate(loadedState);
+    });
   }
 
   setIO(io: SocketIOServer) {

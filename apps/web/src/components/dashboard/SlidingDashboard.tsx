@@ -43,6 +43,7 @@ import {
 } from "recharts";
 import { BlochSphereVisualizer } from "../quantum/BlochSphereVisualizer";
 import { MonteCarloSandbox } from "./MonteCarloSandbox";
+import { SwarmManagerCRUD } from "./SwarmManagerCRUD";
 
 export const SlidingDashboard: React.FC = () => {
   const isOpen = useSimulationStore((s) => s.isDashboardOpen);
@@ -58,7 +59,7 @@ export const SlidingDashboard: React.FC = () => {
   const tabViewRef = useRef<HTMLDivElement>(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [approvalStatus, setApprovalStatus] = useState<"PENDING" | "APPROVED" | "REJECTED">("PENDING");
-  const [dashboardTab, setDashboardTab] = useState<"overview" | "nodes101" | "montecarlo" | "quantum" | "persona">("overview");
+  const [dashboardTab, setDashboardTab] = useState<"overview" | "nodes101" | "montecarlo" | "quantum" | "persona" | "crud">("overview");
   const [nodeFilter, setNodeFilter] = useState<"ALL" | "ML" | "PYTREND" | "GROQ" | "QML" | "ADMIN">("ALL");
   const [nodeSearch, setNodeSearch] = useState("");
   const [isPersonaChatOpen, setIsPersonaChatOpen] = useState(false);
@@ -447,6 +448,17 @@ ${(adminAnalysis?.recommendedActions || [
         >
           <MessageSquare className="w-3 h-3 text-emerald-600" />
           <span>Groq Persona</span>
+        </button>
+        <button
+          onClick={() => setDashboardTab("crud")}
+          className={`py-2.5 px-3 font-bold uppercase transition border-b-2 shrink-0 flex items-center gap-1.5 ${
+            dashboardTab === "crud"
+              ? "border-slate-900 text-slate-900 bg-white"
+              : "border-transparent text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          <Sliders className="w-3 h-3 text-indigo-600" />
+          <span>Swarm CRUD</span>
         </button>
       </div>
 
@@ -1014,6 +1026,10 @@ ${(adminAnalysis?.recommendedActions || [
               })
             )}
           </div>
+        )}
+
+        {dashboardTab === "crud" && (
+          <SwarmManagerCRUD />
         )}
         </div>
       </div>
