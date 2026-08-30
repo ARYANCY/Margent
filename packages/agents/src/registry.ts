@@ -65,27 +65,44 @@ export function generateAgentRegistry(): AgentProfile[] {
     });
   }
 
-  // 3. 30 Groq / LLM Qualitative Reasoning Agents (guide.md Sec 3 - RecommenderAgent)
+  // 3. 30 Groq / LLM Qualitative Reasoning Agents (80% For Advocates / 20% Against Skeptics)
+  const groqProponentPersonas = [
+    "Gen Z Digital Native & Early Adopter",
+    "Direct-Response Growth Strategist",
+    "Viral Creator & Trendsetter",
+    "High-Intent Enterprise Buyer",
+    "Impulse Shopper & Lifestyle Enthusiast",
+    "Brand Loyalty & Community Champion"
+  ];
+  const groqSkepticPersonas = [
+    "Skeptical Enterprise Procurement Officer (ROI Doubts)",
+    "Budget-Conscious Pragmatist (Price Resistance)",
+    "Ad-Fatigued Cynical Consumer (Attention Decay)",
+    "Risk-Averse Media Director (CPA Spike Concerns)",
+    "Privacy & Security Auditor (Compliance Scrutiny)",
+    "Competitor Loyalty Loyalist (High Switching Cost)"
+  ];
+
   for (let i = 1; i <= AGENT_DISTRIBUTION.groq; i++) {
     const id = `groq_${String(i).padStart(3, "0")}`;
-    const persona =
-      i <= 10
-        ? "Gen Z Early Adopter Persona"
-        : i <= 20
-        ? "Direct-Response Creative Strategist"
-        : "Brand Affinity & Sentiment Evaluator";
+    const isSkeptic = i > 24; // 80% For (1-24), 20% Against (25-30)
+    const persona = isSkeptic
+      ? groqSkepticPersonas[(i - 25) % groqSkepticPersonas.length]
+      : groqProponentPersonas[(i - 1) % groqProponentPersonas.length];
 
     agents.push({
       agentId: id,
       name: `RecommenderAgent #${i}`,
       type: "groq",
       pipelineGroup: "GROQ_LLM",
-      roleDescription: `Evaluates ad copy hooks, demographic resonance, and produces concrete next-step recommendations (${persona}).`,
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${id}&backgroundColor=10b981`,
+      roleDescription: isSkeptic
+        ? `Devil's Advocate & Scrutiny Persona: Identifies friction, price resistance, and conversion barriers (${persona}).`
+        : `Constructive Growth Persona: Evaluates ad copy hooks, emotional affinity, and viral appeal (${persona}).`,
+      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${id}&backgroundColor=${isSkeptic ? "ef4444" : "10b981"}`,
       status: "IDLE",
-      sentiment: 0.35,
-      engagementScore: 90,
-      specialization: `RecommenderAgent (${persona})`,
+      sentiment: isSkeptic ? -0.35 : 0.65,
+      engagementScore: isSkeptic ? 72 : 92,
+      specialization: persona,
       modelType: "groq/llama-3.3-70b-versatile"
     });
   }

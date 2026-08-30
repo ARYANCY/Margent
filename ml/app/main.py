@@ -143,6 +143,22 @@ def generate_variants(payload: Dict[str, Any] = Body(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/groq/chat-persona")
+def chat_persona(payload: Dict[str, Any] = Body(...)):
+    try:
+        persona = payload.get("persona", "Gen Z Early Adopter Persona")
+        stance = payload.get("stance", "FOR (Constructive Champion)")
+        campaign_context = payload.get("campaignContext", {})
+        messages = payload.get("messages", [])
+        response_text = groq_service.chat_with_persona(persona, stance, campaign_context, messages)
+        return {
+            "persona": persona,
+            "stance": stance,
+            "reply": response_text
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -70,3 +70,44 @@ simulationRouter.post("/monte-carlo", async (req, res) => {
   }
 });
 
+simulationRouter.post("/persona/chat", async (req, res) => {
+  const mlUrl = process.env.ML_SERVICE_URL || "http://127.0.0.1:8000";
+  try {
+    const response = await fetch(`${mlUrl}/groq/chat-persona`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(req.body),
+      signal: AbortSignal.timeout(6000)
+    });
+    if (!response.ok) throw new Error(`ML status ${response.status}`);
+    const data = await response.json();
+    return res.json(data);
+  } catch (err) {
+    const persona = req.body.persona || "Gen Z Early Adopter Persona";
+    const stance = req.body.stance || "FOR (Constructive Champion)";
+    const messages = req.body.messages || [];
+    const lastUserMsg = messages.length > 0 ? messages[messages.length - 1].content.toLowerCase() : "";
+
+    let reply = "";
+    if (stance.includes("AGAINST") || stance.includes("Skeptic")) {
+      if (lastUserMsg.includes("price") || lastUserMsg.includes("cost")) {
+        reply = `As a ${persona}, the upfront price makes me hesitate without a verified money-back guarantee. Offer a 14-day risk-free trial and I'll consider testing it.`;
+      } else if (lastUserMsg.includes("hook") || lastUserMsg.includes("copy")) {
+        reply = `The opening 2 seconds feel too wordy. Cut the corporate buzzwords and show the actual software workflow immediately.`;
+      } else {
+        reply = `From my perspective as a ${persona}, I need concrete social proof and third-party customer reviews before I trust this ad on this channel.`;
+      }
+    } else {
+      if (lastUserMsg.includes("hook") || lastUserMsg.includes("copy")) {
+        reply = `I love the hook! It addresses the core pain point immediately. Test adding a fast-paced UGC creator video format to boost CTR even further!`;
+      } else if (lastUserMsg.includes("buy") || lastUserMsg.includes("convert")) {
+        reply = `A limited-time early-bird bonus or 1-click checkout link in the caption would convert me right away!`;
+      } else {
+        reply = `As a ${persona}, this ad really resonates with what I'm looking for right now. The trend alignment is high!`;
+      }
+    }
+
+    return res.json({ persona, stance, reply });
+  }
+});
+

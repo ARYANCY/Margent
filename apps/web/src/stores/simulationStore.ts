@@ -171,16 +171,13 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
     // Also dispatch HTTP trigger
     fetch(`${apiUrl}/api/simulation/start`, { method: "POST" }).catch(() => {});
 
-    // Activate initial sample of nodes immediately for instantaneous visual feedback
+    // Activate all 101 nodes across the swarm
     const agentIds = Object.keys(agents);
-    const mlSample = agentIds.filter(id => id.startsWith("ml_")).slice(0, 3);
-    const pytrendSample = agentIds.filter(id => id.startsWith("pytrend_")).slice(0, 3);
-    const groqSample = agentIds.filter(id => id.startsWith("groq_")).slice(0, 3);
-    const qmlSample = agentIds.filter(id => id.startsWith("qml_")).slice(0, 2);
+    const allSwarmIds = agentIds.length > 0 ? agentIds : ["admin_001"];
 
     set({
       simulationStatus: "RUNNING",
-      activeAgentIds: [...mlSample, ...pytrendSample, ...groqSample, ...qmlSample, "admin_001"]
+      activeAgentIds: allSwarmIds
     });
   },
 
@@ -205,17 +202,13 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
     }
     fetch(`${apiUrl}/api/simulation/step`, { method: "POST" }).catch(() => {});
 
-    // Rotate active representative nodes for immediate step animation
+    // Activate all 101 swarm nodes on discrete step
     const agentIds = Object.keys(agents);
-    const pickSample = (arr: string[], n: number) => [...arr].sort(() => 0.5 - Math.random()).slice(0, n);
-    const mlSample = pickSample(agentIds.filter(id => id.startsWith("ml_")), 3);
-    const pytrendSample = pickSample(agentIds.filter(id => id.startsWith("pytrend_")), 3);
-    const groqSample = pickSample(agentIds.filter(id => id.startsWith("groq_")), 3);
-    const qmlSample = pickSample(agentIds.filter(id => id.startsWith("qml_")), 2);
+    const allSwarmIds = agentIds.length > 0 ? agentIds : ["admin_001"];
 
     set({
       tick: tick + 1,
-      activeAgentIds: [...mlSample, ...pytrendSample, ...groqSample, ...qmlSample, "admin_001"]
+      activeAgentIds: allSwarmIds
     });
   },
 

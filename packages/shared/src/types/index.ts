@@ -135,6 +135,24 @@ export interface EnsembleBreakdown {
   entanglement_matrix?: Array<{ pair: string; entanglement: number }>;
 }
 
+export interface NodeEvaluation {
+  nodeId: string;
+  name: string;
+  type: "ml" | "pytrend" | "groq" | "qml" | "admin";
+  pipelineName: string;
+  modelArchitecture: string;
+  inputsEvaluated: string;
+  outputMetric: string;
+  marketingTakeaway: string;
+  strategicAction: string;
+  confidenceGrade: string;
+  concreteResult: string;
+  status: AgentStatus;
+  sentiment?: number;
+  confidence?: number;
+  rawTelemetryJson?: Record<string, any>;
+}
+
 export interface AdminAnalysis {
   decision: "SCALE" | "MAINTAIN" | "INVESTIGATE" | "STOP" | "EXPERIMENT" | "REDUCE";
   confidence: number;
@@ -143,6 +161,7 @@ export interface AdminAnalysis {
   evidence: string[];
   recommendedActions?: string[];
   ensembleBreakdown: EnsembleBreakdown;
+  nodeEvaluations?: NodeEvaluation[];
   activeAgentsCount: number;
   timestamp: string;
 }

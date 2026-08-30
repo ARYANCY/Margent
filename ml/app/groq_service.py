@@ -301,4 +301,63 @@ class GroqService:
             }
         ]
 
+    def chat_with_persona(self, persona: str, stance: str, campaign_context: Dict[str, Any], message_history: List[Dict[str, str]]) -> str:
+        """
+        Real-time conversational chat with a specific demographic/psychographic persona (80% For or 20% Against).
+        """
+        c_name = campaign_context.get("campaignName", "Autonomous AI Marketing")
+        c_caption = campaign_context.get("caption", "Stop burning ad budget on guesswork.")
+        c_channel = campaign_context.get("channel", "Instagram")
+        c_spend = campaign_context.get("spend", 1800)
+        c_audience = campaign_context.get("audience", "Gen Z & Tech Enthusiasts")
+
+        system_instruction = (
+            f"You are roleplaying as an authentic target audience persona: '{persona}'.\n"
+            f"Your stance on this marketing campaign is: {stance}.\n"
+            f"Campaign Context:\n"
+            f"- Campaign: {c_name}\n"
+            f"- Ad Copy: \"{c_caption}\"\n"
+            f"- Channel: {c_channel}\n"
+            f"- Budget: ${c_spend}\n"
+            f"- Target Audience: {c_audience}\n\n"
+            f"Guidelines:\n"
+            f"1. Stay 100% in-character as '{persona}'. Use natural, conversational vocabulary fitting your demographic.\n"
+            f"2. If your stance is 'FOR (Constructive Champion)', be enthusiastic, explain why the hook resonates with you, and suggest ideas to make it even more viral.\n"
+            f"3. If your stance is 'AGAINST (Devil's Advocate)', be candidly skeptical, point out price resistance, trust doubts, or awkward phrasing, and tell the marketer what proof or changes would change your mind.\n"
+            f"4. Keep your answer focused, insightful, and under 3-4 sentences."
+        )
+
+        if self.client:
+            try:
+                groq_messages = [{"role": "system", "content": system_instruction}]
+                for m in message_history[-6:]:
+                    groq_messages.append({"role": m.get("role", "user"), "content": m.get("content", "")})
+
+                completion = self.client.chat.completions.create(
+                    model=os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                    messages=groq_messages,
+                    temperature=0.7,
+                    max_tokens=250
+                )
+                return completion.choices[0].message.content.strip()
+            except Exception as e:
+                print(f"Groq Persona Chat live call fallback: {e}")
+
+        # Deterministic conversational fallback
+        user_msg = message_history[-1]["content"].lower() if message_history else ""
+        if "against" in stance.lower() or "skeptic" in stance.lower():
+            if "price" in user_msg or "cost" in user_msg:
+                return f"Honestly, as a {persona}, the upfront cost makes me hesitate. If you offered a 14-day risk-free trial or a transparent ROI calculator on the landing page, I'd feel a lot safer converting."
+            elif "hook" in user_msg or "copy" in user_msg:
+                return f"The opening caption '{c_caption[:30]}...' feels a bit too buzzword-heavy. I want to see the immediate before/after outcome in the first 2 seconds, not generic marketing jargon."
+            else:
+                return f"From my perspective as a {persona}, I need to see verified proof or third-party case studies before I trust this claim on {c_channel}. Give me social proof!"
+        else:
+            if "hook" in user_msg or "copy" in user_msg:
+                return f"I love how crisp the copy is! '{c_caption[:35]}...' hits right at the core problem. Maybe add a fast-paced UGC screen recording on {c_channel} to double the CTR."
+            elif "convert" in user_msg or "buy" in user_msg:
+                return f"The main thing that would get me to click right now is a 1-click checkout or early-bird bonus discount code in the caption."
+            else:
+                return f"As a {persona}, this ad speaks directly to what I'm looking for on {c_channel}. The trend alignment is spot-on—keep this momentum going!"
+
 groq_service = GroqService()

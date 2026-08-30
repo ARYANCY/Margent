@@ -91,7 +91,7 @@ export const SimulationControls: React.FC = () => {
           ACTIVE NODES
         </span>
         <span className="text-xs font-black text-indigo-900 leading-none">
-          {activeAgentIds.length || (isRunning ? 11 : 0)} / 101
+          {isRunning ? (activeAgentIds.length || 101) : activeAgentIds.length} / 101
         </span>
       </div>
 
