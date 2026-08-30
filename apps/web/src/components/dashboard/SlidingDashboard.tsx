@@ -207,7 +207,7 @@ export const SlidingDashboard: React.FC = () => {
     const liveAgents = Object.values(agents);
     if (liveAgents.length > 0) {
       liveAgents.forEach((a: any) => {
-        let pipelineName = "Classical ML (30 Nodes)";
+        let pipelineName = "ROI Predictor & Anomaly Engine (30 Nodes)";
         let modelArchitecture = a.modelType || "GradientBoostingRegressor (LR=0.05, Trees=100)";
         let inputsEvaluated = `Spend: $${activeCampaign?.spend || 1800} | Channel: '${activeCampaign?.channel || "Instagram"}' | Base CPA: $${activeCampaign?.cpc || 0.30}`;
         let outputMetric = `Predicted ROAS: ${(a.sentiment ? 3.2 + a.sentiment * 0.8 : 3.65).toFixed(2)}x`;
@@ -217,7 +217,7 @@ export const SlidingDashboard: React.FC = () => {
         let concreteResult = a.lastAction || `Validated conversion elasticity and CPA compliance on channel '${activeCampaign?.channel || "Instagram"}'.`;
 
         if (a.type === "pytrend") {
-          pipelineName = "Google PyTrends (30 Nodes)";
+          pipelineName = "Live Search Trend Radar (30 Nodes)";
           modelArchitecture = "PyTrends Real-Time Search Velocity Engine";
           inputsEvaluated = `Query: '${activeCampaign?.hashtags?.[0] || "#AgenticAI"}' | Region: Global`;
           outputMetric = `Search Velocity: ${85 + (Number(a.agentId.split("_")[1] || 1) % 15)}/100`;
@@ -226,7 +226,7 @@ export const SlidingDashboard: React.FC = () => {
           confidenceGrade = "Breakout Signal (RISING)";
           concreteResult = a.lastAction || `Search interest curve indicates high breakout momentum (+88/100 velocity).`;
         } else if (a.type === "groq") {
-          pipelineName = "Groq LLaMA 3.3 (30 Nodes)";
+          pipelineName = "Creative Content Grader (30 Nodes)";
           modelArchitecture = "Groq LLaMA 3.3 70B Versatile Persona Reviewer";
           inputsEvaluated = `Persona: '${a.specialization || "Audience Persona"}' | Copy: "${(activeCampaign?.caption || "Launch").slice(0, 35)}..."`;
           outputMetric = `Hook Score: ${82 + (Number(a.agentId.split("_")[1] || 1) % 16)}/100`;
@@ -235,7 +235,7 @@ export const SlidingDashboard: React.FC = () => {
           confidenceGrade = "Positive Polarity (+0.65)";
           concreteResult = a.lastAction || `Evaluated linguistic persuasion and conversion urgency on target demographic.`;
         } else if (a.type === "qml") {
-          pipelineName = "PennyLane QML (10 Nodes)";
+          pipelineName = "Deep Pattern Linker (10 Nodes)";
           modelArchitecture = "PennyLane 4-Qubit Variational Quantum Circuit (AngleEmbedding)";
           inputsEvaluated = `AngleEmbedding(Spend, CTR, Velocity, Affinity) in Hilbert Space`;
           outputMetric = `Quantum ROAS: 3.88x`;
@@ -244,7 +244,7 @@ export const SlidingDashboard: React.FC = () => {
           confidenceGrade = "Resonance (89.4%)";
           concreteResult = a.lastAction || `Non-linear feature cross-coupling confirms constructive Spend ↔ CTR conversion interference.`;
         } else if (a.type === "admin") {
-          pipelineName = "Master Orchestrator (1 Node)";
+          pipelineName = "Final Verdict Decision Hub (1 Node)";
           modelArchitecture = "Bayesian Multi-Modal Ensemble Aggregator (0.30 ML + 0.30 Trends + 0.30 Groq + 0.10 Rule)";
           inputsEvaluated = `Aggregated 100 Output Vectors from 30 ML + 30 PyTrends + 30 Groq + 10 PennyLane QML worker nodes`;
           outputMetric = `Consensus ROAS: ${adminAnalysis?.simulatedRoas || 3.85}x`;
@@ -1019,11 +1019,13 @@ ${(adminAnalysis?.recommendedActions || [
       </div>
 
       {/* Interactive Real-Time Persona Chat Modal */}
-      <PersonaChatModal
-        isOpen={isPersonaChatOpen}
-        initialPersona={chatInitialPersona}
-        onClose={() => setIsPersonaChatOpen(false)}
-      />
+      {isPersonaChatOpen && (
+        <PersonaChatModal
+          isOpen={isPersonaChatOpen}
+          initialPersona={chatInitialPersona}
+          onClose={() => setIsPersonaChatOpen(false)}
+        />
+      )}
     </div>
   );
 };

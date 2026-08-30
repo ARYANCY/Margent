@@ -23,10 +23,10 @@ export const HeaderBar: React.FC = () => {
 
   const filters = [
     { label: "ALL NODES (101)", role: "ALL" },
-    { label: "30 ML", role: "ML", activeClass: "bg-sky-600 text-white border-sky-600 font-bold" },
-    { label: "30 PYTRENDS", role: "PYTREND", activeClass: "bg-amber-600 text-white border-amber-600 font-bold" },
-    { label: "30 GROQ", role: "GROQ", activeClass: "bg-emerald-600 text-white border-emerald-600 font-bold" },
-    { label: "10 QML", role: "QML", activeClass: "bg-pink-600 text-white border-pink-600 font-bold" }
+    { label: "30 ROI PREDICTORS", role: "ML", activeClass: "bg-sky-600 text-white border-sky-600 font-bold" },
+    { label: "30 TREND RADARS", role: "PYTREND", activeClass: "bg-amber-600 text-white border-amber-600 font-bold" },
+    { label: "30 CONTENT GRADERS", role: "GROQ", activeClass: "bg-emerald-600 text-white border-emerald-600 font-bold" },
+    { label: "10 PATTERN LINKERS", role: "QML", activeClass: "bg-pink-600 text-white border-pink-600 font-bold" }
   ];
 
   const handleLogout = () => {

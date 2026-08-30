@@ -42,66 +42,66 @@ export const AgentInspectorModal: React.FC = () => {
   const getPipelineInfo = () => {
     if (isQML) {
       return {
-        title: "PennyLane QML Node",
-        badge: "10 Quantum Nodes",
+        title: "Deep Pattern Linker (QML)",
+        badge: "10 Pattern Linkers",
         color: "text-pink-900",
         border: "border-pink-200",
         bg: "bg-pink-50",
         icon: <Atom className="w-4 h-4 text-pink-600" />,
         engine: "PennyLane 4-Qubit Variational Quantum Circuit",
         description:
-          "Projects campaign features into 4-Qubit Hilbert Space using AngleEmbedding and BasicEntanglerLayers to compute Pauli-Z expectation values."
+          "Finds complex, non-linear relationships and patterns between datasets by mapping features into quantum Hilbert states."
       };
     }
     if (isML) {
       return {
-        title: "Trained Classical ML Node",
-        badge: "30 ML Models",
+        title: "ROI Predictor & Anomaly Engine",
+        badge: "30 ROI & Anomaly Models",
         color: "text-sky-900",
         border: "border-sky-200",
         bg: "bg-sky-50",
         icon: <Cpu className="w-4 h-4 text-sky-600" />,
         engine: agent.modelType || "RandomForest + GradientBoosting Regressor",
         description:
-          "Predicts campaign ROAS and conversion rates trained on historical multi-channel datasets."
+          "Predicts campaign ROAS/revenue, segments audiences, and automatically flags ad budget leaks."
       };
     }
     if (isGroq) {
       return {
-        title: "Groq LLM Qualitative Node",
-        badge: "30 Cognitive Nodes",
+        title: "Creative Content Grader",
+        badge: "30 Content Graders",
         color: "text-emerald-900",
         border: "border-emerald-200",
         bg: "bg-emerald-50",
         icon: <Brain className="w-4 h-4 text-emerald-600" />,
         engine: "Groq LLaMA 3.3 70B Versatile",
         description:
-          "Evaluates copywriting hooks, linguistic persuasion, and target demographic resonance."
+          "Grades copywriting copy, evaluates how well hooks resonate, and checks customer sentiment."
       };
     }
     if (isPyTrends) {
       return {
-        title: "Google Trends Signal Node",
-        badge: "30 PyTrends Nodes",
+        title: "Live Search Trend Radar",
+        badge: "30 Trend Radars",
         color: "text-amber-900",
         border: "border-amber-200",
         bg: "bg-amber-50",
         icon: <TrendingUp className="w-4 h-4 text-amber-600" />,
         engine: "Google Trends API & Velocity Engine",
         description:
-          "Calculates 90-day search volume interest curves, growth rates, and breakout keyword momentum."
+          "Tracks 90-day Google Search volume to discover breakout keywords and rising interest momentum."
       };
     }
     return {
-      title: "Master Admin Orchestrator",
-      badge: "Master Consensus",
+      title: "Final Verdict Decision Hub",
+      badge: "Decision Hub",
       color: "text-indigo-900",
       border: "border-indigo-200",
       bg: "bg-indigo-50",
       icon: <ShieldCheck className="w-4 h-4 text-indigo-600" />,
       engine: "Bayesian Multi-Modal Ensemble Aggregator",
       description:
-        "Fuses 30 ML, 30 PyTrends, 30 Groq, and 10 PennyLane QML models into prioritized executive actions."
+        "Orchestrates and merges all predictions, trends, creative grades, and patterns into a single final action recommendation."
     };
   };
 

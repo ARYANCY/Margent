@@ -88,7 +88,7 @@ class GroqService:
                     "- urgency_score: float (0.0 to 1.0)"
                 )
                 completion = self.client.chat.completions.create(
-                    model=os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                    model=os.environ.get("GROQ_MODEL", "groq/compound"),
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     temperature=0.2
@@ -149,7 +149,7 @@ class GroqService:
                     "target_appeal (string), sample_critique (string)."
                 )
                 completion = self.client.chat.completions.create(
-                    model=os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                    model=os.environ.get("GROQ_MODEL", "groq/compound"),
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     temperature=0.4
@@ -161,7 +161,7 @@ class GroqService:
                     "sentiment_score": float(res.get("sentiment_score", 0.72)),
                     "target_appeal": str(res.get("target_appeal", "Tech Creators & Trendsetters")),
                     "critique": str(res.get("sample_critique", "Strong visual hook with clear trend-aligned positioning.")),
-                    "model_used": "groq/llama-3.3-70b-versatile"
+                    "model_used": "groq/compound"
                 }
             except Exception as e:
                 print(f"Groq API live call fallback: {e}")
@@ -209,7 +209,7 @@ class GroqService:
                     f"3. recommended_actions: An array of 3 actionable, specific marketing optimization steps."
                 )
                 completion = self.client.chat.completions.create(
-                    model=os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                    model=os.environ.get("GROQ_MODEL", "groq/compound"),
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     temperature=0.6
@@ -258,7 +258,7 @@ class GroqService:
                     "- predicted_ctr_boost: string (e.g. '+28%')\n"
                 )
                 completion = self.client.chat.completions.create(
-                    model=os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                    model=os.environ.get("GROQ_MODEL", "groq/compound"),
                     messages=[{"role": "user", "content": prompt}],
                     response_format={"type": "json_object"},
                     temperature=0.75
@@ -334,7 +334,7 @@ class GroqService:
                     groq_messages.append({"role": m.get("role", "user"), "content": m.get("content", "")})
 
                 completion = self.client.chat.completions.create(
-                    model=os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                    model=os.environ.get("GROQ_MODEL", "groq/compound"),
                     messages=groq_messages,
                     temperature=0.7,
                     max_tokens=250
