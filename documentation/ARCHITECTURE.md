@@ -34,29 +34,27 @@ graph TD
 
 | Pipeline Segment | Agent Count | Specific Agent Roles | Engine / Library | Purpose & Metrics |
 | :--- | :---: | :--- | :--- | :--- |
-| **Classical ML** | **30** | `ChannelAnalyzer` (1–10)<br/>`ModelEnsembleAgent` (11–20)<br/>`RootCauseAgent` (21–30) | `GradientBoostingClassifier`<br/>`RandomForestRegressor`<br/>`KMeans`<br/>`IsolationForest` | Evaluates channel performance, clusters consumer profiles into 5 personas, and detects CPA/CTR anomaly drifts. |
-| **PyTrends Signals** | **30** | `TrendAgent` (1–30) | Google Trends API + Velocity Engine | Computes 90-day search interest curves, breakout query indicators, and growth velocity. |
-| **Groq / Grok LLM** | **30** | `RecommenderAgent` (1–30) | Groq `LLaMA 3.3 70B Versatile` | Copywriting critique, hook resonance, and customer perspective sentiment. |
-| **PennyLane QML** | **10** | `QuantumVQC` (1–10) | PennyLane 4-Qubit Variational Quantum Circuit | Pauli-Z expectation $\langle \sigma_z(0) \rangle$, multi-feature quantum entanglement matrix. |
-| **Admin Master** | **1** | `AdminOrchestrator` (`admin_001`) | Bayesian Multi-Modal Consensus Aggregator | Weighted multi-objective executive decision (`SCALE`, `MAINTAIN`, `INVESTIGATE`, `STOP`). |
+| **Margent ChannelPulse** | **30** | `ChannelAnalyzer` (1–10)<br/>`ModelEnsembleAgent` (11–20)<br/>`RootCauseAgent` (21–30) | `GradientBoostingClassifier`<br/>`RandomForestRegressor`<br/>`KMeans`<br/>`IsolationForest` | Evaluates channel performance, clusters consumer profiles into 5 personas, and detects CPA/CTR anomaly drifts. |
+| **Margent TrendRadar** | **30** | `TrendAgent` (1–30) | Google Trends API + Velocity Engine | Computes 90-day search interest curves, breakout query indicators, and growth velocity. |
+| **Margent CreativeMind** | **30** | `RecommenderAgent` (1–30) | Groq `LLaMA 3.3 70B Versatile` | Copywriting critique, hook resonance, and customer perspective sentiment. |
+| **Margent QuantumSignal** | **10** | `QuantumVQC` (1–10) | PennyLane 4-Qubit Variational Quantum Circuit | Pauli-Z expectation $\langle \sigma_z(0) \rangle$, multi-feature quantum entanglement matrix. |
+| **Margent DecisionCore** | **1** | `AdminOrchestrator` (`admin_001`) | Multi-Modal Weighted Consensus Orchestrator | Weighted multi-objective executive decision (`SCALE`, `MAINTAIN`, `INVESTIGATE`, `STOP`). |
 
 ---
 
 ## 3. Mathematical Consensus Formulation (`guide.md` Section 7)
 
-$$\text{final\_score} = 0.30 \cdot \text{grok\_score} + 0.30 \cdot \text{qml\_score} + 0.30 \cdot \text{simple\_score} + 0.10 \cdot \text{rule\_score}$$
+$$\text{consensus\_score} = 0.35 \cdot \text{ChannelPulse} + 0.25 \cdot \text{TrendRadar} + 0.25 \cdot \text{CreativeMind} + 0.15 \cdot \text{QuantumSignal}$$
 
 ### Pipeline Component Formulations:
-1. **Classical Simple Score ($\text{simple\_score}$)**:
-   $$\text{ROAS}_{\text{ML}} = \text{Regressor}(\mathbf{X})$$
-2. **PyTrends Search Velocity ($\text{velocity\_score}$)**:
-   $$\text{ROAS}_{\text{PyTrends}} = 1.80 + \left(\frac{\text{Velocity}}{100}\right) \cdot 2.20$$
-3. **Groq Persuasion Score ($\text{grok\_score}$)**:
-   $$\text{ROAS}_{\text{Groq}} = 1.50 + \left(\frac{\text{Creative Score}}{100}\right) \cdot 2.80$$
-4. **PennyLane Quantum Resonance ($\text{qml\_score}$)**:
+1. **Margent ChannelPulse ($\text{ChannelPulse}$)**:
+   $$\text{ROAS}_{\text{ChannelPulse}} = \text{Regressor}(\mathbf{X})$$
+2. **Margent TrendRadar ($\text{TrendRadar}$)**:
+   $$\text{ROAS}_{\text{TrendRadar}} = 1.00 + \left(\frac{\text{Velocity}}{100}\right) \cdot 3.50$$
+3. **Margent CreativeMind ($\text{CreativeMind}$)**:
+   $$\text{ROAS}_{\text{CreativeMind}} = 1.00 + \left(\frac{\text{Creative Score}}{100}\right) \cdot 3.00$$
+4. **Margent QuantumSignal ($\text{QuantumSignal}$)**:
    $$\langle \sigma_z(0) \rangle = \langle \psi(\theta, \mathbf{x}) | \sigma_z | \psi(\theta, \mathbf{x}) \rangle$$
-5. **Rule Guardrail ($\text{rule\_score}$)**:
-   $$\text{Penalty} = \begin{cases} 0.65 & \text{if } \text{CPA} > \$18.00 \\ 0.70 & \text{if } \text{Impressions} < 500 \\ 1.00 & \text{otherwise} \end{cases}$$
 
 ---
 

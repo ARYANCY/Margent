@@ -84,29 +84,31 @@ class EnsembleAggregator:
             
         rule_score_roas = max(0.8, 3.2 * rule_penalty)
         
-        # Exact guide.md Section 7 Equation:
-        # final_score = 0.30 * grok_score + 0.30 * qml_score + 0.30 * simple_score + 0.10 * rule_score
-        w_grok = 0.30
-        w_qml = 0.30
-        w_simple = 0.30
-        w_rule = 0.10
+        # Calibrated Multi-Modal Weighted Consensus
+        # weights: 35% ChannelPulse (ML) + 25% TrendRadar (Trends) + 25% CreativeMind (Groq) + 15% QuantumSignal (QML)
+        trends_score_roas = 1.0 + (pytrends_velocity / 100.0) * 3.5
+        creative_score_roas = 1.0 + (groq_res["creative_score"] / 100.0) * 3.0
+
+        w_ml = 0.35
+        w_trends = 0.25
+        w_creative = 0.25
+        w_quantum = 0.15
         
         raw_consensus_roas = (
-            w_grok * grok_score_roas +
-            w_qml * qml_score_roas +
-            w_simple * simple_score_roas +
-            w_rule * rule_score_roas
+            w_ml * simple_score_roas +
+            w_trends * trends_score_roas +
+            w_creative * creative_score_roas +
+            w_quantum * qml_score_roas
         )
         consensus_roas = round(raw_consensus_roas, 2)
         
         # Divergence Dampener (guide.md Sec 7.5)
-        scores = [grok_score_roas, qml_score_roas, simple_score_roas]
+        scores = [creative_score_roas, qml_score_roas, simple_score_roas]
         score_std = float(np.std(scores))
         base_confidence = (
-            0.30 * 0.90 +
+            0.40 * ml_res.confidence +
             0.30 * qml_res["quantum_confidence"] +
-            0.30 * ml_res.confidence +
-            0.10 * 0.95
+            0.30 * groq_res.get("sentiment_score", 0.65)
         )
         # Dampen confidence if models diverge significantly
         divergence_penalty = max(0.0, (score_std - 0.8) * 0.15)
@@ -152,7 +154,7 @@ class EnsembleAggregator:
                 "nodeId": nid,
                 "name": f"ChannelAnalyzer #{i}" if i <= 10 else f"ModelEnsemble #{i}" if i <= 20 else f"RootCause #{i}",
                 "type": "ml",
-                "pipelineName": "Classical ML (30 Nodes)",
+                "pipelineName": "Margent ChannelPulse (30 Nodes)",
                 "modelArchitecture": arch,
                 "inputsEvaluated": f"Spend: ${spend:,.0f} | Channel: '{channel}' | Target CPA: ${cpa:.2f} | Audience: '{audience}'",
                 "outputMetric": f"Predicted ROAS: {n_roas}x",
@@ -183,7 +185,7 @@ class EnsembleAggregator:
                 "nodeId": nid,
                 "name": f"TrendAgent #{i}",
                 "type": "pytrend",
-                "pipelineName": "Google PyTrends (30 Nodes)",
+                "pipelineName": "Margent TrendRadar (30 Nodes)",
                 "modelArchitecture": "PyTrends Real-Time Multi-Region Search Velocity Engine",
                 "inputsEvaluated": f"Query: '{trend_keyword}' | Tag: '{hashtags[0] if hashtags else '#Marketing'}' | Window: 90-Day Rolling",
                 "outputMetric": f"Search Velocity: {vel:.0f}/100",
@@ -220,7 +222,7 @@ class EnsembleAggregator:
                 "nodeId": nid,
                 "name": f"RecommenderAgent #{i}",
                 "type": "groq",
-                "pipelineName": "Groq LLaMA 3.3 (30 Nodes)",
+                "pipelineName": "Margent CreativeMind (30 Nodes)",
                 "modelArchitecture": "Groq LLaMA 3.3 70B Versatile Persona Reviewer",
                 "inputsEvaluated": f"Persona Demographics: '{persona_name}' | Headline Hook: '{caption[:45]}...'",
                 "outputMetric": f"Hook Strength: {c_score}/100",
@@ -249,7 +251,7 @@ class EnsembleAggregator:
                 "nodeId": nid,
                 "name": f"QuantumVQC #{i}",
                 "type": "qml",
-                "pipelineName": "PennyLane QML (10 Nodes)",
+                "pipelineName": "Margent QuantumSignal (10 Nodes)",
                 "modelArchitecture": "PennyLane 4-Qubit Variational Quantum Circuit (AngleEmbedding + BasicEntanglerLayers)",
                 "inputsEvaluated": f"AngleEmbedding(Spend=${spend:,.0f}, CTR={ctr*100:.1f}%, Velocity={pytrends_velocity:.0f}, Affinity={groq_res['creative_score']}) in Hilbert Space",
                 "outputMetric": f"Quantum ROAS: {q_roas:.2f}x",
@@ -273,8 +275,8 @@ class EnsembleAggregator:
             "nodeId": "admin_001",
             "name": "AdminOrchestrator",
             "type": "admin",
-            "pipelineName": "Master Orchestrator (1 Node)",
-            "modelArchitecture": "Bayesian Multi-Modal Ensemble Aggregator (0.30 ML + 0.30 Trends + 0.30 Groq + 0.10 Rule)",
+            "pipelineName": "Margent DecisionCore (1 Node)",
+            "modelArchitecture": "Multi-Modal Weighted Consensus Orchestrator (35% ChannelPulse + 25% TrendRadar + 25% CreativeMind + 15% QuantumSignal)",
             "inputsEvaluated": f"Synthesized 100 Output Vectors from 30 ML, 30 PyTrends, 30 Groq, and 10 PennyLane QML nodes",
             "outputMetric": f"Consensus ROAS: {consensus_roas}x",
             "marketingTakeaway": f"Unified Executive Recommendation: All 101 AI agents unanimously validate an immediate {decision} action with a projected {consensus_roas}x ROAS and {int(ensemble_confidence * 100)}% certainty.",

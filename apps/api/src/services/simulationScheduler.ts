@@ -2,6 +2,7 @@ import { Server as SocketIOServer } from "socket.io";
 import { dataStore } from "./store";
 import { createInitialSimulationState, SimulationGraphEngine } from "../../../../packages/graph/src/index";
 import { CanonicalCampaign, AgentEvent } from "../../../../packages/shared/src/types/index";
+import { generateMarketingRecommendation } from "./interpretation";
 
 export class SimulationScheduler {
   private io?: SocketIOServer;
@@ -50,6 +51,19 @@ export class SimulationScheduler {
   }
 
   private handleStateUpdate(state: any) {
+    if (state.adminAnalysis) {
+      const rec = generateMarketingRecommendation(
+        state.adminAnalysis.analysisId || `rec_${Date.now()}`,
+        state.activeCampaign?.campaignName || "Default Campaign",
+        state.activeCampaign?.channel || "Instagram",
+        state.trends[0]?.name || "Autonomous AI",
+        state.adminAnalysis.confidence,
+        state.adminAnalysis.simulatedRoas,
+        state.adminAnalysis.ensembleBreakdown
+      );
+      state.adminAnalysis.recommendation = rec;
+    }
+
     this.io?.emit("simulation:state", {
       simulationId: state.simulationId,
       status: this.isRunning ? "RUNNING" : "PAUSED",

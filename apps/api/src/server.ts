@@ -14,6 +14,7 @@ import { campaignsRouter } from "./routes/campaigns";
 import { analyticsRouter } from "./routes/analytics";
 import { simulationRouter } from "./routes/simulation";
 import { simulationScheduler } from "./services/simulationScheduler";
+import { generateMarketingRecommendation } from "./services/interpretation";
 
 const app = express();
 const server = http.createServer(app);
@@ -59,6 +60,18 @@ io.on("connection", (socket) => {
   
   const state = simulationScheduler.getEngine().getState();
   
+  if (state.adminAnalysis && !state.adminAnalysis.recommendation) {
+    state.adminAnalysis.recommendation = generateMarketingRecommendation(
+      state.adminAnalysis.analysisId || `rec_${Date.now()}`,
+      state.activeCampaign?.campaignName || "Default Campaign",
+      state.activeCampaign?.channel || "Instagram",
+      state.trends[0]?.name || "Autonomous AI",
+      state.adminAnalysis.confidence,
+      state.adminAnalysis.simulatedRoas,
+      state.adminAnalysis.ensembleBreakdown
+    );
+  }
+
   // Emit initial agents list to populate web client nodes
   socket.emit("agents:initial", Object.values(state.agents));
   

@@ -59,6 +59,7 @@ export const SlidingDashboard: React.FC = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const tabViewRef = useRef<HTMLDivElement>(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [showTechnicalDetails, setShowTechnicalDetails] = useState(false);
   const [approvalStatus, setApprovalStatus] = useState<"PENDING" | "APPROVED" | "REJECTED">("PENDING");
   const [dashboardTab, setDashboardTab] = useState<"overview" | "nodes101" | "montecarlo" | "quantum" | "persona" | "crud">("overview");
   const [nodeFilter, setNodeFilter] = useState<"ALL" | "ML" | "PYTREND" | "GROQ" | "QML" | "ADMIN">("ALL");
@@ -475,138 +476,241 @@ ${(adminAnalysis?.recommendedActions || [
       {/* Main Content Area */}
       <div ref={contentRef} className="p-6 overflow-y-auto space-y-4 flex-1 text-slate-900 bg-white font-sans">
         {/* HERO: Executive Decision Banner */}
-        <div className="p-4 bg-slate-50 border border-slate-300 shadow-xs relative overflow-hidden">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <span className={`px-2.5 py-0.5 text-xs font-mono font-black uppercase tracking-wider ${decisionBadgeStyle.bg}`}>
-                {adminAnalysis?.decision || "SCALE"}
-              </span>
-              <span className="text-xs font-mono font-bold text-slate-800">
-                Consensus ROAS: <strong className="text-indigo-700 text-sm">{adminAnalysis?.simulatedRoas || 3.85}x</strong>
-              </span>
-            </div>
-
-            <div className="flex items-center gap-1.5 font-mono text-[10px] text-slate-600 bg-white px-2.5 py-1 border border-slate-200">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Confidence: <strong>{adminAnalysis ? `${Math.round(adminAnalysis.confidence * 100)}%` : "91%"}</strong></span>
-            </div>
-          </div>
-
-          <p className="text-xs text-slate-700 leading-relaxed font-normal">
-            {adminAnalysis?.summary ||
-              "All 4 pipelines (30 ML Models, 30 PyTrends Signals, 30 Groq LLM agents, and 10 PennyLane QML Circuits) converged on a profitable SCALE action with 3.85x consensus ROAS."}
-          </p>
-
-          {/* Operator Action Controls */}
-          <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between">
-            <div className="text-[10px] font-mono font-bold text-slate-600 uppercase">
-              Operator Execution:
-            </div>
-            <div className="flex items-center gap-2">
-              {approvalStatus === "PENDING" ? (
-                <>
-                  <button
-                    onClick={() => setApprovalStatus("APPROVED")}
-                    className="px-3.5 py-1 text-[10px] font-mono font-bold bg-slate-900 hover:bg-slate-800 text-white flex items-center gap-1.5 transition uppercase shadow-xs cursor-pointer"
-                  >
-                    <Check className="w-3 h-3" />
-                    <span>Approve & Dispatch</span>
-                  </button>
-                  <button
-                    onClick={() => setApprovalStatus("REJECTED")}
-                    className="px-3 py-1 text-[10px] font-mono font-bold bg-white hover:bg-rose-50 text-rose-700 border border-slate-300 flex items-center gap-1 transition shadow-xs uppercase cursor-pointer"
-                  >
-                    <X className="w-3 h-3" />
-                    <span>Reject</span>
-                  </button>
-                </>
-              ) : (
-                <span
-                  className={`px-2.5 py-0.5 text-[9px] font-mono font-bold uppercase border ${
-                    approvalStatus === "APPROVED"
-                      ? "bg-emerald-50 text-emerald-800 border-emerald-300"
-                      : "bg-rose-50 text-rose-800 border-rose-300"
-                  }`}
-                >
-                  {approvalStatus === "APPROVED" ? "Strategy Approved" : "Strategy Rejected"}
+        {/* HERO: Marketing Executive Recommendation Card */}
+        {adminAnalysis?.recommendation ? (
+          <div className="p-5 bg-slate-50 border border-slate-200 rounded-lg shadow-xs relative overflow-hidden space-y-4 font-sans text-slate-900">
+            {/* Top Indicator Line */}
+            <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+              <div className="flex items-center gap-3">
+                <span className={`text-[10px] font-mono font-black uppercase tracking-wider px-2 py-0.5 rounded ${
+                  adminAnalysis.recommendation.decision.action === "INVEST" || adminAnalysis.recommendation.decision.action === "INCREASE"
+                    ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                    : adminAnalysis.recommendation.decision.action === "TEST"
+                    ? "bg-amber-100 text-amber-800 border border-amber-200"
+                    : "bg-rose-100 text-rose-800 border border-rose-200"
+                }`}>
+                  {adminAnalysis.recommendation.decision.action}
                 </span>
-              )}
+                <span className="text-xs text-slate-500 font-mono">
+                  Direction: <strong className="text-slate-800">{adminAnalysis.recommendation.direction.label} ({adminAnalysis.recommendation.direction.strength})</strong>
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1 text-[10px] font-mono text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded">
+                <span>Confidence: <strong>{adminAnalysis.recommendation.confidence.score}%</strong></span>
+              </div>
+            </div>
+
+            {/* Core Verdict Headline */}
+            <div>
+              <h3 className="text-xs font-bold text-slate-900 font-sans tracking-tight uppercase">
+                {adminAnalysis.recommendation.decision.label}
+              </h3>
+              <p className="text-xs text-slate-600 mt-1 font-sans leading-relaxed">
+                {adminAnalysis.recommendation.summary}
+              </p>
+            </div>
+
+            {/* Why section (3 key business reasons) */}
+            <div className="space-y-1.5 pt-1">
+              <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-wide block">
+                Primary Decision Drivers
+              </span>
+              <ul className="space-y-1">
+                {adminAnalysis.recommendation.reasons.map((r, i) => (
+                  <li key={i} className="text-xs text-slate-700 font-sans flex items-start gap-2">
+                    <span className="text-indigo-500 mt-0.5">•</span>
+                    <span>{r}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Action plan grid */}
+            <div className="grid grid-cols-2 gap-3 pt-2">
+              <div className="p-3 bg-white border border-slate-200 rounded">
+                <span className="text-[8px] font-mono font-bold text-slate-400 uppercase block mb-0.5">Recommended Action</span>
+                <span className="text-xs font-bold text-slate-800 leading-snug block">{adminAnalysis.recommendation.recommendedAction.primary}</span>
+              </div>
+              <div className="p-3 bg-white border border-slate-200 rounded">
+                <span className="text-[8px] font-mono font-bold text-slate-400 uppercase block mb-0.5">Budget Allocation Guidance</span>
+                <span className="text-xs font-bold text-slate-800 block">{adminAnalysis.recommendation.recommendedAction.budgetGuidance}</span>
+              </div>
+            </div>
+
+            {/* Safety disclaimer & Toggle */}
+            <div className="border-t border-slate-200 pt-2.5 flex items-center justify-between gap-4">
+              <p className="text-[9px] text-slate-400 font-sans leading-normal italic max-w-sm">
+                ⚠️ Recommendation is provided as marketing decision support based on historical simulation paths and should not be treated as a guaranteed financial outcome.
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowTechnicalDetails(!showTechnicalDetails)}
+                className="px-2.5 py-1 bg-white hover:bg-slate-50 border border-slate-200 text-[9px] font-mono text-slate-600 hover:text-slate-900 transition rounded shadow-2xs flex items-center gap-1 cursor-pointer shrink-0"
+              >
+                <span>{showTechnicalDetails ? "Hide Telemetry" : "Show Telemetry"}</span>
+              </button>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="p-4 bg-slate-50 border border-slate-300 shadow-xs relative overflow-hidden">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <span className={`px-2.5 py-0.5 text-xs font-mono font-black uppercase tracking-wider ${decisionBadgeStyle.bg}`}>
+                  {adminAnalysis?.decision || "SCALE"}
+                </span>
+                <span className="text-xs font-mono font-bold text-slate-800">
+                  Consensus ROAS: <strong className="text-indigo-700 text-sm">{adminAnalysis?.simulatedRoas || 3.85}x</strong>
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5 font-mono text-[10px] text-slate-600 bg-white px-2.5 py-1 border border-slate-200">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Confidence: <strong>{adminAnalysis ? `${Math.round(adminAnalysis.confidence * 100)}%` : "91%"}</strong></span>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-700 leading-relaxed font-normal">
+              {adminAnalysis?.summary ||
+                "All 4 pipelines (30 ML Models, 30 PyTrends Signals, 30 Groq LLM agents, and 10 PennyLane QML Circuits) converged on a profitable SCALE action with 3.85x consensus ROAS."}
+            </p>
+
+            {/* Operator Action Controls */}
+            <div className="mt-3 pt-3 border-t border-slate-200 flex items-center justify-between">
+              <div className="text-[10px] font-mono font-bold text-slate-600 uppercase">
+                Operator Execution:
+              </div>
+              <div className="flex items-center gap-2">
+                {approvalStatus === "PENDING" ? (
+                  <>
+                    <button
+                      onClick={() => setApprovalStatus("APPROVED")}
+                      className="px-3.5 py-1 text-[10px] font-mono font-bold bg-slate-900 hover:bg-slate-800 text-white flex items-center gap-1.5 transition uppercase shadow-xs cursor-pointer"
+                    >
+                      <Check className="w-3 h-3" />
+                      <span>Approve & Dispatch</span>
+                    </button>
+                    <button
+                      onClick={() => setApprovalStatus("REJECTED")}
+                      className="px-3 py-1 text-[10px] font-mono font-bold bg-white hover:bg-rose-50 text-rose-700 border border-slate-300 flex items-center gap-1 transition shadow-xs uppercase cursor-pointer"
+                    >
+                      <X className="w-3 h-3" />
+                      <span>Reject</span>
+                    </button>
+                  </>
+                ) : (
+                  <span
+                    className={`px-2.5 py-0.5 text-[9px] font-mono font-bold uppercase border ${
+                      approvalStatus === "APPROVED"
+                        ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                        : "bg-rose-50 text-rose-800 border-rose-300"
+                    }`}
+                  >
+                    {approvalStatus === "APPROVED" ? "Strategy Approved" : "Strategy Rejected"}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Dynamic Tab Views Animated with GSAP */}
         <div ref={tabViewRef}>
         {/* TAB 1: OVERVIEW */}
         {dashboardTab === "overview" && (
           <div className="space-y-4">
-            {/* 4-Pipeline Summary Grid */}
-            <div className="grid grid-cols-4 gap-2.5">
-              <div className="p-3 bg-sky-50/70 border border-sky-200">
-                <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold text-sky-800 uppercase mb-1">
-                  <Cpu className="w-3.5 h-3.5 text-sky-600" /> 30 ML Models
-                </div>
-                <div className="text-sm font-mono font-black text-slate-900">
-                  {eb?.ml_roas || (activeCampaign?.roas || 3.5)}x
-                </div>
-                <div className="text-[9px] text-slate-500 font-sans mt-0.5">GradientBoosting</div>
-              </div>
+            {showTechnicalDetails ? (
+              <>
+                {/* 4-Pipeline Summary Grid */}
+                <div className="grid grid-cols-4 gap-2.5">
+                  <div className="p-3 bg-sky-50/70 border border-sky-200">
+                    <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold text-sky-800 uppercase mb-1">
+                      <Cpu className="w-3.5 h-3.5 text-sky-600" /> 30 ML Models
+                    </div>
+                    <div className="text-sm font-mono font-black text-slate-900">
+                      {eb?.ml_roas || (activeCampaign?.roas || 3.5)}x
+                    </div>
+                    <div className="text-[9px] text-slate-500 font-sans mt-0.5">GradientBoosting</div>
+                  </div>
 
-              <div className="p-3 bg-amber-50/70 border border-amber-200">
-                <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold text-amber-800 uppercase mb-1">
-                  <TrendingUp className="w-3.5 h-3.5 text-amber-600" /> 30 PyTrends
-                </div>
-                <div className="text-sm font-mono font-black text-slate-900">
-                  {eb?.pytrends_velocity || 88}/100
-                </div>
-                <div className="text-[9px] text-slate-500 font-sans mt-0.5">Search Velocity</div>
-              </div>
+                  <div className="p-3 bg-amber-50/70 border border-amber-200">
+                    <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold text-amber-800 uppercase mb-1">
+                      <TrendingUp className="w-3.5 h-3.5 text-amber-600" /> 30 PyTrends
+                    </div>
+                    <div className="text-sm font-mono font-black text-slate-900">
+                      {eb?.pytrends_velocity || 88}/100
+                    </div>
+                    <div className="text-[9px] text-slate-500 font-sans mt-0.5">Search Velocity</div>
+                  </div>
 
-              <div className="p-3 bg-emerald-50/70 border border-emerald-200">
-                <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold text-emerald-800 uppercase mb-1">
-                  <Brain className="w-3.5 h-3.5 text-emerald-600" /> 30 Groq LLM
-                </div>
-                <div className="text-sm font-mono font-black text-slate-900">
-                  {eb?.groq_creative_score || 85}/100
-                </div>
-                <div className="text-[9px] text-slate-500 font-sans mt-0.5">LLaMA 3.3 Persona</div>
-              </div>
+                  <div className="p-3 bg-emerald-50/70 border border-emerald-200">
+                    <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold text-emerald-800 uppercase mb-1">
+                      <Brain className="w-3.5 h-3.5 text-emerald-600" /> 30 Groq LLM
+                    </div>
+                    <div className="text-sm font-mono font-black text-slate-900">
+                      {eb?.groq_creative_score || 85}/100
+                    </div>
+                    <div className="text-[9px] text-slate-500 font-sans mt-0.5">LLaMA 3.3 Persona</div>
+                  </div>
 
-              <div className="p-3 bg-pink-50/70 border border-pink-200">
-                <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold text-pink-800 uppercase mb-1">
-                  <Atom className="w-3.5 h-3.5 text-pink-600" /> 10 PennyLane
+                  <div className="p-3 bg-pink-50/70 border border-pink-200">
+                    <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold text-pink-800 uppercase mb-1">
+                      <Atom className="w-3.5 h-3.5 text-pink-600" /> 10 PennyLane
+                    </div>
+                    <div className="text-sm font-mono font-black text-slate-900">
+                      {eb?.qml_predicted_roas || 3.95}x
+                    </div>
+                    <div className="text-[9px] text-slate-500 font-sans mt-0.5">Hilbert State VQC</div>
+                  </div>
                 </div>
-                <div className="text-sm font-mono font-black text-slate-900">
-                  {eb?.qml_predicted_roas || 3.95}x
-                </div>
-                <div className="text-[9px] text-slate-500 font-sans mt-0.5">Hilbert State VQC</div>
-              </div>
-            </div>
 
-            {/* 4-Pipeline Consensus Benchmark Bar Chart */}
-            <div className="p-4 border border-slate-200 bg-white">
-              <div className="text-[10px] font-mono font-bold tracking-wider text-slate-800 uppercase mb-2 flex items-center justify-between">
-                <span className="flex items-center gap-1.5">
-                  <Activity className="w-3.5 h-3.5 text-slate-700" />
-                  Multi-Modal Predicted ROAS Comparison
-                </span>
-                <span className="text-slate-500 font-normal">Weights: 30% / 30% / 30% / 10%</span>
+                {/* 4-Pipeline Consensus Benchmark Bar Chart */}
+                <div className="p-4 border border-slate-200 bg-white">
+                  <div className="text-[10px] font-mono font-bold tracking-wider text-slate-800 uppercase mb-2 flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      <Activity className="w-3.5 h-3.5 text-slate-700" />
+                      Multi-Modal Predicted ROAS Comparison
+                    </span>
+                    <span className="text-slate-500 font-normal">Weights: 30% / 30% / 30% / 10%</span>
+                  </div>
+                  <div className="h-36 w-full pt-1">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={280} debounce={50}>
+                      <BarChart data={consensusComparisonData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="2 2" stroke="#F1F5F9" vertical={false} />
+                        <XAxis dataKey="pipeline" tick={{ fontSize: 9, fill: "#475569", fontFamily: "monospace" }} />
+                        <YAxis tick={{ fontSize: 9, fill: "#475569", fontFamily: "monospace" }} />
+                        <Tooltip
+                          contentStyle={{ backgroundColor: "#FFFFFF", borderColor: "#CBD5E1", fontSize: "10px", borderRadius: "0px" }}
+                          formatter={(value: any) => [`${value}x ROAS`, "Predicted ROAS"]}
+                        />
+                        <Bar dataKey="roas" radius={[2, 2, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="p-4 bg-white border border-slate-200 rounded-lg space-y-3 font-sans text-slate-800">
+                <div className="flex items-center justify-between text-xs font-mono font-bold text-slate-900 border-b border-slate-100 pb-2">
+                  <span>📊 Channel Performance Indicators</span>
+                  <span className="text-[9px] text-slate-500 font-normal">Active Targeting: {activeCampaign?.channel || "Instagram"}</span>
+                </div>
+                <div className="grid grid-cols-3 gap-3 text-center font-mono">
+                  <div className="p-3 bg-slate-50 border border-slate-100">
+                    <span className="text-[9px] uppercase font-mono text-slate-400 block mb-1">Estimated Conversion Rate</span>
+                    <span className="font-bold text-slate-855 text-xs">{((activeCampaign?.conversionRate || 0.045) * 100).toFixed(1)}% Ratio</span>
+                  </div>
+                  <div className="p-3 bg-slate-50 border border-slate-100">
+                    <span className="text-[9px] uppercase font-mono text-slate-400 block mb-1">Predicted Ad ROI</span>
+                    <span className="font-bold text-indigo-700 text-xs">{adminAnalysis?.simulatedRoas || 3.85}x ROAS</span>
+                  </div>
+                  <div className="p-3 bg-slate-50 border border-slate-100">
+                    <span className="text-[9px] uppercase font-mono text-slate-400 block mb-1">Optimized Click Cost</span>
+                    <span className="font-bold text-slate-855 text-xs">${activeCampaign?.cpc.toFixed(2) || "0.85"} / click</span>
+                  </div>
+                </div>
               </div>
-              <div className="h-36 w-full pt-1">
-                <ResponsiveContainer width="100%" height="100%" minWidth={280} debounce={50}>
-                  <BarChart data={consensusComparisonData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="2 2" stroke="#F1F5F9" vertical={false} />
-                    <XAxis dataKey="pipeline" tick={{ fontSize: 9, fill: "#475569", fontFamily: "monospace" }} />
-                    <YAxis tick={{ fontSize: 9, fill: "#475569", fontFamily: "monospace" }} />
-                    <Tooltip
-                      contentStyle={{ backgroundColor: "#FFFFFF", borderColor: "#CBD5E1", fontSize: "10px", borderRadius: "0px" }}
-                      formatter={(value: any) => [`${value}x ROAS`, "Predicted ROAS"]}
-                    />
-                    <Bar dataKey="roas" radius={[2, 2, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+            )}
 
             {/* Dynamic 7-Point Google Trends Momentum */}
             <div className="p-4 border border-slate-200 bg-white">

@@ -20,14 +20,14 @@
 **Margent** is an autonomous multi-agent marketing intelligence and campaign optimization platform that transforms scattered cross-channel performance data into clear, actionable executive decisions. Powered by a **101-Node Quantum-Classical Multi-Modal Ensemble**, Margent:
 
 - **Ingests & Harmonizes** campaign data across Instagram, Facebook, Pinterest, Twitter, Google Ads, and TikTok from 5+ licensed datasets into one normalized view.
-- **Analyzes at Scale** using 30 Classical ML nodes (GradientBoosting, RandomForest, KMeans, IsolationForest) for ROAS regression, customer segmentation, and anomaly detection.
-- **Incorporates Real-Time Signals** from 30 PyTrends Google Search nodes tracking 90-day search volume interest curves, growth momentum, and keyword breakout velocity.
-- **Reasons Qualitatively** via 30 Groq LLaMA 3.3 70B nodes for copywriting critique, hook resonance evaluation, and persona-based sentiment analysis.
-- **Computes Quantum Resonance** through 10 PennyLane 4-Qubit Variational Quantum Circuits in Hilbert Space, measuring Pauli-Z expectation values and multi-feature quantum entanglement.
-- **Synthesizes Executive Consensus** via a Bayesian Admin Orchestrator that fuses all signals into ranked decisions: **SCALE**, **MAINTAIN**, **INVESTIGATE**, or **STOP** — with plain-English root-cause explanations.
+- **Analyzes at Scale** using 30 **Margent ChannelPulse** nodes (GradientBoosting, RandomForest, KMeans, IsolationForest) for ROAS regression, customer segmentation, and anomaly detection.
+- **Incorporates Real-Time Signals** from 30 **Margent TrendRadar** Google Search nodes tracking 90-day search volume interest curves, growth momentum, and keyword breakout velocity.
+- **Reasons Qualitatively** via 30 **Margent CreativeMind** Groq LLaMA 3.3 70B nodes for copywriting critique, hook resonance evaluation, and persona-based sentiment analysis.
+- **Computes Quantum Resonance** through 10 **Margent QuantumSignal** PennyLane 4-Qubit Variational Quantum Circuits in Hilbert Space, measuring Pauli-Z expectation values and multi-feature quantum entanglement.
+- **Synthesizes Executive Consensus** via the **Margent DecisionCore** consensus aggregator that fuses all signals into ranked decisions: **SCALE**, **MAINTAIN**, **INVESTIGATE**, or **STOP** — with plain-English root-cause explanations.
 
-The final score is computed through a weighted multi-modal ensemble:
-$$\text{final\_score} = 0.30 \cdot \text{grok\_score} + 0.30 \cdot \text{qml\_score} + 0.30 \cdot \text{simple\_score} + 0.10 \cdot \text{rule\_score}$$
+The final score is computed through a mathematically normalized multi-modal weighted consensus:
+$$\text{consensus\_score} = 0.35 \cdot \text{ChannelPulse} + 0.25 \cdot \text{TrendRadar} + 0.25 \cdot \text{CreativeMind} + 0.15 \cdot \text{QuantumSignal}$$
 
 All of this is visualized in a real-time React Flow graph with a sliding analytics dashboard, live event stream, and agent inspector modal.
 

@@ -251,6 +251,26 @@ campaignsRouter.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
+// POST /api/campaigns/:id/activate (Admin)
+campaignsRouter.post("/:id/activate", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const campaigns = simulationScheduler.getEngine().getState().campaigns || [];
+    const campaign = campaigns.find(c => c.campaignId === id);
+    if (!campaign) {
+      return res.status(404).json({ error: "Campaign not found" });
+    }
+    
+    simulationScheduler.getEngine().setActiveCampaign(campaign);
+    // Execute a tick to re-run models on this active campaign immediately!
+    await simulationScheduler.getEngine().executeTick();
+    
+    res.json({ success: true, message: `Campaign ${id} activated and consensus re-evaluated.`, campaign });
+  } catch (err: any) {
+    res.status(500).json({ error: "Failed to activate campaign", details: err.message });
+  }
+});
+
 // DELETE campaign (Admin)
 campaignsRouter.delete("/:id", async (req: Request, res: Response) => {
   try {

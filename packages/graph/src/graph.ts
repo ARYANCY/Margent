@@ -306,16 +306,38 @@ export class SimulationGraphEngine {
       }
     }
 
-    // 5. Admin Ensemble Synthesis Node (Executive Bayesian Consensus)
-    const consensusRoas = es?.consensus_roas || activeCampaign.roas;
-    const consensusDecision = es?.decision || "SCALE";
+    // 5. Margent DecisionCore Consensus Synthesis
+    const mlRoasVal = pb?.trained_ml?.predicted_roas || activeCampaign.roas || 3.5;
+    const trendsVelocityVal = pb?.pytrends_search?.velocity_score || 88.0;
+    const trendsRoasContribution = 1.0 + (trendsVelocityVal / 100) * 3.5;
+    const groqCreativeVal = pb?.groq_llm?.creative_score || 85.0;
+    const groqRoasContribution = 1.0 + (groqCreativeVal / 100) * 3.0;
+    const qmlRoasVal = pb?.qml_quantum?.quantum_predicted_roas || 3.85;
+
+    const w_ml = 0.35;
+    const w_trends = 0.25;
+    const w_creative = 0.25;
+    const w_quantum = 0.15;
+
+    const calculatedConsensusRoas = Number(
+      (w_ml * mlRoasVal + w_trends * trendsRoasContribution + w_creative * groqRoasContribution + w_quantum * qmlRoasVal).toFixed(2)
+    );
+
+    const consensusRoas = es?.consensus_roas || calculatedConsensusRoas;
+    const consensusDecision = es?.decision || (consensusRoas > 3.2 ? "SCALE" : "MAINTAIN");
     const consensusPriority = es?.priority || "HIGH";
-    const consensusConfidence = es?.ensemble_confidence || 0.91;
+
+    const calculatedConfidence = Number(
+      (0.4 * (pb?.trained_ml?.confidence || 0.88) + 
+       0.3 * (pb?.qml_quantum?.quantum_confidence || 0.94) + 
+       0.3 * (pb?.groq_llm?.sentiment_score || 0.65)).toFixed(2)
+    );
+    const consensusConfidence = es?.ensemble_confidence || calculatedConfidence;
 
     // Construct granular 101-Node Evaluation Telemetry Dataset furnished for Marketers
     const nodeEvaluations: NodeEvaluation[] = [];
 
-    // 1. 30 Classical ML Nodes
+    // 1. 30 Margent ChannelPulse Nodes (Classical ML)
     for (let i = 0; i < mlIds.length; i++) {
       const id = mlIds[i];
       const agent = this.state.agents[id];
@@ -329,10 +351,10 @@ export class SimulationGraphEngine {
           nodeId: id,
           name: agent.name,
           type: "ml",
-          pipelineName: "Classical ML (30 Nodes)",
+          pipelineName: "Margent ChannelPulse (30 Nodes)",
           modelArchitecture: modelArch,
           inputsEvaluated: `Spend: $${activeCampaign.spend.toLocaleString()} | Channel: '${activeCampaign.channel}' | Target CPA: $${activeCampaign.cpc.toFixed(2)} | Target: '${activeCampaign.audience}'`,
-          outputMetric: `Predicted ROAS: ${nodeRoas}x`,
+          outputMetric: `Expected ROAS: ${nodeRoas}x`,
           marketingTakeaway: `High Profitability: For every $1.00 spent on ${activeCampaign.channel}, this statistical model forecasts a $${nodeRoas.toFixed(2)} gross revenue return with a ${(convRate * 100).toFixed(1)}% conversion rate.`,
           strategicAction: `Scale budget by +25% on ${activeCampaign.channel}. Customer acquisition cost is well below maximum threshold.`,
           confidenceGrade: `High Confidence (94%)`,
@@ -364,8 +386,8 @@ export class SimulationGraphEngine {
           nodeId: id,
           name: agent.name,
           type: "pytrend",
-          pipelineName: "Google PyTrends (30 Nodes)",
-          modelArchitecture: "PyTrends Real-Time Multi-Region Search Velocity Engine",
+          pipelineName: "Margent TrendRadar (30 Nodes)",
+          modelArchitecture: "Margent Real-Time Multi-Region Search Velocity Engine",
           inputsEvaluated: `Tracked Query: '${topTrend.name}' | Tag: '${activeCampaign.hashtags?.[0] || "#AgenticAI"}' | Window: 90-Day Rolling`,
           outputMetric: `Search Velocity: ${velocity}/100`,
           marketingTakeaway: `Surging Consumer Interest: Online search volume for '${topTrend.name}' is up +${(pb?.pytrends_search?.growth_rate_pct || 92.4).toFixed(1)}% over the past 30 days (${status} trend).`,
@@ -412,8 +434,8 @@ export class SimulationGraphEngine {
           nodeId: id,
           name: agent.name,
           type: "groq",
-          pipelineName: isSkeptic ? "Groq LLM (20% Against Skeptics)" : "Groq LLM (80% For Advocates)",
-          modelArchitecture: "Groq LLaMA 3.3 70B Versatile Cognitive Persona Reviewer",
+          pipelineName: isSkeptic ? "Margent CreativeMind (Skeptics)" : "Margent CreativeMind (Advocates)",
+          modelArchitecture: "Margent LLaMA 3.3 70B Versatile Cognitive Persona Reviewer",
           inputsEvaluated: `Persona: '${agent.specialization}' | Stance: ${isSkeptic ? 'AGAINST (Friction)' : 'FOR (Resonance)'} | Hook: "${(activeCampaign.caption || "Launch").slice(0, 35)}..."`,
           outputMetric: `Hook Strength: ${creativeScore}/100`,
           marketingTakeaway,
@@ -446,8 +468,8 @@ export class SimulationGraphEngine {
           nodeId: id,
           name: agent.name,
           type: "qml",
-          pipelineName: "PennyLane QML (10 Nodes)",
-          modelArchitecture: "PennyLane 4-Qubit Variational Quantum Circuit (AngleEmbedding + BasicEntanglerLayers)",
+          pipelineName: "Margent QuantumSignal (10 Nodes)",
+          modelArchitecture: "Margent 4-Qubit Variational Quantum Circuit (AngleEmbedding + BasicEntanglerLayers)",
           inputsEvaluated: `AngleEmbedding(Spend=$${activeCampaign.spend}, CTR=${(activeCampaign.ctr * 100).toFixed(1)}%, Velocity=${baseVelocity}, Affinity=${pb?.groq_llm?.creative_score || 88}) in Hilbert Space`,
           outputMetric: `Quantum ROAS: ${qRoas}x`,
           marketingTakeaway: `Cross-Channel Synergy: Non-linear interaction analysis proves that increasing ad spend simultaneously magnifies click-through velocity rather than causing audience fatigue.`,
@@ -471,8 +493,8 @@ export class SimulationGraphEngine {
       nodeId: "admin_001",
       name: "AdminOrchestrator",
       type: "admin",
-      pipelineName: "Master Orchestrator (1 Node)",
-      modelArchitecture: "Bayesian Multi-Modal Ensemble Aggregator (0.30 ML + 0.30 Trends + 0.30 Groq + 0.10 Rule)",
+      pipelineName: "Margent DecisionCore (1 Node)",
+      modelArchitecture: "Multi-Modal Weighted Consensus Orchestrator (35% ChannelPulse + 25% TrendRadar + 25% CreativeMind + 15% QuantumSignal)",
       inputsEvaluated: `Aggregated 100 Output Vectors from 30 ML + 30 PyTrends + 30 Groq + 10 PennyLane QML worker nodes`,
       outputMetric: `Consensus ROAS: ${consensusRoas}x`,
       marketingTakeaway: `Unified Executive Verdict: All 101 AI agents unanimously agree that this campaign is ready for immediate scaling with a projected ${consensusRoas}x gross ROAS and ${Math.round(consensusConfidence * 100)}% statistical confidence.`,
@@ -530,7 +552,7 @@ export class SimulationGraphEngine {
       source: "admin_001",
       type: "ADMIN_ANALYSIS",
       payload: {
-        title: "Executive Bayesian Consensus",
+        title: "Margent DecisionCore Consensus",
         decision: consensusDecision,
         summary: analysis.summary,
         confidence: consensusConfidence,

@@ -22,6 +22,40 @@ export function App() {
   const campaigns = useSimulationStore((s) => s.campaigns);
   const loadInitialData = useSimulationStore((s) => s.loadInitialData);
 
+  const handleActivateCampaign = async (campaignId: string) => {
+    try {
+      const apiUrl = (import.meta as any).env?.VITE_API_URL || `${window.location.protocol}//${window.location.hostname}:4000`;
+      const res = await fetch(`${apiUrl}/api/campaigns/${campaignId}/activate`, {
+        method: "POST"
+      });
+      if (res.ok) {
+        // Reload simulation data to update active status
+        await loadInitialData();
+        // Redirect to dashboard view
+        useSimulationStore.getState().setView("dashboard");
+      }
+    } catch (e) {
+      console.error("Failed to activate campaign", e);
+    }
+  };
+
+  const handleUpdateStatus = async (e: React.MouseEvent, campaignId: string, status: "ACTIVE" | "PAUSED" | "REJECTED") => {
+    e.stopPropagation(); // Avoid activating the campaign on click!
+    try {
+      const apiUrl = (import.meta as any).env?.VITE_API_URL || `${window.location.protocol}//${window.location.hostname}:4000`;
+      const res = await fetch(`${apiUrl}/api/campaigns/${campaignId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status })
+      });
+      if (res.ok) {
+        await loadInitialData();
+      }
+    } catch (err) {
+      console.error("Failed to update status", err);
+    }
+  };
+
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem("margent_authenticated") === "true";
   });
@@ -187,7 +221,11 @@ export function App() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {campaigns.map((c: any) => (
-                    <div key={c.campaignId} className="p-4 border border-slate-200 bg-slate-50 hover:bg-slate-100/50 rounded-lg flex flex-col justify-between">
+                    <div 
+                      key={c.campaignId} 
+                      onClick={() => handleActivateCampaign(c.campaignId)}
+                      className="p-4 border border-slate-200 bg-slate-50 hover:bg-slate-100/50 hover:border-slate-400 hover:shadow-xs transition-all rounded-lg flex flex-col justify-between cursor-pointer"
+                    >
                       <div>
                         <div className="flex items-center justify-between font-mono">
                           <span className="font-black text-slate-900 text-xs">{c.campaignName}</span>
@@ -210,6 +248,37 @@ export function App() {
                           <div>
                             <span className="text-[8px] uppercase font-mono text-slate-400 block">ROAS</span>
                             <span className="font-bold text-[11px] text-indigo-600">{c.roas}x</span>
+                          </div>
+                        </div>
+
+                        {/* Approve & Reject Options */}
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-200">
+                          <span className="text-[9px] font-mono text-slate-400 uppercase">
+                            Status: <strong className={c.status === "ACTIVE" ? "text-emerald-600" : "text-rose-600"}>{c.status}</strong>
+                          </span>
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={(e) => handleUpdateStatus(e, c.campaignId, "ACTIVE")}
+                              className={`px-2 py-0.5 text-[9px] font-mono font-bold rounded border transition cursor-pointer ${
+                                c.status === "ACTIVE" 
+                                  ? "bg-emerald-50 text-emerald-700 border-emerald-300"
+                                  : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+                              }`}
+                            >
+                              Approve
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => handleUpdateStatus(e, c.campaignId, "PAUSED")}
+                              className={`px-2 py-0.5 text-[9px] font-mono font-bold rounded border transition cursor-pointer ${
+                                c.status === "PAUSED"
+                                  ? "bg-rose-50 text-rose-700 border-rose-300"
+                                  : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+                              }`}
+                            >
+                              Reject
+                            </button>
                           </div>
                         </div>
                       </div>

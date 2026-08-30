@@ -153,7 +153,44 @@ export interface NodeEvaluation {
   rawTelemetryJson?: Record<string, any>;
 }
 
+export interface UnifiedMarketingRecommendation {
+  analysisId: string;
+  topic: string;
+  summary: string;
+  direction: {
+    value: "UP" | "DOWN" | "STABLE" | "UNCERTAIN";
+    label: string;
+    strength: "WEAK" | "MODERATE" | "STRONG";
+  };
+  decision: {
+    action: "INVEST" | "INCREASE" | "HOLD" | "TEST" | "REDUCE" | "AVOID" | "WAIT";
+    priority: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+    label: string;
+  };
+  confidence: {
+    level: "LOW" | "MEDIUM" | "HIGH";
+    score: number;
+    explanation: string;
+  };
+  risk: {
+    level: "LOW" | "MEDIUM" | "HIGH";
+    explanation: string;
+  };
+  reasons: string[];
+  recommendedAction: {
+    primary: string;
+    secondary?: string;
+    budgetGuidance: string;
+    urgency: "NOW" | "THIS_WEEK" | "THIS_MONTH" | "MONITOR";
+  };
+  expectedImpact: {
+    direction: "POSITIVE" | "NEGATIVE" | "NEUTRAL" | "UNCERTAIN";
+    description: string;
+  };
+}
+
 export interface AdminAnalysis {
+  analysisId?: string;
   decision: "SCALE" | "MAINTAIN" | "INVESTIGATE" | "STOP" | "EXPERIMENT" | "REDUCE";
   confidence: number;
   simulatedRoas: number;
@@ -164,6 +201,7 @@ export interface AdminAnalysis {
   nodeEvaluations?: NodeEvaluation[];
   activeAgentsCount: number;
   timestamp: string;
+  recommendation?: UnifiedMarketingRecommendation;
 }
 
 export interface SimulationStateSummary {
@@ -185,3 +223,4 @@ export interface SimulationStateSummary {
   };
   recentEvents?: AgentEvent[];
 }
+
