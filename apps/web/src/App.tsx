@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSimulationStore } from "./stores/simulationStore";
 import { HeaderBar } from "./components/navbar/HeaderBar";
 import { AgentGraph } from "./components/graph/AgentGraph";
@@ -8,6 +8,7 @@ import { CampaignForm } from "./components/campaign/CampaignForm";
 import { SlidingDashboard } from "./components/dashboard/SlidingDashboard";
 import { AgentInspectorModal } from "./components/inspector/AgentInspectorModal";
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
+import { LoginScreen } from "./components/auth/LoginScreen";
 
 import { ReactFlowProvider } from "@xyflow/react";
 
@@ -15,6 +16,10 @@ export function App() {
   const initSocket = useSimulationStore((s) => s.initSocket);
   const isCampaignModalOpen = useSimulationStore((s) => s.isCampaignModalOpen);
   const setIsCampaignModalOpen = useSimulationStore((s) => s.setIsCampaignModalOpen);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("margent_authenticated") === "true";
+  });
 
   const [sidebarWidth, setSidebarWidth] = React.useState(320);
   const isResizing = React.useRef(false);
@@ -25,8 +30,10 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    initSocket();
-  }, [initSocket]);
+    if (isAuthenticated) {
+      initSocket();
+    }
+  }, [initSocket, isAuthenticated]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -48,6 +55,14 @@ export function App() {
       window.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
+
+  if (!isAuthenticated) {
+    return (
+      <ErrorBoundary>
+        <LoginScreen onLoginSuccess={() => setIsAuthenticated(true)} />
+      </ErrorBoundary>
+    );
+  }
 
   return (
     <ErrorBoundary>
@@ -103,3 +118,4 @@ export function App() {
 }
 
 export default App;
+

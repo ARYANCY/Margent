@@ -5,7 +5,8 @@ import {
   SlidersHorizontal,
   Activity,
   Layers,
-  Radio
+  Radio,
+  LogOut
 } from "lucide-react";
 import { useSimulationStore } from "../../stores/simulationStore";
 
@@ -27,6 +28,11 @@ export const HeaderBar: React.FC = () => {
     { label: "30 GROQ", role: "GROQ", activeClass: "bg-emerald-600 text-white border-emerald-600 font-bold" },
     { label: "10 QML", role: "QML", activeClass: "bg-pink-600 text-white border-pink-600 font-bold" }
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem("margent_authenticated");
+    window.location.reload();
+  };
 
   return (
     <header className="h-14 px-5 bg-white border-b border-slate-300 flex items-center justify-between z-40 shrink-0 select-none shadow-xs sticky top-0 font-mono">
@@ -97,6 +103,14 @@ export const HeaderBar: React.FC = () => {
               {adminAnalysis.decision}
             </span>
           )}
+        </button>
+
+        <button
+          onClick={handleLogout}
+          className="px-3 py-1.5 text-[11px] font-bold bg-white hover:bg-rose-50 text-rose-600 border border-slate-300 flex items-center gap-1.5 transition uppercase shadow-xs cursor-pointer"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          <span>Sign Out</span>
         </button>
       </div>
     </header>
